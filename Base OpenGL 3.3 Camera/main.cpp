@@ -16,8 +16,11 @@
 #include "stb_image.h"
 
 #include "model.h"
-
+#include "game.h"
 //using namespace std;
+
+
+game gameuno;
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -86,6 +89,8 @@ int mappa[10][10] = { { 6,6,6,6,6,6,6,6,6,6 },
 										{ 6,0,0,0,1,0,0,0,0,6 },
 										{ 6,6,6,6,6,6,6,6,6,6 } };
 
+
+
 /* Array dei colori da utilizzare */
 const glm::vec3 colors[7] = { { 1.0, 1.0, 1.0 },
 															{ 1.0, 0.0, 0.0 },
@@ -111,7 +116,7 @@ bool rotateLeft = false;
 bool rotateRight = false;
 
 unsigned int VBO, VAO;
-unsigned int texture1, texture2;
+unsigned int texturePrato;
 
 Shader *myShader;
 
@@ -136,42 +141,17 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
+// qui viene controllato lo stato degli oggetti e chiamati le fun di update dello stato
 void render()
 {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
-
-	myShader->setInt("myTexture1", 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-	myShader->setInt("myTexture2", 1);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture2);
-	glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-
-	glm::mat4 view = glm::lookAt(pos, at, up);
-	myShader->setMat4("view", view);
 	
-	for (int i = 0; i<10; i++)
-	{
-		for (int j = 0; j<10; j++)
-		{
-			if (mappa[i][j] != 0)
-			{
-				myShader->setVec3("colorcube", colors[mappa[i][j]]);
+}
 
-				/* Ogni cubo dista 1.5 unità dai vicini */
-				float x = -10 + i * 1.5;
-				float z = -10 + j * 1.5;
-				
-				glm::mat4 model = glm::mat4(1.0f);	//identity matrix
-				model = glm::translate(model, glm::vec3(x, 0.0f, z));
-				myShader->setMat4("model", model);
+// qui viene inizializzato l'oggetto game
+void init() {
 
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-				}
-		}
-	}
+	gameuno.inizializza();
+
 }
 
 // load and create a texture 
@@ -237,8 +217,7 @@ int main()
 
 	myShader = new Shader("vertex_shader.vs", "fragment_shader.fs");
 
-	texture1 = loadtexture("unibas.jpg");
-	texture2 = loadtexture("wall.jpg");
+	texturePrato = loadtexture("parete.jpg");
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
