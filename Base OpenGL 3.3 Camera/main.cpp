@@ -17,9 +17,9 @@
 
 #include "model.h"
 #include "game.h"
+#include "gameMap.h"
 #include "operatore.h"
 //using namespace std;
-
 
 game gameuno;
 
@@ -36,7 +36,7 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
 glm::vec3 pos(0.0, 0.0, 0.0);		// Posizione camera
-glm::vec3 at(0.0, 0.0, -10.0);	// Punto in cui "guarda" la camera
+glm::vec3 at(0.0, 0.0, -10.0);		// Punto in cui "guarda" la camera
 glm::vec3 up(0.0, 1.0, 0.0);		// Vettore up...la camera è sempre parallela al piano
 
 glm::vec3 dir(0.0, 0.0, -0.1);	// Direzione dello sguardo
@@ -59,7 +59,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // qui viene controllato lo stato degli oggetti e chiamati le fun di update dello stato
 void render()
 {
-	
+	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+	gameuno.gameMap.inizializza();
+
 }
 
 // qui viene inizializzato l'oggetto game
@@ -86,7 +90,7 @@ unsigned int loadtexture(std::string filename)
 	int width, height, nrChannels;
 	stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
 																					// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-	unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -132,9 +136,8 @@ int main()
 
 	myShader = new Shader("vertex_shader.vs", "fragment_shader.fs");
 
-	gameuno.texturePrato = loadtexture("parete.jpg");
+	gameuno.gameMap.texturePrato = loadtexture("prato.jpg");
 
-	////bind VAO and VBO
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &cubeVBO);
 
@@ -160,16 +163,16 @@ int main()
 	glBindVertexArray(0);
 
 	glEnable(GL_DEPTH_TEST);
-
+	
 	// create transformations
 	//glm::mat4 view = glm::mat4(1.0f);	//identity matrix;
 	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	
+
 	myShader->use();
 	myShader->setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-	
-	
+
+
 	// render loop
 	while (!glfwWindowShouldClose(window))
 	{

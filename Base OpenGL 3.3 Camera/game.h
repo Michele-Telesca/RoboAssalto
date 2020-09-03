@@ -9,13 +9,13 @@ public:
 
 	void inizializza();
 
-	unsigned int texturePrato;
+
 	gameMap gameMap;
 
 };
 
 void game::inizializza() {
 
-	gameMap.inizializza(texturePrato);
+	gameMap.inizializza();
 
 }

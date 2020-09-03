@@ -112,10 +112,10 @@ public:
 
 	void drawCube() {
 
-		// light properties
-		myShader->setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
-		myShader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-		myShader->setVec3("light.specular", 0.5f, 0.5f, 0.5f);
+		//// light properties
+		//myShader->setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
+		//myShader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+		//myShader->setVec3("light.specular", 0.5f, 0.5f, 0.5f);
 
 		glm::mat4 model = glm::mat4(1.0f);	//identity matrix
 		model = glm::translate(model, glm::vec3(posizione_x, posizione_y, posizione_z));
