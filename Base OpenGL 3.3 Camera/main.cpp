@@ -12,35 +12,31 @@
 #include <map>
 #include "shader_s.h"
 #include "camera.h"
-//#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 #include "model.h"
 #include "game.h"
 #include "gameMap.h"
-#include "operatore.h"
-//using namespace std;
+#include "cube.h"
 
+// dichiarazione classi
 game gameuno;
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 800;
 
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-
-std::stack<glm::mat4> glm_ModelViewMatrix; 
-
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-glm::vec3 pos(0.0, 0.0, 0.0);		// Posizione camera
-glm::vec3 at(0.0, 0.0, -10.0);		// Punto in cui "guarda" la camera
+// vettori per la direzione della camera
+glm::vec3 pos(0.0, 5.0, 0.0);		// Posizione camera
+glm::vec3 at(0.0, 0.0, -1.0);		// Punto in cui "guarda" la camera
 glm::vec3 up(0.0, 1.0, 0.0);		// Vettore up...la camera è sempre parallela al piano
 
-glm::vec3 dir(0.0, 0.0, -0.1);	// Direzione dello sguardo
-glm::vec3 side(1.0, 0.0, 0.0);	// Direzione spostamento laterale
+glm::vec3 dir(0.0, 0.0, -0.1);		// Direzione dello sguardo
+glm::vec3 side(1.0, 0.0, 0.0);		// Direzione spostamento laterale
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow *window)
@@ -56,20 +52,19 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-// qui viene controllato lo stato degli oggetti e chiamati le fun di update dello stato
+// viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
 void render()
 {
-	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	gameuno.gameMap.inizializza();
-
+	gameuno.draw();
 }
 
-// qui viene inizializzato l'oggetto game
+// viene richiamata prima dell'inizio del while e server per inizializzare il game (vengono creati gli oggetti)
 void init() {
 
-	gameuno.inizializza();
+	gameuno.init();
 
 }
 
@@ -134,9 +129,11 @@ int main()
 		return -1;
 	}
 
+	glEnable(GL_BLEND);
+
 	myShader = new Shader("vertex_shader.vs", "fragment_shader.fs");
 
-	gameuno.gameMap.texturePrato = loadtexture("prato.jpg");
+	gameuno.gameMap.texturePrato = loadtexture("texture/prato2.jpg");
 
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &cubeVBO);
@@ -164,14 +161,19 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 	
-	// create transformations
-	//glm::mat4 view = glm::mat4(1.0f);	//identity matrix;
+	myShader->use();
+
+	//projection
 	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-
-	myShader->use();
 	myShader->setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 
+	//camera
+	glm::mat4 view = glm::mat4(1.0f);
+	view = glm::lookAt(pos, at, up);
+	myShader->setMat4("view", view);
+
+	init();
 
 	// render loop
 	while (!glfwWindowShouldClose(window))

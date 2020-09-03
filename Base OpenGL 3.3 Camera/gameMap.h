@@ -1,7 +1,8 @@
 #pragma once
 #include<stdio.h>
 #include "game.h"
-#include "operatore.h"
+#include "cube.h"
+#include <vector>
 
 class gameMap {
 
@@ -9,21 +10,19 @@ public:
 
 	unsigned int texturePrato;
 
-	gameMap() {};
+	vector <cube*> tiles; //vettore contenente le mattonelle del pavimento
 
-	void inizializza();
+	void initMap(); //crea gli oggetti della mappa
+	void drawMap(); //disegna gli oggetti della mappa
 
 };
 
-void gameMap::inizializza() {
-
-	glm::vec3 pos(0.0f, 0.0f, 0.0f);		// Posizione camera
-	glm::vec3 at(0.0f, 0.0f, -10.0f);		// Punto in cui "guarda" la camera
-	glm::vec3 up(0.0f, 1.0f, 0.0f);			// Vettore up...la camera è sempre parallela al piano
+void gameMap::initMap() {
 
 	// ---- FLOOR ---- //
-	for (float i = -50; i <= 50; i = i + 0.5) {
-		for (float j = 50; j >= -50; j = j - 0.5) {
+	float dim = 5;
+	for (float i = -dim; i <= dim; i = i + 0.5) {
+		for (float j = dim; j >= -dim; j = j - 0.5) {
 
 			// setto la texture
 			myShader->setInt("myTexture1", 0);
@@ -31,17 +30,20 @@ void gameMap::inizializza() {
 			glBindTexture(GL_TEXTURE_2D, texturePrato);
 			glBindVertexArray(cubeVAO);
 
-			//setto la view
-			glm::mat4 view = glm::lookAt(pos, at, up);
-			myShader->setMat4("view", view);
-
-			//setto il colore
+			// setto il colore
 			myShader->setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
- 
-			//creo il cubo
-			operatore* tile = new operatore(0.5, 0.0f, 1.0f, 0.0f, 0.0f, i, -2.0, j, myShader);
-			tile->drawCube();
+			
+			// creo la singola mattonella del floor e la inserisco nel vettore tiles
+			cube* tile = new cube(0.5, 0.0f, 1.0f, 0.0f, 0.0f, i, 0.0f, j, myShader);
+			tiles.push_back(tile);
+
 		}
 	}
 
+}
+
+void gameMap::drawMap() {
+	for (int i = 1; i < tiles.size(); i++) {
+		tiles[i]->drawCube();
+	}
 }

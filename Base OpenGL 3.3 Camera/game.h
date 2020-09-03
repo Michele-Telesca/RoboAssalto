@@ -1,5 +1,7 @@
 #pragma once
+#include "cube.h"
 #include "gameMap.h"
+
 
 /*classe game qui vengono gestiti tutte le azioni relatie
 alla partita e inizializzati tutti gli oggetti*/
@@ -7,15 +9,21 @@ class game {
 public:
 	game() {};
 
-	void inizializza();
-
-
 	gameMap gameMap;
+
+	void init();
+	void draw();
 
 };
 
-void game::inizializza() {
+void game::init() {
 
-	gameMap.inizializza();
+	gameMap.initMap();
+
+}
+
+void game::draw() {
+
+	gameMap.drawMap();
 
 }

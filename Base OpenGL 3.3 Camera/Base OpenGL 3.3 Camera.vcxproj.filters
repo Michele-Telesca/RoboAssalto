@@ -89,7 +89,7 @@
     <ClInclude Include="mesh.h">
       <Filter>Header Files\Tool</Filter>
     </ClInclude>
-    <ClInclude Include="operatore.h">
+    <ClInclude Include="cube.h">
       <Filter>Header Files\Controllo</Filter>
     </ClInclude>
   </ItemGroup>

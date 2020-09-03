@@ -64,7 +64,7 @@ float verticesCube[] = {
 	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 };
 
-class operatore {
+class cube {
 
 private:
 
@@ -83,12 +83,8 @@ private:
 
 public:
 
-	//Costruttore no arg
-
-	operatore() { }
-
 	//Costruttore con argomenti
-	operatore(float d,
+	cube(float d,
 		float a, float r_x, float r_y, float r_z,
 		float p_x, float p_y, float p_z,
 		Shader* shader)
@@ -112,10 +108,6 @@ public:
 
 	void drawCube() {
 
-		//// light properties
-		//myShader->setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
-		//myShader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-		//myShader->setVec3("light.specular", 0.5f, 0.5f, 0.5f);
 
 		glm::mat4 model = glm::mat4(1.0f);	//identity matrix
 		model = glm::translate(model, glm::vec3(posizione_x, posizione_y, posizione_z));
