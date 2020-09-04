@@ -6,10 +6,13 @@
 /*classe game qui vengono gestiti tutte le azioni relatie
 alla partita e inizializzati tutti gli oggetti*/
 class game {
-public:
+
+private:
 
 	gameMap* map;
 	player* p;
+
+public:
 
 	//costruttore
 	game() {
@@ -20,18 +23,36 @@ public:
 	void inizializza();
 	void draw();
 
+	// get //
+	gameMap* getGameMap() {
+		return map;
+	}
+
+	player* getPlayer() {
+		return p;
+	}
+	
+	// set //
+	void setGameMap(gameMap* gamemap) {
+		map = gamemap;
+	}
+
+	void getPlayer(player* player) {
+		p = player;
+	}
+
 };
 
 void game::inizializza() {
 
-	p = new player(1.0f, 0.5f, 0.0f);
+	p->initPlayer();
 	map->initMap();
 
 }
 
 void game::draw() {
 
+	p->drawPlayer();
 	map->drawMap();
-	p->draw();
 
 }

@@ -100,34 +100,34 @@ void render()
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	currentTime = glfwGetTime();
 	double timeInterval = currentTime - previousTime;
 	if (timeInterval >= 0.05f) {
 
 		if (muoviDx) {
-			moveDx(gameuno);
+			gameuno->getPlayer()->moveDx();
 		}
 
 		if (muoviSx) {
-			moveSx(gameuno);
+			gameuno->getPlayer()->moveSx();
 		}
 
 		if (muoviSu) {
-			moveUp(gameuno);
+			gameuno->getPlayer()->moveUp();
 		}
 
 		if (muoviGiu) {
-			moveDown(gameuno);
+			gameuno->getPlayer()->moveDown();
 		}
 
 		previousTime = currentTime;
 
 	}
-	
+
 	gameuno->draw();
 
-	std::cout << "coordinate player (x,z): (" << gameuno->p->x << ", " << gameuno->p->z << ")" << "\n"; //coordinate player
+	std::cout << "coordinate player (x,z): (" << gameuno->getPlayer()->x << ", " << gameuno->getPlayer()->z << ")" << "\n"; //coordinate player
 
 }
 
@@ -201,11 +201,15 @@ int main()
 
 	glEnable(GL_BLEND);
 
+	// dichiarazione degli shader
 	myShader = new Shader("vertex_shader.vs", "fragment_shader.fs");
+
+	// setto la texture a myShader
 	myShader->setInt("myTexture1", 0);
 
-	gameuno->map->texturePrato = loadtexture("texture/prato2.jpg");
-	gameuno->p->texturePlayer = loadtexture("texture/unibas.jpg");
+	// caricamento texture
+	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato2.jpg");
+	gameuno->getPlayer()->texturePlayer = loadtexture("texture/unibas.jpg");
 
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &cubeVBO);

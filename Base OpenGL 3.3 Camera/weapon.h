@@ -24,9 +24,9 @@ public:
 //init arma iniziale
 void weapon::initWeapon() {
 	
-	lengthRange = 4.0f;
+	/*lengthRange = 4.0f;
 	lengthBase = 2.0f;
-	angleRange = 90.0f;
+	angleRange = 90.0f;*/
 
 }
 

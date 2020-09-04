@@ -14,7 +14,7 @@ public:
 	float y;
 	float z;
 
-	point3D direction; //punto in cui si trova il cursore verrà aggiornato e non fa parte del costruttore
+	//point3D direction; //punto in cui si trova il cursore verrà aggiornato e non fa parte del costruttore
 
 	unsigned int texturePlayer;
 
@@ -25,10 +25,14 @@ public:
 	
 	weapon* weapon; //arma posseduta al momento
 
-	void draw(); //disegna il player
+	void drawPlayer(); //disegna il player
 	void animate(); //metodo di servizio per l'animazione
 	void initPlayer();
 
+	void moveDx();
+	void moveSx();
+	void moveUp();
+	void moveDown();
 };
 
 void player::initPlayer() {
@@ -55,11 +59,9 @@ void player::initPlayer() {
 
 }
 
-void player::draw() {
+void player::drawPlayer() {
 
-	// setto la texture
 	glActiveTexture(GL_TEXTURE0);
-
 	glBindTexture(GL_TEXTURE_2D, texturePlayer);
 	glBindVertexArray(cubeVAO);
 
@@ -75,4 +77,20 @@ void player::draw() {
 
 void player::animate() {
 
+}
+
+void player::moveDx() {
+	x = x + 0.3f;
+}
+
+void player::moveSx() {
+	x = x  - 0.3f;
+}
+
+void player::moveUp() {
+	z = z - 0.3f;
+}
+
+void player::moveDown() {
+	z = z + 0.3f;
 }
