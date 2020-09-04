@@ -20,10 +20,14 @@
 #include "cube.h"
 #include "update.h"
 
-// dichiarazione classi
+// dichiarazione oggetti
+game* gameuno = new game();
 
 //time
 float timebase = 0;
+
+double currentTime = 0.0f;
+double previousTime = glfwGetTime();
 
 //movimenti
 bool muoviDx = false;
@@ -90,37 +94,47 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
+
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
 void render()
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	float t = glfwGetTime();
-	float time = float(t) / 1;
-
-	
-	if (time - timebase > 0.05) {
+	currentTime = glfwGetTime();
+	double timeInterval = currentTime - previousTime;
+	if (timeInterval >= 0.05f) {
 
 		if (muoviDx) {
-			muoviDestra(gameuno);
+			moveDx(gameuno);
 		}
+
 		if (muoviSx) {
-			muoviSinistra(gameuno);
+			moveSx(gameuno);
 		}
+
+		if (muoviSu) {
+			moveUp(gameuno);
+		}
+
+		if (muoviGiu) {
+			moveDown(gameuno);
+		}
+
+		previousTime = currentTime;
 
 	}
 	
-	gameuno.draw();
+	gameuno->draw();
 
+	std::cout << "coordinate player (x,z): (" << gameuno->p->x << ", " << gameuno->p->z << ")" << "\n"; //coordinate player
 
 }
 
 // viene richiamata prima dell'inizio del while e server per inizializzare il game (vengono creati gli oggetti)
 void init() {
 
-	gameuno.inizializza();
-	std::cout << "OK";
+	gameuno->inizializza();
 
 }
 
@@ -190,9 +204,8 @@ int main()
 	myShader = new Shader("vertex_shader.vs", "fragment_shader.fs");
 	myShader->setInt("myTexture1", 0);
 
-
-	gameuno.gameMap.texturePrato = loadtexture("texture/prato2.jpg");
-	gameuno.p.texturePlayer = loadtexture("texture/unibas.jpg");
+	gameuno->map->texturePrato = loadtexture("texture/prato2.jpg");
+	gameuno->p->texturePlayer = loadtexture("texture/unibas.jpg");
 
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &cubeVBO);

@@ -2,12 +2,13 @@
 #include "point3D.h"
 #include "weapon.h"
 
-class playerNostro {
+class player {
 
 public:
 	
-	playerNostro(){}
-	playerNostro(float x, float y, float z) : x(x), y(y), z(z) {}
+	player() {}
+
+	player(float x, float y, float z) : x(x), y(y), z(z) {}
 
 	float x;//centro utente
 	float y;
@@ -22,7 +23,7 @@ public:
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
 	
-	weapon weapon; //arma posseduta al momento
+	weapon* weapon; //arma posseduta al momento
 
 	void draw(); //disegna il player
 	void animate(); //metodo di servizio per l'animazione
@@ -30,7 +31,7 @@ public:
 
 };
 
-void playerNostro::initPlayer() {
+void player::initPlayer() {
 
 	//punto in cui nasce
 	x = 0.0f;
@@ -50,20 +51,17 @@ void playerNostro::initPlayer() {
 	timeLastShot = 0.0;
 
 	//arma iniziale
-	weapon.initWeapon();
+	weapon->initWeapon();
 
 }
 
-void playerNostro::draw() {
+void player::draw() {
 
 	// setto la texture
 	glActiveTexture(GL_TEXTURE0);
 
 	glBindTexture(GL_TEXTURE_2D, texturePlayer);
 	glBindVertexArray(cubeVAO);
-
-
-	std::cout << "x: " << x << "\n";
 
 	myShader->setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
 
@@ -75,6 +73,6 @@ void playerNostro::draw() {
 
 }
 
-void playerNostro::animate() {
+void player::animate() {
 
 }

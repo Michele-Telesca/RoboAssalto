@@ -7,7 +7,9 @@
 class gameMap {
 
 public:
-	gameMap() {};
+
+	gameMap() {}
+
 	unsigned int texturePrato;
 
 	vector <cube*> tiles; //vettore contenente le mattonelle del pavimento

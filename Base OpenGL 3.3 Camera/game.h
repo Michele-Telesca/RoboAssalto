@@ -3,36 +3,35 @@
 #include "gameMap.h"
 #include "player.h";
 
-
 /*classe game qui vengono gestiti tutte le azioni relatie
 alla partita e inizializzati tutti gli oggetti*/
 class game {
 public:
 
-	game() {};
+	gameMap* map;
+	player* p;
 
-	gameMap gameMap;
-	playerNostro p;
+	//costruttore
+	game() {
+		map = new gameMap();
+		p = new player();
+	};
 
 	void inizializza();
 	void draw();
 
 };
 
-game gameuno;
-
 void game::inizializza() {
 
-	std::cout << "OK";
-
-	p = playerNostro (1.0f,0.5f,0.0f);
-	gameMap.initMap();
+	p = new player(1.0f, 0.5f, 0.0f);
+	map->initMap();
 
 }
 
 void game::draw() {
 
-	gameMap.drawMap();
-	p.draw();
+	map->drawMap();
+	p->draw();
 
 }
