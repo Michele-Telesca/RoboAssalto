@@ -84,6 +84,7 @@ private:
 public:
 
 	//Costruttore con argomenti
+	// dimensione/angolo rotazione/cord rot x/cord rot y/cord rot z/ x / y / z /shader
 	cube(float d,
 		float a, float r_x, float r_y, float r_z,
 		float p_x, float p_y, float p_z,

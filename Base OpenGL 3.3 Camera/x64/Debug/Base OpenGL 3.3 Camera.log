@@ -1,12 +1,9 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Base OpenGL 3.3 Camera.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  glad.c
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: la directory intermedia (x64\Debug\) contiene file condivisi da un altro progetto (Base OpenGL 3.3 Camera.vcxproj). Tale condizione può comportare un comportamento di pulizia e ricompilazione non corretto.
   main.cpp
-D:\Desktop\RoboAssalto01\Base OpenGL 3.3 Camera\shader_s.h(56,35): warning C4101: 'e': variabile locale senza riferimenti
-D:\Desktop\RoboAssalto01\Base OpenGL 3.3 Camera\mesh.h(84,1): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto01\Base OpenGL 3.3 Camera\gameMap.h(18,37): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto01\Base OpenGL 3.3 Camera\gameMap.h(19,38): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto01\Base OpenGL 3.3 Camera\gameMap.h(21,22): error C2065: 'cubeVAO': identificatore non dichiarato
-D:\Desktop\RoboAssalto01\Base OpenGL 3.3 Camera\gameMap.h(22,4): error C2065: 'operatore': identificatore non dichiarato
-D:\Desktop\RoboAssalto01\Base OpenGL 3.3 Camera\gameMap.h(22,15): error C2065: 'tile': identificatore non dichiarato
-D:\Desktop\RoboAssalto01\Base OpenGL 3.3 Camera\gameMap.h(22,35): error C2061: errore di sintassi: identificatore 'operatore'
-D:\Desktop\RoboAssalto01\Base OpenGL 3.3 Camera\gameMap.h(23,4): error C2065: 'tile': identificatore non dichiarato
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.5\Base OpenGL 3.3 Camera\shader_s.h(56,35): warning C4101: 'e': variabile locale senza riferimenti
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.5\Base OpenGL 3.3 Camera\mesh.h(84,1): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.5\Base OpenGL 3.3 Camera\gameMap.h(24,39): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.5\Base OpenGL 3.3 Camera\gameMap.h(25,40): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.5\Base OpenGL 3.3 Camera\game.h(4,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.5\Base OpenGL 3.3 Camera\main.cpp(99,10): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+  Base OpenGL 3.3 Camera.vcxproj -> C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.5\x64\Debug\RoboAssalto.exe

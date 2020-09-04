@@ -7,7 +7,7 @@
 class gameMap {
 
 public:
-
+	gameMap() {};
 	unsigned int texturePrato;
 
 	vector <cube*> tiles; //vettore contenente le mattonelle del pavimento
@@ -24,26 +24,26 @@ void gameMap::initMap() {
 	for (float i = -dim; i <= dim; i = i + 0.5) {
 		for (float j = dim; j >= -dim; j = j - 0.5) {
 
-			// setto la texture
-			myShader->setInt("myTexture1", 0);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texturePrato);
-			glBindVertexArray(cubeVAO);
-
-			// setto il colore
-			myShader->setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
-			
 			// creo la singola mattonella del floor e la inserisco nel vettore tiles
 			cube* tile = new cube(0.5, 0.0f, 1.0f, 0.0f, 0.0f, i, 0.0f, j, myShader);
 			tiles.push_back(tile);
-
 		}
 	}
 
 }
 
 void gameMap::drawMap() {
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texturePrato);
+	glBindVertexArray(cubeVAO);
+
+	myShader->setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
+
 	for (int i = 1; i < tiles.size(); i++) {
 		tiles[i]->drawCube();
 	}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }

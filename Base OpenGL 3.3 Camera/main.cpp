@@ -18,9 +18,18 @@
 #include "game.h"
 #include "gameMap.h"
 #include "cube.h"
+#include "update.h"
 
 // dichiarazione classi
-game gameuno;
+
+//time
+float timebase = 0;
+
+//movimenti
+bool muoviDx = false;
+bool muoviSx = false;
+bool muoviSu = false;
+bool muoviGiu = false;
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -41,7 +50,36 @@ glm::vec3 side(1.0, 0.0, 0.0);		// Direzione spostamento laterale
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow *window)
 {
-	
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		muoviDx = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
+		muoviDx = false;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		muoviSx = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE) {
+		muoviSx = false;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		muoviSu = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
+		muoviSu = false;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		muoviGiu = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE) {
+		muoviGiu = false;
+	}
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -57,14 +95,32 @@ void render()
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	float t = glfwGetTime();
+	float time = float(t) / 1;
 
+	
+	if (time - timebase > 0.05) {
+
+		if (muoviDx) {
+			muoviDestra(gameuno);
+		}
+		if (muoviSx) {
+			muoviSinistra(gameuno);
+		}
+
+	}
+	
 	gameuno.draw();
+
+
 }
 
 // viene richiamata prima dell'inizio del while e server per inizializzare il game (vengono creati gli oggetti)
 void init() {
 
-	gameuno.init();
+	gameuno.inizializza();
+	std::cout << "OK";
 
 }
 
@@ -132,8 +188,11 @@ int main()
 	glEnable(GL_BLEND);
 
 	myShader = new Shader("vertex_shader.vs", "fragment_shader.fs");
+	myShader->setInt("myTexture1", 0);
+
 
 	gameuno.gameMap.texturePrato = loadtexture("texture/prato2.jpg");
+	gameuno.p.texturePlayer = loadtexture("texture/unibas.jpg");
 
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &cubeVBO);
