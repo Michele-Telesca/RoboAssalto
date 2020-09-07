@@ -17,8 +17,6 @@
 
 unsigned int cubeVBO, cubeVAO;
 
-Shader* myShader;
-
 float verticesCube[] = {
 	// positions          // normals           // texture coords
 	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
@@ -79,16 +77,13 @@ private:
 	float posizione_y;
 	float posizione_z;
 
-	Shader* myShader;
-
 public:
 
 	//Costruttore con argomenti
 	// dimensione/angolo rotazione/cord rot x/cord rot y/cord rot z/ x / y / z /shader
 	cube(float d,
 		float a, float r_x, float r_y, float r_z,
-		float p_x, float p_y, float p_z,
-		Shader* shader)
+		float p_x, float p_y, float p_z)
 	{
 
 		dimensione = d;
@@ -102,26 +97,20 @@ public:
 		posizione_y = p_y;
 		posizione_z = p_z;
 
-		myShader = shader;
-
 	}
 
 
-	void drawCube() {
-
+	void drawCube(Shader myShader) {
 
 		glm::mat4 model = glm::mat4(1.0f);	//identity matrix
 		model = glm::translate(model, glm::vec3(posizione_x, posizione_y, posizione_z));
 		model = glm::rotate(model, angle, glm::vec3(rotation_x, rotation_y, rotation_z));
 		model = glm::scale(model, glm::vec3(dimensione, dimensione, dimensione));
-		myShader->setMat4("model", model);
+		myShader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 	}
 
-	void setShader(Shader* s) {
-		myShader = s;
-	}
 
 	void setDimensione(float d) {
 		dimensione = d;

@@ -2,6 +2,8 @@
 #include "cube.h"
 #include "gameMap.h"
 #include "player.h";
+#include "shader_s.h"
+#include "shader_m.h"
 
 /*classe game qui vengono gestiti tutte le azioni relatie
 alla partita e inizializzati tutti gli oggetti*/
@@ -21,7 +23,7 @@ public:
 	};
 
 	void inizializza();
-	void draw();
+	void draw(Shader myShader);
 
 	// get //
 	gameMap* getGameMap() {
@@ -50,9 +52,9 @@ void game::inizializza() {
 
 }
 
-void game::draw() {
+void game::draw(Shader myShader) {
 
-	p->drawPlayer();
-	map->drawMap();
+	p->drawPlayer(myShader);
+	map->drawMap(myShader);
 
 }

@@ -44,7 +44,7 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
 // vettori per la direzione della camera
-glm::vec3 pos(0.0, 5.0, 0.0);		// Posizione camera
+glm::vec3 pos(0.0, 10.0, 0.0);		// Posizione camera
 glm::vec3 at(0.0, 0.0, -1.0);		// Punto in cui "guarda" la camera
 glm::vec3 up(0.0, 1.0, 0.0);		// Vettore up...la camera è sempre parallela al piano
 
@@ -96,7 +96,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
-void render()
+void render(Shader myShader)
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -125,7 +125,7 @@ void render()
 
 	}
 
-	gameuno->draw();
+	gameuno->draw(myShader);
 
 	std::cout << "coordinate player (x,z): (" << gameuno->getPlayer()->x << ", " << gameuno->getPlayer()->z << ")" << "\n"; //coordinate player
 
@@ -202,10 +202,8 @@ int main()
 	glEnable(GL_BLEND);
 
 	// dichiarazione degli shader
-	myShader = new Shader("vertex_shader.vs", "fragment_shader.fs");
-
-	// setto la texture a myShader
-	myShader->setInt("myTexture1", 0);
+	Shader myShader("vertex_shader.vs", "fragment_shader.fs");
+	myShader.use();
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato2.jpg");
@@ -237,17 +235,15 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 	
-	myShader->use();
-
 	//projection
 	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	myShader->setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	myShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 
 	//camera
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::lookAt(pos, at, up);
-	myShader->setMat4("view", view);
+	myShader.setMat4("view", view);
 
 	init();
 
@@ -257,7 +253,7 @@ int main()
 		// input
 		processInput(window);
 
-		render();
+		render(myShader);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);

@@ -92,5 +92,8 @@
     <ClInclude Include="cube.h">
       <Filter>Header Files\Controllo</Filter>
     </ClInclude>
+    <ClInclude Include="shader_m.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

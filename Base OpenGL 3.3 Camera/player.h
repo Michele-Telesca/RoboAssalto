@@ -1,6 +1,7 @@
 #pragma once
 #include "point3D.h"
 #include "weapon.h"
+#include "model.h"
 
 class player {
 
@@ -22,10 +23,12 @@ public:
 	int numShotsAvailable; //colpi a disposizione
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
-	
+
+	Model* player_model;
+
 	weapon* weapon; //arma posseduta al momento
 
-	void drawPlayer(); //disegna il player
+	void drawPlayer(Shader myShader); //disegna il player
 	void animate(); //metodo di servizio per l'animazione
 	void initPlayer();
 
@@ -57,21 +60,36 @@ void player::initPlayer() {
 	//arma iniziale
 	weapon->initWeapon();
 
+	//caricamento modello
+	player_model = new Model();
+	player_model->loadModel("models/player1/backpack.obj");
+	//model1->loadModel("models/astroboy/astroBoy_walk_Max.DAE");
+
 }
 
-void player::drawPlayer() {
+void player::drawPlayer(Shader myShader) {
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texturePlayer);
-	glBindVertexArray(cubeVAO);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, texturePlayer);
+	//glBindVertexArray(cubeVAO);
 
-	myShader->setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
+	//myShader.setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
 
-	// creo la singola mattonella del floor e la inserisco nel vettore tiles
-	cube* playerMesh = new cube(1.0f, 0.0f, 1.0f, 0.0f, 0.0f, x, y, z, myShader);
-	playerMesh->drawCube();
+	//// creo la singola mattonella del floor e la inserisco nel vettore tiles
+	//cube* playerMesh = new cube(1.0f, 0.0f, 1.0f, 0.0f, 0.0f, x, y, z);
+	//playerMesh->drawCube(myShader);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+
+	myShader.setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
+
+	glm::mat4 model = glm::mat4(1.0f);	
+	model = glm::translate(model, glm::vec3(x, 2.0f, z));
+	model = glm::rotate(model, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	myShader.setMat4("model", model);
+
+	player_model->Draw(myShader);
 
 }
 
