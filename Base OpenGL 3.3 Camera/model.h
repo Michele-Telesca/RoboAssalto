@@ -12,7 +12,7 @@
 #include <assimp/postprocess.h>
 
 #include "mesh.h"
-#include "shader_s.h"
+#include "shader_m.h"
 
 #include <string>
 #include <fstream>
@@ -20,6 +20,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+
 using namespace std;
 
 unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false);

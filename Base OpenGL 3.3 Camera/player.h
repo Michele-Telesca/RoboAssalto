@@ -62,8 +62,7 @@ void player::initPlayer() {
 
 	//caricamento modello
 	player_model = new Model();
-	player_model->loadModel("models/player1/backpack.obj");
-	//model1->loadModel("models/astroboy/astroBoy_walk_Max.DAE");
+	player_model->loadModel("models/Michelle_run/Running.DAE");
 
 }
 
@@ -86,7 +85,7 @@ void player::drawPlayer(Shader myShader) {
 	glm::mat4 model = glm::mat4(1.0f);	
 	model = glm::translate(model, glm::vec3(x, 2.0f, z));
 	model = glm::rotate(model, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 	myShader.setMat4("model", model);
 
 	player_model->Draw(myShader);
