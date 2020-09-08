@@ -62,7 +62,7 @@ void player::initPlayer() {
 
 	//caricamento modello
 	player_model = new Model();
-	player_model->loadModel("models/Michelle_run/Running.DAE");
+	player_model->loadModel("models/Michelle/Ch03_nonPBR.DAE");
 
 }
 
