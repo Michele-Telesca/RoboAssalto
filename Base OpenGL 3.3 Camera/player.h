@@ -36,6 +36,19 @@ public:
 	void moveSx();
 	void moveUp();
 	void moveDown();
+
+	float getX() {
+		return x;
+	}
+
+	float getY() {
+		return y;
+	}
+
+	float getZ() {
+		return z;
+	}
+
 };
 
 void player::initPlayer() {

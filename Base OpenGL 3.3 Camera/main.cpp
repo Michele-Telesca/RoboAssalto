@@ -86,6 +86,43 @@ void processInput(GLFWwindow *window)
 	}
 }
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+
+	float player_xpos = gameuno->getPlayer()->getX(); //coordinata x del player
+	float player_zpos = gameuno->getPlayer()->getZ(); //coordinata z del player
+	cout << "*** PLAYER Position (X,Z): (" << player_xpos << ", " << player_zpos << ")" << endl;
+
+	//cout << "*** MOUSE - SCREEN Position (X,Z): (" << xpos << ", " << ypos << ")" << endl;
+
+	///// --- Metodo 1 ---///
+
+	// NORMALISED DEVICE SPACE
+	double xpos_norm = 2.0 * xpos / SCR_WIDTH - 1.0f;
+	double ypos_norm = 2.0 * ypos / SCR_HEIGHT - 1.0f;
+
+	//Inizializzazione di projection, view e model
+	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
+	glm::mat4 view = glm::mat4(1.0f); //identity matrix
+	glm::mat4 model = glm::mat4(1.0f);	//identity matrix
+	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = glm::lookAt({ 0.0f, 10.f, 0.0f }, { 0.0f, 0.0f, -1.0f }, up);
+
+	// HOMOGENEOUS SPACE
+	glm::vec4 screenPos = glm::vec4(xpos_norm, -ypos_norm, -1.0f, 1.0f);
+
+	// Projection/Eye Space
+	glm::mat4 invVP = glm::inverse(projection * view);
+	glm::vec4 worldPos = invVP * screenPos;
+
+	//glm::vec3 dir = glm::normalize(glm::vec3(worldPos));
+
+	cout << "*** MOUSE - WORLD Position (X,Z): (" << worldPos.x * 10 << ", " << worldPos.z * 10 << ")" << endl;
+
+	///// -------------- ///
+
+}
+
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -127,7 +164,7 @@ void render(Shader myShader)
 
 	gameuno->draw(myShader);
 
-	std::cout << "coordinate player (x,z): (" << gameuno->getPlayer()->x << ", " << gameuno->getPlayer()->z << ")" << "\n"; //coordinate player
+	//std::cout << "coordinate player (x,z): (" << gameuno->getPlayer()->x << ", " << gameuno->getPlayer()->z << ")" << "\n"; //coordinate player
 
 }
 
@@ -192,6 +229,7 @@ int main()
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
 
 	// glad: load all OpenGL function pointers
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
