@@ -245,7 +245,7 @@ int main()
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato2.jpg");
-	gameuno->getPlayer()->texturePlayer = loadtexture("texture/unibas.jpg");
+	//gameuno->getPlayer()->texturePlayer = loadtexture("texture/unibas.jpg");
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);

@@ -59,9 +59,6 @@
     <ClInclude Include="weapon.h">
       <Filter>Header Files\Modello</Filter>
     </ClInclude>
-    <ClInclude Include="stone.h">
-      <Filter>Header Files\Modello</Filter>
-    </ClInclude>
     <ClInclude Include="playerShot.h">
       <Filter>Header Files\Modello</Filter>
     </ClInclude>
@@ -94,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="shader_m.h">
       <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="mapObject.h">
+      <Filter>Header Files\Modello</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

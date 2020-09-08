@@ -10,28 +10,27 @@ public:
 	player() {}
 
 	player(float x, float y, float z) : x(x), y(y), z(z) {}
-
-	float x;//centro utente
+	
+	//coordinate
+	float x; 
 	float y;
 	float z;
-
-	//point3D direction; //punto in cui si trova il cursore verrà aggiornato e non fa parte del costruttore
-
-	unsigned int texturePlayer;
 
 	int life; //vita del player aggiornata 
 	int numShotsAvailable; //colpi a disposizione
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
 
+	// modello 3D del player
 	Model* player_model;
 
 	weapon* weapon; //arma posseduta al momento
 
 	void drawPlayer(Shader myShader); //disegna il player
-	void animate(); //metodo di servizio per l'animazione
-	void initPlayer();
+	void animate(); //animazione del player
+	void initPlayer(); //inizializza il player
 
+	//movimenti
 	void moveDx();
 	void moveSx();
 	void moveUp();
@@ -75,6 +74,8 @@ void player::initPlayer() {
 
 	//caricamento modello
 	player_model = new Model();
+	//player_model->loadModel("models/Stones/Stone1.obj");
+
 	player_model->loadModel("models/Michelle/Ch03_nonPBR.DAE");
 
 }

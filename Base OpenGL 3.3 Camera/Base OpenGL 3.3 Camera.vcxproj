@@ -170,7 +170,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="playerShot.h" />
     <ClInclude Include="point3D.h" />
     <ClInclude Include="shader_m.h" />
-    <ClInclude Include="stone.h" />
+    <ClInclude Include="mapObject.h" />
     <ClInclude Include="update.h" />
     <ClInclude Include="villainShot.h" />
     <ClInclude Include="weapon.h" />
