@@ -22,7 +22,7 @@ public:
 	}
 
 	void initMapObject(string path);
-	void drawMapObject(Shader myShader);
+	void drawMapObject(Shader myShader, float scale);
 
 };
 
@@ -34,14 +34,14 @@ void mapObject::initMapObject(string path) {
 
 }
 
-void mapObject::drawMapObject(Shader myShader) {
+void mapObject::drawMapObject(Shader myShader, float scale) {
 
 	myShader.setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, y, z));
 	model = glm::rotate(model, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+	model = glm::scale(model, glm::vec3(scale, scale, scale));
 	myShader.setMat4("model", model);
 
 	mapObject_i->Draw(myShader);

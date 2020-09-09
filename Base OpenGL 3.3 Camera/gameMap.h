@@ -35,16 +35,16 @@ void gameMap::initMap() {
 
 	// ---- STONES ---- //
 	mapObject* stone1 = new mapObject(1.0f, 2.0f, 1.0f);
-	stone1->initMapObject("models/Stones/Ch16_nonPBR.DAE");
+	stone1->initMapObject("models/stones/stone11/stone111.dae");
 	mapObjects.push_back(stone1);
 
-	mapObject* stone2 = new mapObject(-1.0f, 2.0f, -1.0f);
-	stone2->initMapObject("models/Stones/Ch16_nonPBR.DAE");
-	mapObjects.push_back(stone2);
+	//mapObject* stone2 = new mapObject(-1.0f, 2.0f, -1.0f);
+	//stone2->initMapObject("models/Stones/Ch16_nonPBR.DAE");
+	//mapObjects.push_back(stone2);
 
-	mapObject* stone3 = new mapObject(-2.0f, 2.0, -2.0f);
-	stone3->initMapObject("models/Stones/Ch16_nonPBR.DAE");
-	mapObjects.push_back(stone3);
+	//mapObject* stone3 = new mapObject(-2.0f, 2.0, -2.0f);
+	//stone3->initMapObject("models/Stones/Ch16_nonPBR.DAE");
+	//mapObjects.push_back(stone3);
 
 }
 
@@ -63,7 +63,7 @@ void gameMap::drawMap(Shader myShader) {
 
 	// ---- STONES ---- //
 	for (int i = 0; i < mapObjects.size(); i++) {
-		mapObjects[i]->drawMapObject(myShader);
+		mapObjects[i]->drawMapObject(myShader, 1.0f);
 	}
 
 
