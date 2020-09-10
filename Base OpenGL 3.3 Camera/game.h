@@ -23,7 +23,7 @@ public:
 	};
 
 	void inizializza();
-	void draw(Shader myShader);
+	void draw(Shader lightShader);
 
 	// get //
 	gameMap* getGameMap() {
@@ -52,9 +52,9 @@ void game::inizializza() {
 
 }
 
-void game::draw(Shader myShader) {
-
-	p->drawPlayer(myShader);
-	map->drawMap(myShader);
+void game::draw(Shader lightShader) {
+	
+	p->drawPlayer(lightShader);
+	map->drawMap(lightShader);
 
 }

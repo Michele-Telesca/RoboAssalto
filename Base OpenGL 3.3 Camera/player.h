@@ -80,29 +80,21 @@ void player::initPlayer() {
 
 }
 
-void player::drawPlayer(Shader myShader) {
+void player::drawPlayer(Shader lightShader) {
 
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, texturePlayer);
-	//glBindVertexArray(cubeVAO);
-
-	//myShader.setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
-
-	//// creo la singola mattonella del floor e la inserisco nel vettore tiles
-	//cube* playerMesh = new cube(1.0f, 0.0f, 1.0f, 0.0f, 0.0f, x, y, z);
-	//playerMesh->drawCube(myShader);
-
-	//glBindTexture(GL_TEXTURE_2D, 0);
-
-	myShader.setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
+	// material properties
+	lightShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	lightShader.setFloat("material.shininess", 76.8f);
 
 	glm::mat4 model = glm::mat4(1.0f);	
 	model = glm::translate(model, glm::vec3(x, 2.0f, z));
 	model = glm::rotate(model, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
-	myShader.setMat4("model", model);
+	lightShader.setMat4("model", model);
 
-	player_model->Draw(myShader);
+	player_model->Draw(lightShader);
 
 }
 

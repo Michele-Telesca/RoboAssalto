@@ -23,6 +23,9 @@
 // dichiarazione oggetti
 game* gameuno = new game();
 
+
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
 //time
 float timebase = 0;
 
@@ -50,6 +53,7 @@ glm::vec3 up(0.0, 1.0, 0.0);		// Vettore up...la camera è sempre parallela al pi
 
 glm::vec3 dir(0.0, 0.0, -0.1);		// Direzione dello sguardo
 glm::vec3 side(1.0, 0.0, 0.0);		// Direzione spostamento laterale
+glm::vec3 lightPos(0.0f, 15.0f, 0.0f);
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow *window)
@@ -133,7 +137,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
-void render(Shader myShader)
+void render(Shader lightShader)
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -162,7 +166,7 @@ void render(Shader myShader)
 
 	}
 
-	gameuno->draw(myShader);
+	gameuno->draw(lightShader);
 
 	//std::cout << "coordinate player (x,z): (" << gameuno->getPlayer()->x << ", " << gameuno->getPlayer()->z << ")" << "\n"; //coordinate player
 
@@ -239,14 +243,9 @@ int main()
 
 	glEnable(GL_BLEND);
 
-	// dichiarazione degli shader
-	Shader myShader("vertex_shader.vs", "fragment_shader.fs");
-	myShader.use();
-
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato2.jpg");
-	//gameuno->getPlayer()->texturePlayer = loadtexture("texture/unibas.jpg");
-
+	
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);
 
@@ -275,16 +274,33 @@ int main()
 	glBindVertexArray(0);
 
 	glEnable(GL_DEPTH_TEST);
-	
+
+	//dichiarazione degli shader
+	Shader myShader("vertex_shader.vs", "fragment_shader.fs");
+	Shader lightShader("vertex_shader_lights.vs", "fragment_shader_lights.fs");
+	//myShader.use();
+	lightShader.use();
+
 	//projection
 	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	myShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	myShader.setMat4("projection", projection);
+	lightShader.setMat4("projection", projection);
 
 	//camera
-	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 view = glm::mat4(1.0f); //identity matrix
 	view = glm::lookAt(pos, at, up);
 	myShader.setMat4("view", view);
+	lightShader.setMat4("view", view);
+
+	// ??
+	//lightShader.setVec3("viewPos", camera.Position);
+
+	// light properties
+	lightShader.setVec3("light.position", lightPos);
+	lightShader.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
+	lightShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+	lightShader.setVec3("light.specular", 0.5f, 0.5f, 0.5f);
 
 	init();
 
@@ -294,7 +310,7 @@ int main()
 		// input
 		processInput(window);
 
-		render(myShader);
+		render(lightShader);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);

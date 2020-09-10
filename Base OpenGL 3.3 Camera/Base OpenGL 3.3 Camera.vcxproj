@@ -157,8 +157,10 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shader.fs" />
+    <None Include="fragment_shader_lights.fs" />
     <None Include="packages.config" />
     <None Include="vertex_shader.vs" />
+    <None Include="vertex_shader_lights.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />

@@ -100,13 +100,19 @@ public:
 	}
 
 
-	void drawCube(Shader myShader) {
+	void drawCube(Shader shader) {
+
+		// material properties
+		shader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+		shader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+		shader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+		shader.setFloat("material.shininess", 76.8f);
 
 		glm::mat4 model = glm::mat4(1.0f);	//identity matrix
 		model = glm::translate(model, glm::vec3(posizione_x, posizione_y, posizione_z));
 		model = glm::rotate(model, angle, glm::vec3(rotation_x, rotation_y, rotation_z));
 		model = glm::scale(model, glm::vec3(dimensione, dimensione, dimensione));
-		myShader.setMat4("model", model);
+		shader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 	}
