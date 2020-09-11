@@ -47,7 +47,7 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
 // vettori per la direzione della camera
-glm::vec3 pos(0.0, 10.0, 0.0);		// Posizione camera
+glm::vec3 pos(0.0, 20.0, 0.0);		// Posizione camera
 glm::vec3 at(0.0, 0.0, -1.0);		// Punto in cui "guarda" la camera
 glm::vec3 up(0.0, 1.0, 0.0);		// Vettore up...la camera è sempre parallela al piano
 
@@ -169,7 +169,6 @@ void render(Shader lightShader)
 	gameuno->draw(lightShader);
 
 	//std::cout << "coordinate player (x,z): (" << gameuno->getPlayer()->x << ", " << gameuno->getPlayer()->z << ")" << "\n"; //coordinate player
-
 }
 
 // viene richiamata prima dell'inizio del while e server per inizializzare il game (vengono creati gli oggetti)
@@ -244,7 +243,7 @@ int main()
 	glEnable(GL_BLEND);
 
 	// caricamento texture
-	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato2.jpg");
+	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
 	
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);
