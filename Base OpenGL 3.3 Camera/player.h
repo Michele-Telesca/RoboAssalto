@@ -74,8 +74,6 @@ void player::initPlayer() {
 
 	//caricamento modello
 	player_model = new Model();
-	//player_model->loadModel("models/Stones/Stone1.obj");
-
 	player_model->loadModel("models/Michelle/Ch03_nonPBR.DAE");
 
 }

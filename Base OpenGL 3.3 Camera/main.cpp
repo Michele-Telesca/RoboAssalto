@@ -47,8 +47,10 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
 // vettori per la direzione della camera
-glm::vec3 pos(0.0, 20.0, 0.0);		// Posizione camera
-glm::vec3 at(0.0, 0.0, -1.0);		// Punto in cui "guarda" la camera
+glm::vec3 pos(0.0, 10.0, 0.0);
+//glm::vec3 pos(0.0, 10.0, 5.0);		// Posizione camera
+glm::vec3 at(0.0, 0.0, -1.0);		
+//glm::vec3 at(0.0, 0.0, -10.0);		// Punto in cui "guarda" la camera
 glm::vec3 up(0.0, 1.0, 0.0);		// Vettore up...la camera è sempre parallela al piano
 
 glm::vec3 dir(0.0, 0.0, -0.1);		// Direzione dello sguardo
@@ -166,9 +168,18 @@ void render(Shader lightShader)
 
 	}
 
+	//camera
+	float x = gameuno->getPlayer()->getX();
+	float z = gameuno->getPlayer()->getZ();
+	glm::vec3 pos_player(x, 10.0f, z + 5.0);
+	glm::vec3 at_player(x, 0.0f, z - 5.0f);
+
+	glm::mat4 view = glm::mat4(1.0f); //identity matrix
+	view = glm::lookAt(pos_player, at_player, up);
+	lightShader.setMat4("view", view);
+
 	gameuno->draw(lightShader);
 
-	//std::cout << "coordinate player (x,z): (" << gameuno->getPlayer()->x << ", " << gameuno->getPlayer()->z << ")" << "\n"; //coordinate player
 }
 
 // viene richiamata prima dell'inizio del while e server per inizializzare il game (vengono creati gli oggetti)
@@ -277,20 +288,12 @@ int main()
 	//dichiarazione degli shader
 	Shader myShader("vertex_shader.vs", "fragment_shader.fs");
 	Shader lightShader("vertex_shader_lights.vs", "fragment_shader_lights.fs");
-	//myShader.use();
 	lightShader.use();
 
 	//projection
 	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	myShader.setMat4("projection", projection);
 	lightShader.setMat4("projection", projection);
-
-	//camera
-	glm::mat4 view = glm::mat4(1.0f); //identity matrix
-	view = glm::lookAt(pos, at, up);
-	myShader.setMat4("view", view);
-	lightShader.setMat4("view", view);
 
 	// ??
 	//lightShader.setVec3("viewPos", camera.Position);
