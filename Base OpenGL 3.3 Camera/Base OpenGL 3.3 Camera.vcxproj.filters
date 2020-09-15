@@ -101,5 +101,8 @@
     <ClInclude Include="mapObject.h">
       <Filter>Header Files\Modello</Filter>
     </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

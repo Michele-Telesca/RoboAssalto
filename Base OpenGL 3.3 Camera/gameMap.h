@@ -3,6 +3,7 @@
 #include "game.h"
 #include "cube.h"
 #include "mapObject.h"
+#include "utility.h"
 #include <vector>
 
 class gameMap {
@@ -15,6 +16,29 @@ public:
 
 	vector <cube*> tiles; //vettore contenente le mattonelle del pavimento
 	vector <mapObject*> mapObjects;
+
+						// x = colonna; z = riga; 
+	int map[20][20] = { {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+						{0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0},
+			            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,3,0,0,3,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,9,6,4,0,0,6,4,0,0,0,0,0,0,0},
+						{0,0,0,0,0,4,3,3,5,0,0,3,5,6,3,0,0,0,0,0},
+						{0,0,0,0,0,3,6,0,0,0,0,0,0,5,4,0,0,0,0,0},
+						{0,0,3,6,3,6,5,0,0,0,0,9,0,6,3,0,0,0,0,0},
+						{0,0,0,0,0,5,3,0,0,0,0,0,0,4,5,0,0,5,0,0},
+						{0,0,0,0,0,4,6,0,0,0,0,0,0,3,6,0,0,3,0,0},
+						{0,0,0,0,0,3,5,0,9,0,0,0,0,4,3,0,0,4,0,0},
+						{0,0,0,0,0,5,6,0,0,0,0,0,0,6,5,0,0,5,9,10},
+						{0,0,0,0,0,3,4,3,6,0,0,5,4,3,4,0,0,3,0,0},
+						{0,0,0,0,0,0,2,3,5,0,0,3,6,0,0,0,0,4,0,0},
+						{0,0,0,0,0,0,0,0,3,0,0,3,0,0,0,0,0,6,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,9,0,0,0,0,0,0,0,10,0,0,0,0,0,0},
+	                  };
 
 	void initMap(); //crea gli oggetti della mappa
 	void drawMap(Shader lightShader); //disegna gli oggetti della mappa
@@ -33,188 +57,81 @@ void gameMap::initMap() {
 		}
 	}
 
-	// ---- STONES ---- //
+	// ---- mapObject ---- //
+	for (int i = 0; i < 20; i++) {
+		for (int j = 0; j < 20; j++) {
 
-	// -- Quadrato centrale -- //
-	// lato sx
-	mapObject* stone1 = new mapObject(-3.5f, 1.0f, 3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone1->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone1);
+			//conversione coordinate matrice -> game
+			int x = j - 10;
+			int z = i - 9;
 
-	mapObject* stone2 = new mapObject(-3.5f, 1.0f, 2.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone2->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone2);
+			if (map[i][j] == 1) {
+				mapObject* bush1 = new mapObject(x, 0.6f, z, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f);
+				bush1->initMapObject("models/bushes/bush1/bush1.dae");
+				mapObjects.push_back(bush1);
+			}
+			else if (map[i][j] == 2) {
+				mapObject* bush2 = new mapObject(x, 0.6f, z, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f);
+				bush2->initMapObject("models/bushes/bush2/bush2.dae");
+				mapObjects.push_back(bush2);
+			}
+			else if (map[i][j] == 3) {
+				mapObject* stone1 = new mapObject(x, 0.7f, z, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
+				stone1->initMapObject("models/stones/stone1/stone1.dae");
+				mapObjects.push_back(stone1);
+			}
+			else if (map[i][j] == 4) {
+				mapObject* stone2 = new mapObject(x, 0.7f, z, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
+				stone2->initMapObject("models/stones/stone2/stone2.dae");
+				mapObjects.push_back(stone2);
+			}
+			else if (map[i][j] == 5) {
+				mapObject* stone3 = new mapObject(x, 0.7f, z, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f);
+				stone3->initMapObject("models/stones/stone3/stone3.dae");
+				mapObjects.push_back(stone3);
+			}
+			else if (map[i][j] == 6) {
+				mapObject* stone4 = new mapObject(x, 0.7f, z, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f);
+				stone4->initMapObject("models/stones/stone4/stone4.dae");
+				mapObjects.push_back(stone4);
+			}
+			else if (map[i][j] == 7) {
+				mapObject* tree1 = new mapObject(x, 1.8f, z, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
+				tree1->initMapObject("models/trees/tree1/tree1.dae");
+				mapObjects.push_back(tree1);
+			}
+			else if (map[i][j] == 8) { 
+				mapObject* tree2 = new mapObject(x, 1.8f, z, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
+				tree2->initMapObject("models/trees/tree2/tree2.dae");
+				mapObjects.push_back(tree2);
+			}
+			else if (map[i][j] == 9) {
+				mapObject* tree3 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
+				tree3->initMapObject("models/trees/tree3/tree3.dae");
+				mapObjects.push_back(tree3);
+			}
+			else if (map[i][j] == 10) {
+				mapObject* tree4 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
+				tree4->initMapObject("models/trees/tree4/tree4.dae");
+				mapObjects.push_back(tree4);
+			}
+			else if (map[i][j] == 11) {
+				mapObject* tree5 = new mapObject(x, 1.8f, z, 0.28f, 0.0f, 1.0f, 0.0f, 0.0f);
+				tree5->initMapObject("models/trees/tree5/tree5.dae");
+				mapObjects.push_back(tree5);
+			}
+			//else if (map[i][j] == 12) {
+			//	//seleziono un punto random all'interno del quadrato 1x1
+			//	float x_rand = randMToN(x - 0.45, x + 0.45);
+			//	float z_rand = randMToN(z - 0.45, z + 0.45);
 
-	mapObject* stone3 = new mapObject(-3.5f, 1.0f, 1.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone3->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone3);
+			//	mapObject* grass1 = new mapObject(x_rand, 1.0f, z_rand, 0.1f, 0.0f, 1.0f, 0.0f, 0.0f);
+			//	grass1->initMapObject("models/grass/grass1/grass1.dae");
+			//	mapObjects.push_back(grass1);
+			//}
 
-	mapObject* stone4 = new mapObject(-3.5f, 1.0f, 0.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone4->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone4);
-
-	mapObject* stone5 = new mapObject(-3.5f, 1.0f, -0.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone5->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone5);
-
-	mapObject* stone6 = new mapObject(-3.5f, 1.0f, -1.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone6->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone6);
-
-	mapObject* stone7 = new mapObject(-3.5f, 1.0f, -2.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone7->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone7);
-
-	mapObject* stone8 = new mapObject(-3.5f, 1.0f, -3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone8->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone8);
-
-	// sopra
-	mapObject* stone9 = new mapObject(-2.5f, 1.0f, -3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone9->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone9);
-
-	mapObject* stone10 = new mapObject(-1.5f, 1.0f, -3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone10->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone10);
-
-	mapObject* stone11 = new mapObject(1.5f, 1.0f, -3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone11->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone11);
-
-	mapObject* stone12 = new mapObject(2.5f, 1.0f, -3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone12->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone12);
-
-	mapObject* stone13 = new mapObject(3.5f, 1.0f, -3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone13->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone13);
-
-	// lato dx
-	mapObject* stone14 = new mapObject(3.5f, 1.0f, -2.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone14->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone14);
-
-	mapObject* stone15 = new mapObject(3.5f, 1.0f, -1.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone15->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone15);
-
-	mapObject* stone16 = new mapObject(3.5f, 1.0f, -0.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone16->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone16);
-
-	mapObject* stone17 = new mapObject(3.5f, 1.0f, 0.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone17->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone17);
-
-	mapObject* stone18 = new mapObject(3.5f, 1.0f, 1.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone18->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone18);
-
-	mapObject* stone19 = new mapObject(3.5f, 1.0f, 2.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone19->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone19);
-
-	mapObject* stone20 = new mapObject(3.5f, 1.0f, 3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone20->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone20);
-
-	// sotto
-	mapObject* stone21 = new mapObject(2.5f, 1.0f, 3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone21->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone21);
-
-	mapObject* stone22 = new mapObject(1.5f, 1.0f, 3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone22->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone22);
-
-	mapObject* stone23 = new mapObject(-1.5f, 1.0f, 3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone23->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone23);
-
-	mapObject* stone24 = new mapObject(-2.5f, 1.0f, 3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone24->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone24);
-
-	mapObject* stone25 = new mapObject(-3.5f, 1.0f, 3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone25->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone25);
-
-	// 4 stone extra
-	mapObject* stone26 = new mapObject(1.5f, 1.0f, 4.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone26->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone26);
-
-	mapObject* stone27 = new mapObject(-1.5f, 1.0f, 4.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone27->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone27);
-
-	mapObject* stone28 = new mapObject(1.5f, 1.0f, -4.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone28->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone28);
-
-	mapObject* stone29 = new mapObject(-1.5f, 1.0f, -4.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone29->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone29);
-
-	// ---- //
-
-	// -- Stone laterali dx -- //
-
-	mapObject* stone30 = new mapObject(6.5f, 1.0f, 0.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone30->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone30);
-
-	mapObject* stone31 = new mapObject(6.5f, 1.0f, 1.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone31->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone31);
-
-	mapObject* stone32 = new mapObject(6.5f, 1.0f, 2.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone32->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone32);
-
-	mapObject* stone33 = new mapObject(6.5f, 1.0f, 3.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone33->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone33);
-
-	mapObject* stone34 = new mapObject(6.5f, 1.0f, 4.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone34->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone34);
-
-	// -- Stone laterali sx -- //
-
-	mapObject* stone35 = new mapObject(-4.5f, 1.0f, -1.0f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone35->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone35);
-
-	mapObject* stone36 = new mapObject(-5.5f, 1.0f, -1.0f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone36->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone36);
-
-	mapObject* stone37 = new mapObject(-6.5f, 1.0f, -1.0f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone37->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone37);
-
-	mapObject* stone38 = new mapObject(-7.5f, 1.0f, -1.0f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-	stone38->initMapObject("models/stones/stone1/stone1.dae");
-	mapObjects.push_back(stone38);
-
-	// ---- TREES ---- //
-	mapObject* tree1 = new mapObject(1.5f, 2.0f, -1.0f, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
-	tree1->initMapObject("models/trees/tree3/tree3.dae");
-	mapObjects.push_back(tree1);
-
-	mapObject* tree2 = new mapObject(-1.0f, 2.0f, 1.5f, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
-	tree2->initMapObject("models/trees/tree4/tree4.dae");
-	mapObjects.push_back(tree2);
-
-	mapObject* tree3 = new mapObject(7.5f, 2.0f, 2.5f, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
-	tree3->initMapObject("models/trees/tree3/tree3.dae");
-	mapObjects.push_back(tree3);
-
-	mapObject* tree4 = new mapObject(9.0f, 2.0f, 2.5f, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
-	tree4->initMapObject("models/trees/tree4/tree4.dae");
-	mapObjects.push_back(tree4);
+		}
+	}
 	
 }
 
@@ -231,7 +148,7 @@ void gameMap::drawMap(Shader lightShader) {
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// ---- STONES ---- //
+	// ---- Objects ---- //
 	for (int i = 0; i < mapObjects.size(); i++) {
 		mapObjects[i]->drawMapObject(lightShader);
 	}

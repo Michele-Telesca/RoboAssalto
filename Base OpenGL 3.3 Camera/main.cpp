@@ -23,7 +23,6 @@
 // dichiarazione oggetti
 game* gameuno = new game();
 
-
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 //time
@@ -171,8 +170,22 @@ void render(Shader lightShader)
 	//camera
 	float x = gameuno->getPlayer()->getX();
 	float z = gameuno->getPlayer()->getZ();
+
+	//dal basso
 	glm::vec3 pos_player(x, 10.0f, z + 5.0);
 	glm::vec3 at_player(x, 0.0f, z - 5.0f);
+
+	////terza persona
+	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);
+	//glm::vec3 at_player(x, 0.5f, z - 1.0f);
+	
+	////dall alto
+	//glm::vec3 pos_player(x, 30.0f, z);
+	//glm::vec3 at_player(x, 0.0f, z - 1.0f);
+
+	////prima persona
+	//glm::vec3 pos_player(x, 0.8f, z);
+	//glm::vec3 at_player(x, 0.5f, z - 1.0f);
 
 	glm::mat4 view = glm::mat4(1.0f); //identity matrix
 	view = glm::lookAt(pos_player, at_player, up);
@@ -235,7 +248,7 @@ int main()
 #endif
 
 																											 // glfw window creation
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL 3.3 - Labirinto!", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL 3.3 - Roboassalto", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();

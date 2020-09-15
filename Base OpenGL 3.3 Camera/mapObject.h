@@ -34,6 +34,14 @@ public:
 	void initMapObject(string path);
 	void drawMapObject(Shader myShader);
 
+	void setX(float new_x) {
+		x = new_x;
+	}
+
+	void setZ(float new_z) {
+		z = new_z;
+	}
+
 };
 
 void mapObject::initMapObject(string path) {

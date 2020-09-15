@@ -126,6 +126,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -143,6 +144,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -174,6 +176,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="shader_m.h" />
     <ClInclude Include="mapObject.h" />
     <ClInclude Include="update.h" />
+    <ClInclude Include="utility.h" />
     <ClInclude Include="villainShot.h" />
     <ClInclude Include="weapon.h" />
     <ClInclude Include="camera.h" />
