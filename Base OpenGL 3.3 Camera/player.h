@@ -2,6 +2,8 @@
 #include "point3D.h"
 #include "weapon.h"
 #include "model.h"
+#include "gameMap.h"
+#include "globalData.h"
 
 class player {
 
@@ -10,9 +12,9 @@ public:
 	player() {}
 
 	player(float x, float y, float z) : x(x), y(y), z(z) {}
-	
+
 	//coordinate
-	float x; 
+	float x;
 	float y;
 	float z;
 
@@ -86,7 +88,7 @@ void player::drawPlayer(Shader lightShader) {
 	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
 	lightShader.setFloat("material.shininess", 76.8f);
 
-	glm::mat4 model = glm::mat4(1.0f);	
+	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, 0.5f, z));
 	model = glm::rotate(model, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
@@ -101,17 +103,77 @@ void player::animate() {
 }
 
 void player::moveDx() {
-	x = x + 0.3f;
+
+	bool ostacolo = false;
+	for (int i = 0; i < mapObjectsCoord.size(); i++) {
+		float x_obj = (float)mapObjectsCoord[i].x;
+		float z_obj = (float)mapObjectsCoord[i].y;
+		if ((x == x_obj - (TILE_DIM/2 + MOVE_STEP)) && (z >= z_obj - TILE_DIM/2 && z <= z_obj + TILE_DIM/2)) {
+			ostacolo = true;
+			exit;
+		}
+	}
+	if (ostacolo == true) {
+		x = x;
+	}
+	else {
+		x = x + MOVE_STEP;
+	}	
 }
 
 void player::moveSx() {
-	x = x  - 0.3f;
+
+	bool ostacolo = false;
+	for (int i = 0; i < mapObjectsCoord.size(); i++) {
+		float x_obj = (float)mapObjectsCoord[i].x;
+		float z_obj = (float)mapObjectsCoord[i].y;
+		if ((x == x_obj + (TILE_DIM/2 + MOVE_STEP)) && (z >= z_obj - TILE_DIM/2 && z <= z_obj + TILE_DIM/2)) {
+			ostacolo = true;
+			exit;
+		}
+	}
+	if (ostacolo == true) {
+		x = x;
+	}
+	else {
+		x = x - MOVE_STEP;
+	}
 }
 
 void player::moveUp() {
-	z = z - 0.3f;
+
+	bool ostacolo = false;
+	for (int i = 0; i < mapObjectsCoord.size(); i++) {
+		float x_obj = mapObjectsCoord[i].x;
+		float z_obj = mapObjectsCoord[i].y;
+		if ((x >= x_obj - TILE_DIM/2 && x <= x_obj + TILE_DIM/2) && (z == z_obj + (TILE_DIM/2 + MOVE_STEP))) {
+			ostacolo = true;
+			exit;
+		}
+	}
+	if (ostacolo == true) {
+		z = z;
+	}
+	else {
+		z = z - MOVE_STEP;
+	}
 }
 
 void player::moveDown() {
-	z = z + 0.3f;
+
+	bool ostacolo = false;
+	for (int i = 0; i < mapObjectsCoord.size(); i++) {
+		float x_obj = mapObjectsCoord[i].x;
+		float z_obj = mapObjectsCoord[i].y;
+		if ((x >= x_obj - TILE_DIM/2 && x <= x_obj + TILE_DIM/2) && (z == z_obj - (TILE_DIM/2 + MOVE_STEP))) {
+			ostacolo = true;
+			exit;
+		}
+	}
+	if (ostacolo == true) {
+		z = z;
+	}
+	else {
+		z = z + MOVE_STEP;
+	}
 }

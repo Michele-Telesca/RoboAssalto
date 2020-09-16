@@ -96,7 +96,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 	float player_xpos = gameuno->getPlayer()->getX(); //coordinata x del player
 	float player_zpos = gameuno->getPlayer()->getZ(); //coordinata z del player
-	cout << "*** PLAYER Position (X,Z): (" << player_xpos << ", " << player_zpos << ")" << endl;
+	//cout << "*** PLAYER Position (X,Z): (" << player_xpos << ", " << player_zpos << ")" << endl;
 
 	//cout << "*** MOUSE - SCREEN Position (X,Z): (" << xpos << ", " << ypos << ")" << endl;
 
@@ -122,7 +122,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 	//glm::vec3 dir = glm::normalize(glm::vec3(worldPos));
 
-	cout << "*** MOUSE - WORLD Position (X,Z): (" << worldPos.x * 10 << ", " << worldPos.z * 10 << ")" << endl;
+	//cout << "*** MOUSE - WORLD Position (X,Z): (" << worldPos.x * 10 << ", " << worldPos.z * 10 << ")" << endl;
 
 	///// -------------- ///
 
@@ -145,7 +145,7 @@ void render(Shader lightShader)
 
 	currentTime = glfwGetTime();
 	double timeInterval = currentTime - previousTime;
-	if (timeInterval >= 0.05f) {
+	if (timeInterval >= RENDER_SPEED) {
 
 		if (muoviDx) {
 			gameuno->getPlayer()->moveDx();
