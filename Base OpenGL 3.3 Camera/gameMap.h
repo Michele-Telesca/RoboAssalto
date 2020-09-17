@@ -59,7 +59,7 @@ void gameMap::initMap() {
 	for (float i = -DIM/2; i < DIM/2; i = i + TILE_DIM) {
 		for (float j = DIM/2; j > -DIM/2; j = j - TILE_DIM) {
 			// creo la singola mattonella del floor e la inserisco nel vettore tiles
-			cube* tile = new cube(TILE_DIM, 0.0f, 1.0f, 0.0f, 0.0f, i, 0.0f, j);
+			cube* tile = new cube(TILE_DIM, 0.0f, 1.0f, 0.0f, 0.0f, i, 1.0f, j);
 			tiles.push_back(tile);
 		}
 	}
