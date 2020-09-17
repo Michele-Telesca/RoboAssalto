@@ -25,12 +25,20 @@
 // dichiarazione oggetti
 game* gameuno = new game();
 
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+glm::vec3 pos_camera_mobile_global(1.0f);
+glm::mat4 view_global(1.0f);
 
-//provvisorie
-glm::mat4 view2 = glm::mat4(1.0f);
-glm::vec3 pos_camera_fissa(0.0f, 20.0f, 0.0f);
-glm::vec3 at_camera_fissa(0.0f, 0.0f, -1.0f);
+////camera fissa dall'alto
+//glm::vec3 pos_camera_fissa(0.0f, 40.0f, 0.0f);
+//glm::vec3 at_camera_fissa(0.0f, 0.0f, -1.0f);
+
+////camera fissa bassa
+//glm::vec3 pos_camera_fissa(0.0f, 10.0f, 5.0f);
+//glm::vec3 at_camera_fissa(0.0f, 0.0f, -5.0f);
+
+////camera fissa che guarda verso l'alto
+//glm::vec3 pos_camera_fissa(0.0f, 10.0f, 0.0f);
+//glm::vec3 at_camera_fissa(0.0f, 1000.0f, -1.0f);
 
 //time
 float timebase = 0;
@@ -96,56 +104,32 @@ void processInput(GLFWwindow *window)
 	}
 }
 
-//MousePicker::MousePicker(Camera* camera, glm::mat4 projectionMatrix)
-//{
-//	this->camera = camera;
-//	this->projectionMatrix = projectionMatrix;
-//	this->viewMatrix = Math::CreateViewMatrix(camera->getCameraPos(), camera->getCameraFront(), camera->getCameraUp());
-//}
+void ray_plane(glm::vec3 plane_normal_word, glm::vec3 plane_pos_word, glm::vec3 ray_word, glm::vec3 origin, float dim_square) {
+	
+	float denom = dot(plane_normal_word, ray_word);
+	if (abs(denom) > 0.0001f) 
+	{
+		float t = dot((plane_pos_word - origin), plane_normal_word) / denom;
+		glm::vec3 p = origin + t * ray_word; //calcolo del punto intersecato p
 
+		if ( (t >= 0.0f) && (p.z >= plane_pos_word.z - dim_square /2 && p.z <= plane_pos_word.z + dim_square /2) && (p.x >= plane_pos_word.x - dim_square /2 && p.x <= plane_pos_word.x + dim_square /2)) {
+			
+			cout << "********************************* HITTATO: (" << p.x << ", " << p.y << ", " << p.z << ")" << endl;
+			float player_xpos = gameuno->getPlayer()->getX(); //coordinata x del player
+			float player_zpos = gameuno->getPlayer()->getZ(); //coordinata z del player
+			cout << "*** PLAYER Position (X,Z): (" << player_xpos << ", " << player_zpos << ")" << endl;
+		}
+
+	}
+}
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 
-	float player_xpos = gameuno->getPlayer()->getX(); //coordinata x del player
-	float player_zpos = gameuno->getPlayer()->getZ(); //coordinata z del player
-	cout << "*** PLAYER Position (X,Z): (" << player_xpos << ", " << player_zpos << ")" << endl;
-
-	//cout << "*** MOUSE - SCREEN Position (X,Z): (" << xpos << ", " << ypos << ")" << endl;
-
-	///// --- Metodo 1 ---///
-
-	//NORMALISED DEVICE SPACE
-	//double xpos_norm = 2.0 * xpos / SCR_WIDTH - 1.0f;
-	//double ypos_norm = 2.0 * ypos / SCR_HEIGHT - 1.0f;
-
-	//// Inizializzazione di projection
-	//glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
-	//projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-
-	//// HOMOGENEOUS SPACE
-	//glm::vec4 screenPos = glm::vec4(xpos_norm, -ypos_norm, -1.0f, 1.0f);
-
-	//// Projection/Eye Space
-	//glm::mat4 invVP = glm::inverse(projection * view2);
-	//glm::vec3 worldPos = invVP * screenPos;
-
-	//cout << "*** MOUSE - WORLD Position (X,Y,Z): (" << worldPos.x << ", " << worldPos.y/10 << ", " << worldPos.z << ")" << endl;
-
-	///// --- Metodo 2 --- ///
-	// Unproject Window Coordinates
-	/*float mouse_current_z;
-	glReadPixels(xpos, ypos, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &mouse_current_z);
-	glm::vec3 windowCoordinates = glm::vec3(xpos, ypos, mouse_current_z);
-	glm::vec4 viewport = glm::vec4(0.0f, 0.0f, (float)SCR_WIDTH, (float)SCR_HEIGHT);
-	glm::vec3 worldCoordinates = glm::unProject(windowCoordinates, view2, projection, viewport);
-	cout << "*** MOUSE - WORLD Position (X,Z): (" << worldCoordinates.x << ", " << worldCoordinates.z << ")" << endl;*/
-
-	///// --- Metodo 3 --- ///
-
-	//Define projection e view
+	//Projection e View
 	glm::mat4 projection_matrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	glm::mat4 view_matrix = glm::lookAt(pos_camera_fissa, at_camera_fissa, up);
+	//glm::mat4 view_matrix = glm::lookAt(pos_camera_fissa, at_camera_fissa, up);
+	glm::mat4 view_matrix = view_global;
 
 	//Step 1: 3d Normalised Device Coordinates
 	float x = (2.0f * xpos) / (float)SCR_WIDTH - 1.0f;
@@ -161,9 +145,21 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
 
 	//Step 4: 4d World Coordinates
-	glm::vec3 ray_wor((inverse(view_matrix) * ray_eye).x, (inverse(view_matrix) * ray_eye).y, (inverse(view_matrix) * ray_eye).z);
-	ray_wor = glm::normalize(ray_wor);
-	cout << "*** MOUSE - RAY WORLD Position (X,Y,Z): (" << ray_wor.x << ", " << ray_wor.y << ", " << ray_wor.z << ")" << endl;
+	glm::vec3 ray_word((inverse(view_matrix) * ray_eye).x, (inverse(view_matrix) * ray_eye).y, (inverse(view_matrix) * ray_eye).z);
+	ray_word = glm::normalize(ray_word);
+	
+	//dichiaro il pavimento
+	//for (float i = -DIM / 2; i <= DIM / 2; i = i + TILE_DIM) {
+	//	for (float j = DIM / 2; j >= -DIM / 2; j = j - TILE_DIM) {
+	//		glm::vec3 plane_normal_wor(0.0f, 1.0f, 0.0f); //normale del piano
+	//		glm::vec3 plane_pos_wor(j, 1.0f, i); //centro del piano
+	//		ray_plane(plane_normal_wor, plane_pos_wor, ray_wor, pos_camera_mobile_global, 1.0f);
+	//	}
+	//}
+
+	glm::vec3 plane_normal_word(0.0f, 1.0f, 0.0f);
+	glm::vec3 plane_pos_word(-0.75f, 1.0f, 0.75f);
+	ray_plane(plane_normal_word, plane_pos_word, ray_word, pos_camera_mobile_global,DIM);
 	
 }
 
@@ -211,35 +207,38 @@ void render(Shader lightShader)
 	float x = gameuno->getPlayer()->getX();
 	float z = gameuno->getPlayer()->getZ();
 
-	//dal basso
-	//glm::vec3 pos_player(x, 10.0f, z + 5.0);
-	//glm::vec3 at_player(x, 0.0f, z - 5.0f);
-	//pos_player2 = pos_player;
-	//at_player2 = at_player;
+	////dal basso
+	//glm::vec3 pos_camera_mobile(x, 10.0f, z + 5.0);
+	//glm::vec3 at_camera_mobile(x, 0.0f, z - 5.0f);
+
+	glm::vec3 pos_camera_mobile(x, 12.0f, z + 3.0);
+	glm::vec3 at_camera_mobile(x, 0.0f, z - 3.0f);
 
 	////terza persona
 	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);
-	//glm::vec3 at_player(x, 0.5f, z - 1.0f);
+	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 	
 	////dall alto
-	//glm::vec3 pos_player(x, 30.0f, z);
-	//glm::vec3 at_player(x, 0.0f, z - 1.0f);
+	//glm::vec3 pos_camera_mobile(x, 30.0f, z);
+	//glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
 
 	////prima persona
-	//glm::vec3 pos_player(x, 0.8f, z);
-	//glm::vec3 at_player(x, 0.5f, z - 1.0f);
+	//glm::vec3 pos_camera_mobile(x, 0.8f, z);
+	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
 	////fissa dall'alto
-	//glm::vec3 pos_player(0.0f, 20.0f, 0.0f);
-	//glm::vec3 at_player(0.0f, 0.0f, -1.0f);
-
-	//glm::mat4 view = glm::mat4(1.0f); 
-	//view = glm::lookAt(pos_player, at_player, up);
-	//lightShader.setMat4("view", view);
+	//glm::vec3 pos_camera_mobile(0.0f, 20.0f, 0.0f);
+	//glm::vec3 at_camera_mobile(0.0f, 0.0f, -1.0f);
 
 	glm::mat4 view = glm::mat4(1.0f); 
-	view = glm::lookAt(pos_camera_fissa, at_camera_fissa, up);
+	view = glm::lookAt(pos_camera_mobile, at_camera_mobile, up);
+	pos_camera_mobile_global = pos_camera_mobile;
+	view_global = view;
 	lightShader.setMat4("view", view);
+
+	//glm::mat4 view = glm::mat4(1.0f); 
+	//view = glm::lookAt(pos_camera_fissa, at_camera_fissa, up);
+	//lightShader.setMat4("view", view);
 
 	gameuno->draw(lightShader);
 
