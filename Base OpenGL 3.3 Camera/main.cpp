@@ -43,6 +43,7 @@ glm::mat4 view_global(1.0f);
 //time
 float timebase = 0;
 
+
 double currentTime = 0.0f;
 double previousTime = glfwGetTime();
 
@@ -70,7 +71,7 @@ glm::vec3 side(1.0, 0.0, 0.0);		// Direzione spostamento laterale
 glm::vec3 lightPos(0.0f, 15.0f, 0.0f);
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-void processInput(GLFWwindow *window)
+void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -105,22 +106,24 @@ void processInput(GLFWwindow *window)
 }
 
 void ray_plane(glm::vec3 plane_normal_word, glm::vec3 plane_pos_word, glm::vec3 ray_word, glm::vec3 origin, float dim_square) {
-	
+
 	float denom = dot(plane_normal_word, ray_word);
-	if (abs(denom) > 0.0001f) 
+	if (abs(denom) > 0.0001f)
 	{
 		float t = dot((plane_pos_word - origin), plane_normal_word) / denom;
 		glm::vec3 p = origin + t * ray_word; //calcolo del punto intersecato p
 
-		if ( (t >= 0.0f) && (p.z >= plane_pos_word.z - dim_square /2 && p.z <= plane_pos_word.z + dim_square /2) && (p.x >= plane_pos_word.x - dim_square /2 && p.x <= plane_pos_word.x + dim_square /2)) {
-			
+		if ((t >= 0.0f) && (p.z >= plane_pos_word.z - dim_square / 2 && p.z <= plane_pos_word.z + dim_square / 2) && (p.x >= plane_pos_word.x - dim_square / 2 && p.x <= plane_pos_word.x + dim_square / 2)) {
+
 			cout << "********************************* HITTATO: (" << p.x << ", " << p.y << ", " << p.z << ")" << endl;
 			float player_xpos = gameuno->getPlayer()->getX(); //coordinata x del player
 			float player_zpos = gameuno->getPlayer()->getZ(); //coordinata z del player
 			cout << "*** PLAYER Position (X,Z): (" << player_xpos << ", " << player_zpos << ")" << endl;
+			gameuno->setMousePoint(p);
 		}
 
 	}
+
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
@@ -136,7 +139,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	float y = 1.0f - (2.0f * ypos) / (float)SCR_HEIGHT;
 	float z = 1.0f;
 	glm::vec3 ray_nds(x, y, z);
-	
+
 	//Step 2: 4d Homogeneous Clip Coordinates
 	glm::vec4 ray_clip(ray_nds.x, ray_nds.y, -1.0, 1.0);
 
@@ -147,7 +150,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	//Step 4: 4d World Coordinates
 	glm::vec3 ray_word((inverse(view_matrix) * ray_eye).x, (inverse(view_matrix) * ray_eye).y, (inverse(view_matrix) * ray_eye).z);
 	ray_word = glm::normalize(ray_word);
-	
+
 	//dichiaro il pavimento
 	//for (float i = -DIM / 2; i <= DIM / 2; i = i + TILE_DIM) {
 	//	for (float j = DIM / 2; j >= -DIM / 2; j = j - TILE_DIM) {
@@ -159,8 +162,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 	glm::vec3 plane_normal_word(0.0f, 1.0f, 0.0f);
 	glm::vec3 plane_pos_word(-0.75f, 1.0f, 0.75f);
-	ray_plane(plane_normal_word, plane_pos_word, ray_word, pos_camera_mobile_global,DIM);
-	
+	ray_plane(plane_normal_word, plane_pos_word, ray_word, pos_camera_mobile_global, DIM);
+
 }
 
 
@@ -217,7 +220,7 @@ void render(Shader lightShader)
 	////terza persona
 	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
-	
+
 	////dall alto
 	//glm::vec3 pos_camera_mobile(x, 30.0f, z);
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
@@ -230,7 +233,7 @@ void render(Shader lightShader)
 	//glm::vec3 pos_camera_mobile(0.0f, 20.0f, 0.0f);
 	//glm::vec3 at_camera_mobile(0.0f, 0.0f, -1.0f);
 
-	glm::mat4 view = glm::mat4(1.0f); 
+	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::lookAt(pos_camera_mobile, at_camera_mobile, up);
 	pos_camera_mobile_global = pos_camera_mobile;
 	view_global = view;
@@ -317,7 +320,9 @@ int main()
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
-	
+	gameuno->getPlayer()->texturePlayer = loadtexture("texture/unibas.jpg");
+
+
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);
 

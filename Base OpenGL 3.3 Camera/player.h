@@ -8,11 +8,12 @@
 class player {
 
 public:
-	
+
 	player() {}
 
 	player(float x, float y, float z) : x(x), y(y), z(z) {}
 
+	float angleP = 0.0f;
 	//coordinate
 	float x;
 	float y;
@@ -26,9 +27,9 @@ public:
 	// modello 3D del player
 	Model* player_model;
 
-	weapon* weapon; //arma posseduta al momento
+	weapon* wea = new weapon(3.0f, 90.0f, 2.0f); //arma posseduta al momento
 
-	void drawPlayer(Shader myShader); //disegna il player
+	void drawPlayer(Shader myShader, glm::vec3 mousePoint); //disegna il player
 	void animate(); //animazione del player
 	void initPlayer(); //inizializza il player
 
@@ -37,6 +38,8 @@ public:
 	void moveSx();
 	void moveUp();
 	void moveDown();
+
+	unsigned int texturePlayer;
 
 	float getX() {
 		return x;
@@ -71,16 +74,19 @@ void player::initPlayer() {
 	//tempo ultimo colpo
 	timeLastShot = 0.0;
 
-	//arma iniziale
-	weapon->initWeapon();
-
 	//caricamento modello
 	player_model = new Model();
 	player_model->loadModel("models/Michelle/Ch03_nonPBR.DAE");
 
 }
 
-void player::drawPlayer(Shader lightShader) {
+float angleBetween(const glm::vec3 a, const glm::vec3 b) {
+
+	float angle = atan2(b.x, a.x) - atan2(b.z, a.y);
+	return angle;
+}
+
+void player::drawPlayer(Shader lightShader, glm::vec3 mousePoint) {
 
 	// material properties
 	lightShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
@@ -94,7 +100,28 @@ void player::drawPlayer(Shader lightShader) {
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 	lightShader.setMat4("model", model);
 
+
+	float mouseX = mousePoint.x;
+	float mouseY = mousePoint.y;
+
+	float d1 = mouseX - x;
+	float d2 = mouseY - z;
+
+	float angle = atan2(d1, d2);
+
+	/*
+	glm::vec3 dir(0.0f, 0.0f, 1.0f);
+	glm::vec3 position(x, y, z);
+	glm::vec3 point = mousePoint;
+
+	float an = angleBetween(dir, point - position);
+	float angle = an / 3.13f * 180.0f;
+	*/
+
+	//angleP = angleP + 0.01f;
+	//cout << "*** angle: (" << angle << ", "  << endl;	
 	player_model->Draw(lightShader);
+	wea->drawTarget(lightShader, x, y, z, texturePlayer, angle);
 
 }
 
@@ -108,7 +135,7 @@ void player::moveDx() {
 	for (int i = 0; i < mapObjectsCoord.size(); i++) {
 		float x_obj = (float)mapObjectsCoord[i].x;
 		float z_obj = (float)mapObjectsCoord[i].y;
-		if ((x == x_obj - (TILE_DIM/2 + MOVE_STEP)) && (z >= z_obj - TILE_DIM/2 && z <= z_obj + TILE_DIM/2)) {
+		if ((x == x_obj - (TILE_DIM / 2 + MOVE_STEP)) && (z >= z_obj - TILE_DIM / 2 && z <= z_obj + TILE_DIM / 2)) {
 			ostacolo = true;
 			exit;
 		}
@@ -118,7 +145,7 @@ void player::moveDx() {
 	}
 	else {
 		x = x + MOVE_STEP;
-	}	
+	}
 }
 
 void player::moveSx() {
@@ -127,7 +154,7 @@ void player::moveSx() {
 	for (int i = 0; i < mapObjectsCoord.size(); i++) {
 		float x_obj = (float)mapObjectsCoord[i].x;
 		float z_obj = (float)mapObjectsCoord[i].y;
-		if ((x == x_obj + (TILE_DIM/2 + MOVE_STEP)) && (z >= z_obj - TILE_DIM/2 && z <= z_obj + TILE_DIM/2)) {
+		if ((x == x_obj + (TILE_DIM / 2 + MOVE_STEP)) && (z >= z_obj - TILE_DIM / 2 && z <= z_obj + TILE_DIM / 2)) {
 			ostacolo = true;
 			exit;
 		}
@@ -146,7 +173,7 @@ void player::moveUp() {
 	for (int i = 0; i < mapObjectsCoord.size(); i++) {
 		float x_obj = mapObjectsCoord[i].x;
 		float z_obj = mapObjectsCoord[i].y;
-		if ((x >= x_obj - TILE_DIM/2 && x <= x_obj + TILE_DIM/2) && (z == z_obj + (TILE_DIM/2 + MOVE_STEP))) {
+		if ((x >= x_obj - TILE_DIM / 2 && x <= x_obj + TILE_DIM / 2) && (z == z_obj + (TILE_DIM / 2 + MOVE_STEP))) {
 			ostacolo = true;
 			exit;
 		}
@@ -165,7 +192,7 @@ void player::moveDown() {
 	for (int i = 0; i < mapObjectsCoord.size(); i++) {
 		float x_obj = mapObjectsCoord[i].x;
 		float z_obj = mapObjectsCoord[i].y;
-		if ((x >= x_obj - TILE_DIM/2 && x <= x_obj + TILE_DIM/2) && (z == z_obj - (TILE_DIM/2 + MOVE_STEP))) {
+		if ((x >= x_obj - TILE_DIM / 2 && x <= x_obj + TILE_DIM / 2) && (z == z_obj - (TILE_DIM / 2 + MOVE_STEP))) {
 			ostacolo = true;
 			exit;
 		}

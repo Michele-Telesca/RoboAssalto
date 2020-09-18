@@ -13,6 +13,7 @@ private:
 
 	gameMap* map;
 	player* p;
+	glm::vec3 mousePoint;
 
 public:
 
@@ -25,6 +26,14 @@ public:
 	void inizializza();
 	void draw(Shader lightShader);
 
+	glm::vec3 getMousePoint() {
+		return mousePoint;
+	}
+
+	void setMousePoint(glm::vec3 w) {
+		mousePoint = w;
+	}
+
 	// get //
 	gameMap* getGameMap() {
 		return map;
@@ -33,7 +42,7 @@ public:
 	player* getPlayer() {
 		return p;
 	}
-	
+
 	// set //
 	void setGameMap(gameMap* gamemap) {
 		map = gamemap;
@@ -53,8 +62,8 @@ void game::inizializza() {
 }
 
 void game::draw(Shader lightShader) {
-	
-	p->drawPlayer(lightShader);
+
+	p->drawPlayer(lightShader, getMousePoint());
 	map->drawMap(lightShader);
 
 }
