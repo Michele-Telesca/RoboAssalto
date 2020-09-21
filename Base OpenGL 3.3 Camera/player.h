@@ -38,6 +38,7 @@ public:
 	void moveSx();
 	void moveUp();
 	void moveDown();
+	bool mouseSxIsSelected = false;
 
 	unsigned int texturePlayer;
 
@@ -102,27 +103,23 @@ void player::drawPlayer(Shader lightShader, glm::vec3 mousePoint) {
 
 
 	float mouseX = mousePoint.x;
-	float mouseY = mousePoint.y;
+	float mouseY = mousePoint.z;
 
 	float d1 = mouseX - x;
 	float d2 = mouseY - z;
 
 	float angle = atan2(d1, d2);
 
-	/*
-	glm::vec3 dir(0.0f, 0.0f, 1.0f);
-	glm::vec3 position(x, y, z);
-	glm::vec3 point = mousePoint;
+	if (mouseY < z) {
+		//angle = - 3.14f;
+	}
+	
 
-	float an = angleBetween(dir, point - position);
-	float angle = an / 3.13f * 180.0f;
-	*/
-
-	//angleP = angleP + 0.01f;
-	//cout << "*** angle: (" << angle << ", "  << endl;	
 	player_model->Draw(lightShader);
-	wea->drawTarget(lightShader, x, y, z, texturePlayer, angle);
 
+	if (mouseSxIsSelected) {
+		wea->drawTarget(lightShader, x, y, z, texturePlayer, angle);
+	}
 }
 
 void player::animate() {

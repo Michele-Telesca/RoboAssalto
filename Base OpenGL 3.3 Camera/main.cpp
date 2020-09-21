@@ -52,6 +52,8 @@ bool muoviDx = false;
 bool muoviSx = false;
 bool muoviSu = false;
 bool muoviGiu = false;
+bool mouseSx = false;
+
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -73,9 +75,15 @@ glm::vec3 lightPos(0.0f, 15.0f, 0.0f);
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+		mouseSx = true;
+	}
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+		mouseSx = false;
+	}
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
-
+	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		muoviDx = true;
 	}
@@ -115,10 +123,12 @@ void ray_plane(glm::vec3 plane_normal_word, glm::vec3 plane_pos_word, glm::vec3 
 
 		if ((t >= 0.0f) && (p.z >= plane_pos_word.z - dim_square / 2 && p.z <= plane_pos_word.z + dim_square / 2) && (p.x >= plane_pos_word.x - dim_square / 2 && p.x <= plane_pos_word.x + dim_square / 2)) {
 
-			cout << "********************************* HITTATO: (" << p.x << ", " << p.y << ", " << p.z << ")" << endl;
+			//cout << "********************************* HITTATO: (" << p.x << ", " << p.y << ", " << p.z << ")" << endl;
 			float player_xpos = gameuno->getPlayer()->getX(); //coordinata x del player
 			float player_zpos = gameuno->getPlayer()->getZ(); //coordinata z del player
-			cout << "*** PLAYER Position (X,Z): (" << player_xpos << ", " << player_zpos << ")" << endl;
+			//cout << "*** PLAYER Position (X,Z): (" << player_xpos << ", " << player_zpos << ")" << endl;
+			//cout << "*** Mouse Position (X,Z): (" << p.x << ", " << p.z << ")" << endl;
+
 			gameuno->setMousePoint(p);
 		}
 
@@ -201,6 +211,13 @@ void render(Shader lightShader)
 		if (muoviGiu) {
 			gameuno->getPlayer()->moveDown();
 		}
+		if (mouseSx) {
+			gameuno->getPlayer()->mouseSxIsSelected = true;
+		}
+		else {
+			gameuno->getPlayer()->mouseSxIsSelected = false;
+		}
+
 
 		previousTime = currentTime;
 
@@ -320,7 +337,7 @@ int main()
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
-	gameuno->getPlayer()->texturePlayer = loadtexture("texture/unibas.jpg");
+	gameuno->getPlayer()->texturePlayer = loadtexture("texture/target.png");
 
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
