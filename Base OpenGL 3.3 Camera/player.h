@@ -76,8 +76,7 @@ void player::initPlayer() {
 
 	//caricamento modello
 	player_model = new Model();
-	player_model->loadModel("models/Michelle/Ch03_nonPBR.DAE");
-
+	player_model->loadModel("models/michelle/Ch03_nonPBR.DAE");
 }
 
 float angleBetween(const glm::vec3 a, const glm::vec3 b) {
@@ -130,12 +129,13 @@ void player::animate() {
 }
 
 void player::moveDx() {
+    float epsilon = 0.001;
 
 	bool ostacolo = false;
 	for (int i = 0; i < mapObjectsCoord.size(); i++) {
 		float x_obj = (float)mapObjectsCoord[i].x;
 		float z_obj = (float)mapObjectsCoord[i].y;
-		if ((x == x_obj - (TILE_DIM / 2 + MOVE_STEP)) && (z >= z_obj - TILE_DIM / 2 && z <= z_obj + TILE_DIM / 2)) {
+		if (isEqual(x, x_obj - (TILE_DIM / 2 + MOVE_STEP), EPSILON_1) && (z >= z_obj - TILE_DIM / 2 && z <= z_obj + TILE_DIM / 2)) {
 			ostacolo = true;
 			exit;
 		}
@@ -149,12 +149,12 @@ void player::moveDx() {
 }
 
 void player::moveSx() {
-
+	float epsilon = 0.001;
 	bool ostacolo = false;
 	for (int i = 0; i < mapObjectsCoord.size(); i++) {
 		float x_obj = (float)mapObjectsCoord[i].x;
 		float z_obj = (float)mapObjectsCoord[i].y;
-		if ((x == x_obj + (TILE_DIM / 2 + MOVE_STEP)) && (z >= z_obj - TILE_DIM / 2 && z <= z_obj + TILE_DIM / 2)) {
+		if (isEqual(x, x_obj + (TILE_DIM / 2 + MOVE_STEP), EPSILON_1) && (z >= z_obj - TILE_DIM / 2 && z <= z_obj + TILE_DIM / 2)) {
 			ostacolo = true;
 			exit;
 		}
@@ -168,12 +168,12 @@ void player::moveSx() {
 }
 
 void player::moveUp() {
-
+	float epsilon = 0.001;
 	bool ostacolo = false;
 	for (int i = 0; i < mapObjectsCoord.size(); i++) {
 		float x_obj = mapObjectsCoord[i].x;
 		float z_obj = mapObjectsCoord[i].y;
-		if ((x >= x_obj - TILE_DIM / 2 && x <= x_obj + TILE_DIM / 2) && (z == z_obj + (TILE_DIM / 2 + MOVE_STEP))) {
+		if ((x >= x_obj - TILE_DIM / 2 && x <= x_obj + TILE_DIM / 2) && isEqual(z, z_obj + (TILE_DIM / 2 + MOVE_STEP), EPSILON_1)) {
 			ostacolo = true;
 			exit;
 		}
@@ -187,12 +187,12 @@ void player::moveUp() {
 }
 
 void player::moveDown() {
-
+	float epsilon = 0.001;
 	bool ostacolo = false;
 	for (int i = 0; i < mapObjectsCoord.size(); i++) {
 		float x_obj = mapObjectsCoord[i].x;
 		float z_obj = mapObjectsCoord[i].y;
-		if ((x >= x_obj - TILE_DIM / 2 && x <= x_obj + TILE_DIM / 2) && (z == z_obj - (TILE_DIM / 2 + MOVE_STEP))) {
+		if ((x >= x_obj - TILE_DIM / 2 && x <= x_obj + TILE_DIM / 2) && isEqual(z, z_obj - (TILE_DIM / 2 + MOVE_STEP), EPSILON_1)) {
 			ostacolo = true;
 			exit;
 		}

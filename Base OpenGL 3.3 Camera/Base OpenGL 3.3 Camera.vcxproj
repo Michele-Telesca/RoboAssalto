@@ -168,9 +168,11 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="game.h" />
     <ClInclude Include="gameMap.h" />
     <ClInclude Include="globalData.h" />
+    <ClInclude Include="globalPathData.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="cube.h" />
+    <ClInclude Include="path.h" />
     <ClInclude Include="playerShot.h" />
     <ClInclude Include="point3D.h" />
     <ClInclude Include="shader_m.h" />

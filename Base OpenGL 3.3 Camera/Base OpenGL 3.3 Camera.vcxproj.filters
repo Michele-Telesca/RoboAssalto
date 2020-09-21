@@ -104,5 +104,11 @@
     <ClInclude Include="utility.h">
       <Filter>Header Files\Tool</Filter>
     </ClInclude>
+    <ClInclude Include="path.h">
+      <Filter>Header Files\Modello</Filter>
+    </ClInclude>
+    <ClInclude Include="globalPathData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
