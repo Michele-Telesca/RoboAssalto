@@ -159,38 +159,7 @@ void mouse_position() {
 
 }
 
-/*
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
 
-	//Projection e View
-	glm::mat4 projection_matrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	//glm::mat4 view_matrix = glm::lookAt(pos_camera_fissa, at_camera_fissa, up);
-	glm::mat4 view_matrix = view_global;
-
-	//Step 1: 3d Normalised Device Coordinates
-	float x = (2.0f * xpos) / (float)SCR_WIDTH - 1.0f;
-	float y = 1.0f - (2.0f * ypos) / (float)SCR_HEIGHT;
-	float z = 1.0f;
-	glm::vec3 ray_nds(x, y, z);
-
-	//Step 2: 4d Homogeneous Clip Coordinates
-	glm::vec4 ray_clip(ray_nds.x, ray_nds.y, -1.0, 1.0);
-
-	//Step 3: 4d Eye (Camera) Coordinates
-	glm::vec4 ray_eye = inverse(projection_matrix) * ray_clip;
-	ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
-
-	//Step 4: 4d World Coordinates
-	glm::vec3 ray_word((inverse(view_matrix) * ray_eye).x, (inverse(view_matrix) * ray_eye).y, (inverse(view_matrix) * ray_eye).z);
-	ray_word = glm::normalize(ray_word);
-
-	glm::vec3 plane_normal_word(0.0f, 1.0f, 0.0f);
-	glm::vec3 plane_pos_word(-0.75f, 1.0f, 0.75f);
-	ray_plane(plane_normal_word, plane_pos_word, ray_word, pos_camera_mobile_global, DIM);
-
-}
-*/
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -233,10 +202,10 @@ void render(Shader lightShader)
 			gameuno->getPlayer()->mouseSxIsSelected = false;
 		}
 
-<<<<<<< HEAD
+
 		mouse_position();
-		previousTime = currentTime;
-=======
+
+
 		//movimento di 2 soli bot (path1) +++ PROVVISORIO +++		
 		if (bot_timer == 10) {
 			gameuno->spawn_botPath1();
@@ -245,7 +214,6 @@ void render(Shader lightShader)
 		}
 		
 		gameuno->moveAllBots();
->>>>>>> origin/Giuseppe
 
 		bot_timer++;
 		previousTime = currentTime;
@@ -259,22 +227,21 @@ void render(Shader lightShader)
 	//glm::vec3 pos_camera_mobile(x, 10.0f, z + 5.0);
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 5.0f);
 
-<<<<<<< HEAD
+
 	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0);
 	glm::vec3 at_camera_mobile(x, 0.0f, z );
-=======
+
 	////dal basso
 	//glm::vec3 pos_camera_mobile(x, 12.0f, z + 3.0);
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 3.0f);
->>>>>>> origin/Giuseppe
 
 	////terza persona
 	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
 	//dall alto
-	glm::vec3 pos_camera_mobile(x, 30.0f, z);
-	glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
+	/*glm::vec3 pos_camera_mobile(x, 30.0f, z);
+	glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);*/
 
 	////prima persona
 	//glm::vec3 pos_camera_mobile(x, 0.8f, z);

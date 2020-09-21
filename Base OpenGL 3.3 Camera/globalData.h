@@ -1,23 +1,15 @@
 #pragma once
 
 //GAME SETTINGS
-<<<<<<< HEAD
 float RENDER_SPEED = 0.03f; //Più è alto e più rallenta; più è basso e più velocizza
 const int DIM = 40; //Dimensione floor 20x20
 float TILE_DIM = 1.0; //Dimensione singola mattonella
 float MOVE_STEP = TILE_DIM / 8; // = 0.125f; //Incremento dello spostamento del player
-=======
-float RENDER_SPEED = 0.04f; //Più è alto e più rallenta; più è basso e più velocizza
 
-const int DIM = 20; //Dimensione floor 20x20
-float TILE_DIM = 1.0f; //Dimensione singola mattonella
-
-float MOVE_STEP = TILE_DIM / 8; // = 0.125f -> Incremento dello spostamento del player 
 float EPSILON_1 = TILE_DIM / 100;
 
 float BOT_MOVE_STEP = TILE_DIM / 10; // = 0.1 -> Incremento dello spostamento del BOT 
 float EPSILON_2 = TILE_DIM / 100;
->>>>>>> origin/Giuseppe
 
 // ---- //
 const int BUSH1 = 1;
