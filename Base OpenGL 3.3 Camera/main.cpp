@@ -21,6 +21,8 @@
 #include "gameMap.h"
 #include "cube.h"
 #include "update.h"
+#include "villain.h"
+#include "globalPathData.h"
 
 // dichiarazione oggetti
 game* gameuno = new game();
@@ -28,24 +30,13 @@ game* gameuno = new game();
 glm::vec3 pos_camera_mobile_global(1.0f);
 glm::mat4 view_global(1.0f);
 
-////camera fissa dall'alto
-//glm::vec3 pos_camera_fissa(0.0f, 40.0f, 0.0f);
-//glm::vec3 at_camera_fissa(0.0f, 0.0f, -1.0f);
-
-////camera fissa bassa
-//glm::vec3 pos_camera_fissa(0.0f, 10.0f, 5.0f);
-//glm::vec3 at_camera_fissa(0.0f, 0.0f, -5.0f);
-
-////camera fissa che guarda verso l'alto
-//glm::vec3 pos_camera_fissa(0.0f, 10.0f, 0.0f);
-//glm::vec3 at_camera_fissa(0.0f, 1000.0f, -1.0f);
-
 //time
 float timebase = 0;
-
-
 double currentTime = 0.0f;
 double previousTime = glfwGetTime();
+
+//
+int bot_timer = 0;
 
 //movimenti
 bool muoviDx = false;
@@ -194,15 +185,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	glm::vec3 ray_word((inverse(view_matrix) * ray_eye).x, (inverse(view_matrix) * ray_eye).y, (inverse(view_matrix) * ray_eye).z);
 	ray_word = glm::normalize(ray_word);
 
-	//dichiaro il pavimento
-	//for (float i = -DIM / 2; i <= DIM / 2; i = i + TILE_DIM) {
-	//	for (float j = DIM / 2; j >= -DIM / 2; j = j - TILE_DIM) {
-	//		glm::vec3 plane_normal_wor(0.0f, 1.0f, 0.0f); //normale del piano
-	//		glm::vec3 plane_pos_wor(j, 1.0f, i); //centro del piano
-	//		ray_plane(plane_normal_wor, plane_pos_wor, ray_wor, pos_camera_mobile_global, 1.0f);
-	//	}
-	//}
-
 	glm::vec3 plane_normal_word(0.0f, 1.0f, 0.0f);
 	glm::vec3 plane_pos_word(-0.75f, 1.0f, 0.75f);
 	ray_plane(plane_normal_word, plane_pos_word, ray_word, pos_camera_mobile_global, DIM);
@@ -251,9 +233,22 @@ void render(Shader lightShader)
 			gameuno->getPlayer()->mouseSxIsSelected = false;
 		}
 
+<<<<<<< HEAD
 		mouse_position();
 		previousTime = currentTime;
+=======
+		//movimento di 2 soli bot (path1) +++ PROVVISORIO +++		
+		if (bot_timer == 10) {
+			gameuno->spawn_botPath1();
+			gameuno->spawn_botPath2();
+			gameuno->spawn_botPath3();
+		}
+		
+		gameuno->moveAllBots();
+>>>>>>> origin/Giuseppe
 
+		bot_timer++;
+		previousTime = currentTime;
 	}
 
 	//camera
@@ -264,16 +259,22 @@ void render(Shader lightShader)
 	//glm::vec3 pos_camera_mobile(x, 10.0f, z + 5.0);
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 5.0f);
 
+<<<<<<< HEAD
 	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0);
 	glm::vec3 at_camera_mobile(x, 0.0f, z );
+=======
+	////dal basso
+	//glm::vec3 pos_camera_mobile(x, 12.0f, z + 3.0);
+	//glm::vec3 at_camera_mobile(x, 0.0f, z - 3.0f);
+>>>>>>> origin/Giuseppe
 
 	////terza persona
 	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
-	////dall alto
-	//glm::vec3 pos_camera_mobile(x, 30.0f, z);
-	//glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
+	//dall alto
+	glm::vec3 pos_camera_mobile(x, 30.0f, z);
+	glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
 
 	////prima persona
 	//glm::vec3 pos_camera_mobile(x, 0.8f, z);
@@ -288,10 +289,6 @@ void render(Shader lightShader)
 	pos_camera_mobile_global = pos_camera_mobile;
 	view_global = view;
 	lightShader.setMat4("view", view);
-
-	//glm::mat4 view = glm::mat4(1.0f); 
-	//view = glm::lookAt(pos_camera_fissa, at_camera_fissa, up);
-	//lightShader.setMat4("view", view);
 
 	gameuno->draw(lightShader);
 
@@ -404,7 +401,6 @@ int main()
 
 	glEnable(GL_DEPTH);
 
-
 	//dichiarazione degli shader
 	Shader myShader("vertex_shader.vs", "fragment_shader.fs");
 	Shader lightShader("vertex_shader_lights.vs", "fragment_shader_lights.fs");
@@ -447,5 +443,3 @@ int main()
 	glfwTerminate();
 	return 0;
 }
-
-

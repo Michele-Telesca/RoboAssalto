@@ -189,6 +189,7 @@ void gameMap::drawMap(Shader lightShader) {
 	// ---- Objects ---- //
 	for (int i = 0; i < mapObjects.size(); i++) {
 		mapObjects[i]->drawMapObject(lightShader);
+		glBindTexture(GL_TEXTURE_2D, 0); //PROVVISORIO
 	}
 
 }
