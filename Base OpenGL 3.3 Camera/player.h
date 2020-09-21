@@ -14,6 +14,7 @@ public:
 	player(float x, float y, float z) : x(x), y(y), z(z) {}
 
 	float angleP = 0.0f;
+
 	//coordinate
 	float x;
 	float y;

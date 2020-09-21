@@ -36,7 +36,8 @@ double currentTime = 0.0f;
 double previousTime = glfwGetTime();
 
 //
-int bot_timer = 0;
+//int bot_timer = 0;
+bool spawnBot = true;
 
 //movimenti
 bool muoviDx = false;
@@ -61,7 +62,7 @@ glm::vec3 up(0.0, 1.0, 0.0);		// Vettore up...la camera è sempre parallela al pi
 
 glm::vec3 dir(0.0, 0.0, -0.1);		// Direzione dello sguardo
 glm::vec3 side(1.0, 0.0, 0.0);		// Direzione spostamento laterale
-glm::vec3 lightPos(0.0f, 15.0f, 0.0f);
+glm::vec3 lightPos(0.0f, 80.0f, 0.0f);
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow* window)
@@ -202,20 +203,18 @@ void render(Shader lightShader)
 			gameuno->getPlayer()->mouseSxIsSelected = false;
 		}
 
-
 		mouse_position();
 
-
-		//movimento di 2 soli bot (path1) +++ PROVVISORIO +++		
-		if (bot_timer == 10) {
+		if (spawnBot == true) {
 			gameuno->spawn_botPath1();
 			gameuno->spawn_botPath2();
 			gameuno->spawn_botPath3();
+			gameuno->spawn_botPath4();
+			spawnBot = false;
 		}
-		
+	
 		gameuno->moveAllBots();
 
-		bot_timer++;
 		previousTime = currentTime;
 	}
 
@@ -227,9 +226,9 @@ void render(Shader lightShader)
 	//glm::vec3 pos_camera_mobile(x, 10.0f, z + 5.0);
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 5.0f);
 
-
-	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0);
-	glm::vec3 at_camera_mobile(x, 0.0f, z );
+	////corretta
+	//glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0);
+	//glm::vec3 at_camera_mobile(x, 0.0f, z );
 
 	////dal basso
 	//glm::vec3 pos_camera_mobile(x, 12.0f, z + 3.0);
@@ -240,16 +239,13 @@ void render(Shader lightShader)
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
 	//dall alto
-	/*glm::vec3 pos_camera_mobile(x, 30.0f, z);
-	glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);*/
+	glm::vec3 pos_camera_mobile(x, 60.0f, z);
+	glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
 
 	////prima persona
 	//glm::vec3 pos_camera_mobile(x, 0.8f, z);
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
-	////fissa dall'alto
-	//glm::vec3 pos_camera_mobile(0.0f, 20.0f, 0.0f);
-	//glm::vec3 at_camera_mobile(0.0f, 0.0f, -1.0f);
 
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::lookAt(pos_camera_mobile, at_camera_mobile, up);
@@ -334,6 +330,7 @@ int main()
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
+	//gameuno->getGameMap()->texturePrato = loadtexture("texture/unibas.jpg");
 	gameuno->getPlayer()->texturePlayer = loadtexture("texture/target.png");
 
 

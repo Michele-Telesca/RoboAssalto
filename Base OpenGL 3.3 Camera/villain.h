@@ -74,8 +74,8 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 		for (int j = 0; j < DIM; j++) {
 			if (path_Matrix[i][j] == 1) {
 				//conversione coordinate matrice -> game
-				int coord_x = j - 10;
-				int coord_z = i - 9;
+				int coord_x = j - 20;
+				int coord_z = i - 19;
 
 				x = coord_x;
 				z = coord_z;
@@ -116,7 +116,6 @@ void villain::drawVillain(Shader myShader){
 	villain_model->Draw(myShader);
 
 }
-
 
 void villain::move() {
 	float epsilon = 0.1f;

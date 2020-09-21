@@ -85,6 +85,12 @@ public:
 		botList.push_back(bot);
 	}
 
+	void spawn_botPath4() {
+		villain* bot = new villain();
+		bot->initVillain(path4_Matrix);
+		botList.push_back(bot);
+	}
+
 };
 
 void game::inizializza() {
