@@ -2,7 +2,7 @@
 
 //GAME SETTINGS
 float RENDER_SPEED = 0.03f; //Più è alto e più rallenta; più è basso e più velocizza
-const int DIM = 20; //Dimensione floor 20x20
+const int DIM = 40; //Dimensione floor 20x20
 float TILE_DIM = 1.0; //Dimensione singola mattonella
 float MOVE_STEP = TILE_DIM / 8; // = 0.125f; //Incremento dello spostamento del player
 
