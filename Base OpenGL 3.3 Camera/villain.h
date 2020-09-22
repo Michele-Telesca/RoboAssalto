@@ -7,6 +7,9 @@
 #include "globalPathData.h"
 #include "utility.h"
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h> 
 
 class villain {
 
@@ -86,16 +89,17 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 	//vita iniziale
 	life = 100;
 
-	path_currentStep = 1;
-
-	//caricamento modello
+	//caricamento modello villain
 	villain_model = new Model();
 	villain_model->loadModel("models/bot/boty.DAE");
 	
-	//Creo ed inizializzo il path del villain
+	//creo ed inizializzo il path del villain
 	percorso = new path(); 
 	percorso->inizializzaPath(path_Matrix);
 
+	//setto lo step corrente (relativo al path) del villain
+	path_currentStep = 1;
+	
 }
 
 
@@ -117,49 +121,39 @@ void villain::drawVillain(Shader myShader){
 
 }
 
+//metodo con map
 void villain::move() {
+
 	float epsilon = 0.1f;
+	int path_nextStep = path_currentStep + 1;
+		
+	if (path_nextStep > path_currentStep) {
+		float newCoord_x = percorso->getPath_map()[path_nextStep].x;
+		float newCoord_z = percorso->getPath_map()[path_nextStep].y; //coordinata z
+		if (isEqual(z, newCoord_z, epsilon)) {
+			if (newCoord_x > x) { //muovi a destra
+				x = x + BOT_MOVE_STEP;
 
-	//ciclo la lista di coordinate del path 
-	for (int i = 0; i < percorso->getPath_list().size(); i++) {
-
-		//se il path_currentStep è compreso tra lo step precedente e quello successivo (nuove coordinate da raggiungere)
-		//if (percorso->getPath_list()[i].w > path_currentStep && percorso->getPath_list()[i].w <= path_currentStep + 1.0f) {
-		//if (floor(percorso->getPath_list()[i].w) == path_currentStep + 1.0f){
-		if(isEqual(floor(percorso->getPath_list()[i].w), path_currentStep + 1.0f, epsilon)) {
-
-			float newCoord_x = percorso->getPath_list()[i].x;
-			float newCoord_z = percorso->getPath_list()[i].z;
-			if (isEqual(z,newCoord_z, epsilon)) {
-				if (newCoord_x > x) { //muovi a destra
-					x = x + BOT_MOVE_STEP;
-				}
-				if (newCoord_x < x) { //muovi a sinistra
-					x = x - BOT_MOVE_STEP;
-				}
+			} else if (newCoord_x < x) { //muovi a sinistra
+				x = x - BOT_MOVE_STEP;
 			}
-			else if (isEqual(x, newCoord_x, epsilon)) {
-				if (newCoord_z > z) { //muovi in basso
-					z = z + BOT_MOVE_STEP;
-				}
-				if (newCoord_z < z) { //muovi in alto
-					z = z - BOT_MOVE_STEP;
-				}
-			}
-
-			//if (x == newCoord_x && z == newCoord_z) { //se il bot ha raggiungo la nuova coordinata
-			//if ((x <= newCoord_x && x > newCoord_x - 0.1f) && (z <= newCoord_z && z > newCoord_z - 0.1f)) { //se il bot ha raggiungo la nuova coordinata
-			if (isEqual(x, newCoord_x, epsilon) && isEqual(z, newCoord_z, epsilon)) {
-				path_currentStep++; //incremento lo step a quello successivo
-			}
-			break;
 		}
+		else if (isEqual(x, newCoord_x, epsilon)) {
+			if (newCoord_z > z) { //muovi in basso
+				z = z + BOT_MOVE_STEP;
+
+			} else if (newCoord_z < z) { //muovi in alto
+				z = z - BOT_MOVE_STEP;
+			}
+		}
+
+		//Se le coordinate del bot (path_currentStep) hanno raggunto le coordinate desiderate (path_nextStep)
+		if (isEqual(x, newCoord_x, epsilon) && isEqual(z, newCoord_z, epsilon)) {
+				path_currentStep++;  
+		}
+
 	}
 
-	//se è arrivato a fine corsa -> RICOMINCIA
-	if (path_currentStep == percorso->getPath_EndPath()) {
-		path_currentStep = 1;
-	}
 }
 
 void villain::animate() {

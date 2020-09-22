@@ -17,17 +17,18 @@ public:
 	//costruttore
 	path() {}
 
-	int path_Matrix[DIM][DIM];
-	vector <glm::vec4> path_list;
-	int path_EndPath;
+	//proprietà
+	map <int, glm::vec2> path_map; //mappa per gestire il path del bot -> Viene inizializzata scansionando la matrice
+								   //la chiave è un intero che rappresenta lo step del path, a cui corrispondono le rispettive coordinate x,z (vec2) 
+	int path_EndPath; //il valore dell'ultimo step del path
 
 	//prototipi
 	void inizializzaPath(int path_M[DIM][DIM]);
 
 	//GET e SET
-	vector <glm::vec4> getPath_list() {
-		return path_list;
-	}
+	map <int, glm::vec2> getPath_map() {
+		return path_map;
+	} 
 
 	int getPath_EndPath() {
 		return path_EndPath;
@@ -53,29 +54,38 @@ void path::inizializzaPath(int path_M[DIM][DIM]) {
 	else if (path_M == path4_Matrix) {
 		path_EndPath = PATH4_ENDPATH;
 	}
-
-	//inizializzo la MATRICE
-	for (int i = 0; i < DIM; i++) {
-		for (int j = 0; j < DIM; j++) {
-			path_Matrix[i][j] = path_M[i][j];
-		}
+	else if (path_M == path5_Matrix) {
+		path_EndPath = PATH5_ENDPATH;
+	}
+	else if (path_M == path6_Matrix) {
+		path_EndPath = PATH6_ENDPATH;
+	}
+	else if (path_M == path7_Matrix) {
+		path_EndPath = PATH7_ENDPATH;
+	}
+	else if (path_M == path8_Matrix) {
+		path_EndPath = PATH8_ENDPATH;
+	}
+	else if (path_M == path9_Matrix) {
+		path_EndPath = PATH9_ENDPATH;
+	}
+	else if (path_M == path10_Matrix) {
+		path_EndPath = PATH10_ENDPATH;
 	}
 
-	//INIZIALIZZO LA LISTA CON LE COORDINATE
-	int step = 0;
+	//INIZIALIZZO LA MAPPA CON LE COORDINATE
 	for (int i = 0; i < DIM; i++) { //z
 		for (int j = 0; j < DIM; j++) { //x
-			if (path_Matrix[i][j] != 1 && path_Matrix[i][j] != 0 && path_Matrix[i][j] != -1) {
-				int index = path_Matrix[i][j];
-
+			if (path_M[i][j] != 1 && path_M[i][j] != 0 && path_M[i][j] != -1) {
+				int step = path_M[i][j];
 				//conversione coordinate matrice -> game
 				int coord_x = j - 20;
 				int coord_z = i - 19;
-
-				glm::vec4 coord_bot_iesima(coord_x, 0.5f, coord_z, index);
-				path_list.push_back(coord_bot_iesima);
+				glm::vec2 coord_bot_iesima(coord_x, coord_z);
+				path_map[step] = coord_bot_iesima;
 			}
 		}
 	}
 
 }
+

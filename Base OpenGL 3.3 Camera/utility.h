@@ -1,5 +1,4 @@
 #pragma once
-#include <stdlib.h>
 
 class utility
 {
@@ -14,4 +13,5 @@ bool isEqual(float a, float b, float epsilon)
 {
 	return fabs(a - b) < epsilon;
 }
+
 
