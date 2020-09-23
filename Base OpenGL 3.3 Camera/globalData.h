@@ -27,4 +27,5 @@ const int TREE4 = 11;
 const int TREE5 = 12;
 const int BUSH1 = 13;
 const int BUSH2 = 14;
+const int CHEST = 15;
 

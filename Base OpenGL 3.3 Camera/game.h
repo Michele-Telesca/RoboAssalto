@@ -6,6 +6,7 @@
 #include "shader_m.h"
 #include "villain.h"
 #include "globalPathData.h"
+#include "path.h"
 #include <vector>
 
 
@@ -19,7 +20,6 @@ private:
 	player* p;
 	vector <villain*> botList;
 
-
 	glm::vec3 mousePoint;
 
 public:
@@ -28,11 +28,11 @@ public:
 	game() {
 		map = new gameMap();
 		p = new player();
-		//bot_path1 = new villain();
 	};
 
 	void inizializza();
 	void draw(Shader lightShader);
+	void spawn_BOT(int path_Matrix[DIM][DIM]);
 	void moveAllBots();
 
 
@@ -67,37 +67,21 @@ public:
 		p = player;
 	}
 
-	void spawn_botPath1() {
-		villain* bot = new villain();
-		bot->initVillain(path1_Matrix);
-		botList.push_back(bot);
-	}
-
-	void spawn_botPath2() {
-		villain* bot = new villain();
-		bot->initVillain(path2_Matrix);
-		botList.push_back(bot);
-	}
-
-	void spawn_botPath3() {
-		villain* bot = new villain();
-		bot->initVillain(path3_Matrix);
-		botList.push_back(bot);
-	}
-
-	void spawn_botPath4() {
-		villain* bot = new villain();
-		bot->initVillain(path4_Matrix);
-		botList.push_back(bot);
-	}
-
 };
+
+void game::spawn_BOT(int path_Matrix[DIM][DIM]) {
+	villain* bot = new villain();
+	bot->initVillain(path_Matrix);
+	botList.push_back(bot);
+}
 
 void game::inizializza() {
 
+	//inizializza player
 	p->initPlayer();
-	map->initMap();
 
+	//inizializza mappa
+	map->initMap();
 }
 
 void game::draw(Shader lightShader) {

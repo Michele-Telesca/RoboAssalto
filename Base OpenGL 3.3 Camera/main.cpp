@@ -35,8 +35,6 @@ float timebase = 0;
 double currentTime = 0.0f;
 double previousTime = glfwGetTime();
 
-//
-//int bot_timer = 0;
 bool spawnBot = true;
 
 //movimenti
@@ -55,13 +53,10 @@ const unsigned int SCR_HEIGHT = 1080;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-// vettori per la direzione della camera
-glm::vec3 pos(0.0f, 20.0f, 25.0f);
-glm::vec3 at(0.0f, 0.0f, -5.0f);
-glm::vec3 up(0.0, 1.0, 0.0);		// Vettore up...la camera è sempre parallela al piano
+//vettore up della camera
+glm::vec3 up(0.0, 1.0, 0.0);
 
-glm::vec3 dir(0.0, 0.0, -0.1);		// Direzione dello sguardo
-glm::vec3 side(1.0, 0.0, 0.0);		// Direzione spostamento laterale
+//posizione luce
 glm::vec3 lightPos(0.0f, 80.0f, 0.0f);
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
@@ -127,6 +122,7 @@ void ray_plane(glm::vec3 plane_normal_word, glm::vec3 plane_pos_word, glm::vec3 
 	}
 
 }
+
 void mouse_position() {
 
 	POINT cp;
@@ -181,6 +177,7 @@ void render(Shader lightShader)
 	double timeInterval = currentTime - previousTime;
 	if (timeInterval >= RENDER_SPEED) {
 
+		// ------- PLAYER MOVES ------- //
 		if (muoviDx) {
 			gameuno->getPlayer()->moveDx();
 		}
@@ -203,22 +200,31 @@ void render(Shader lightShader)
 			gameuno->getPlayer()->mouseSxIsSelected = false;
 		}
 
+		// ------- MOUSE ------- //
 		mouse_position();
 
+		// ------- BOT ------- //
 		if (spawnBot == true) {
-			gameuno->spawn_botPath1();
-			gameuno->spawn_botPath2();
-			gameuno->spawn_botPath3();
-			gameuno->spawn_botPath4();
+			gameuno->spawn_BOT(path1_Matrix);
+			gameuno->spawn_BOT(path2_Matrix);
+			gameuno->spawn_BOT(path3_Matrix);
+			gameuno->spawn_BOT(path4_Matrix);
+			gameuno->spawn_BOT(path5_Matrix);
+			gameuno->spawn_BOT(path6_Matrix);
+			gameuno->spawn_BOT(path7_Matrix);
+			gameuno->spawn_BOT(path8_Matrix);
+			gameuno->spawn_BOT(path9_Matrix);
+			gameuno->spawn_BOT(path10_Matrix);
+
 			spawnBot = false;
 		}
-	
 		gameuno->moveAllBots();
 
+		
 		previousTime = currentTime;
 	}
 
-	//camera
+	// ------- CAMERA ------- //
 	float x = gameuno->getPlayer()->getX();
 	float z = gameuno->getPlayer()->getZ();
 
@@ -246,13 +252,13 @@ void render(Shader lightShader)
 	//glm::vec3 pos_camera_mobile(x, 0.8f, z);
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
-
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::lookAt(pos_camera_mobile, at_camera_mobile, up);
 	pos_camera_mobile_global = pos_camera_mobile;
 	view_global = view;
 	lightShader.setMat4("view", view);
 
+	// ------- DRAW ------- //
 	gameuno->draw(lightShader);
 
 }
@@ -363,7 +369,7 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 
-	glEnable(GL_DEPTH);
+	//glEnable(GL_DEPTH);
 
 	//dichiarazione degli shader
 	Shader myShader("vertex_shader.vs", "fragment_shader.fs");
