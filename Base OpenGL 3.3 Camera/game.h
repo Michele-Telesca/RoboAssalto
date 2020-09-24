@@ -1,5 +1,4 @@
 #pragma once
-#include "cube.h"
 #include "gameMap.h"
 #include "player.h";
 #include "shader_s.h"
@@ -101,12 +100,11 @@ void game::draw(Shader lightShader) {
 
 }
 
-void game::moveAllBots() {
-	if (botList.size() >= 1) {
-		for (int i = 0; i < botList.size(); i++) {
-			botList[i]->move();
-		}
-	}
-
-}
+//void game::moveAllBots() {
+//	if (botList.size() >= 1) {
+//		for (int i = 0; i < botList.size(); i++) {
+//			botList[i]->move(p->getX(), p->getZ());
+//		}
+//	}
+//}
 

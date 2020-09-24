@@ -1,15 +1,7 @@
 #pragma once
-#include "point3D.h"
-#include "weapon.h"
 #include "model.h"
-#include "globalData.h"
+#include "weapon.h"
 #include "path.h"
-#include "globalPathData.h"
-#include "utility.h"
-#include <vector>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h> 
 
 class villain {
 
@@ -35,12 +27,12 @@ public:
 
 	weapon* weapon; //per avere la gittata del villain
 	path* percorso;
+	player* p;
 
 	//Prototipi
 	void drawVillain(Shader myShader);			 //disegna il player
 	void animate();								 //animazione del player
 	void initVillain(int path_Matrix[DIM][DIM]); //inializza il villain
-	void move();		
 
 	//GET e SET
 	float getX() {
@@ -55,6 +47,14 @@ public:
 		return z;
 	}
 
+	float getPath_currentStep() {
+		return path_currentStep;
+	}
+
+	path* getPath() {
+		return percorso;
+	}
+
 	void setX(float posx) {
 		x = posx;
 	}
@@ -65,6 +65,10 @@ public:
 
 	void setZ(float posz) {
 		z = posz;
+	}
+
+	void setPath_currentStep(float valore) {
+		path_currentStep = valore;
 	}
 
 
@@ -118,41 +122,6 @@ void villain::drawVillain(Shader myShader){
 	myShader.setMat4("model", model);
 
 	villain_model->Draw(myShader);
-
-}
-
-//metodo con map
-void villain::move() {
-
-	float epsilon = 0.1f;
-	int path_nextStep = path_currentStep + 1;
-		
-	if (path_nextStep > path_currentStep) {
-		float newCoord_x = percorso->getPath_map()[path_nextStep].x;
-		float newCoord_z = percorso->getPath_map()[path_nextStep].y; //coordinata z
-		if (isEqual(z, newCoord_z, epsilon)) {
-			if (newCoord_x > x) { //muovi a destra
-				x = x + BOT_MOVE_STEP;
-
-			} else if (newCoord_x < x) { //muovi a sinistra
-				x = x - BOT_MOVE_STEP;
-			}
-		}
-		else if (isEqual(x, newCoord_x, epsilon)) {
-			if (newCoord_z > z) { //muovi in basso
-				z = z + BOT_MOVE_STEP;
-
-			} else if (newCoord_z < z) { //muovi in alto
-				z = z - BOT_MOVE_STEP;
-			}
-		}
-
-		//Se le coordinate del bot (path_currentStep) hanno raggunto le coordinate desiderate (path_nextStep)
-		if (isEqual(x, newCoord_x, epsilon) && isEqual(z, newCoord_z, epsilon)) {
-				path_currentStep++;  
-		}
-
-	}
 
 }
 

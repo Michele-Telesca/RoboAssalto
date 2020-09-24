@@ -1,36 +1,57 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Base OpenGL 3.3 Camera.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  glad.c
   main.cpp
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\shader_s.h(56,35): warning C4101: 'e': variabile locale senza riferimenti
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\mesh.h(84,1): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(76,47): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(76,38): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(82,47): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(82,38): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(88,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(88,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(94,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(94,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(100,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(100,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(106,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(106,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(112,47): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(112,38): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(118,47): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(118,38): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(124,47): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(124,38): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(130,47): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(130,38): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(136,47): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\gameMap.h(136,38): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\game.h(4,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\player.h(140,4): warning C4551: chiamata di funzione senza elenco di argomenti
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\player.h(159,4): warning C4551: chiamata di funzione senza elenco di argomenti
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\player.h(178,4): warning C4551: chiamata di funzione senza elenco di argomenti
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\player.h(197,4): warning C4551: chiamata di funzione senza elenco di argomenti
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\main.cpp(138,10): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-D:\Desktop\RoboAssalto04\Base OpenGL 3.3 Camera\main.cpp(139,10): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-  LINK : D:\Desktop\RoboAssalto04\x64\Debug\RoboAssalto.exe non trovato o non compilato dall'ultimo collegamento incrementale; verrà eseguito il collegamento completo
-  Base OpenGL 3.3 Camera.vcxproj -> D:\Desktop\RoboAssalto04\x64\Debug\RoboAssalto.exe
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\shader_s.h(56,35): warning C4101: 'e': variabile locale senza riferimenti
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\mesh.h(84,1): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(103,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(103,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(109,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(109,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(115,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(115,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(121,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(121,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(127,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(127,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(133,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(133,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(139,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(139,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(145,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(145,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(151,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(151,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(157,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(157,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(163,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(163,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(169,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(169,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(175,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(175,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(181,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(181,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(187,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\gameMap.h(187,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\game.h(4,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(46,31): error C2061: errore di sintassi: identificatore 'player'
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(47,18): error C2061: errore di sintassi: identificatore 'player'
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(88,9): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(89,9): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(129,33): error C2065: 'player': identificatore non dichiarato
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(129,41): error C2065: 'pl': identificatore non dichiarato
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(129,43): error C2761: 'bool villain::collideWithPlayer(void)': non è consentito dichiarare di nuovo il membro
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(129,45): error C2448: 'villain::collideWithPlayer': l'inizializzatore di tipo funzione sembra essere una definizione di funzione
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(138,20): error C2065: 'player': identificatore non dichiarato
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(138,28): error C2065: 'pl': identificatore non dichiarato
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(138,30): error C2761: 'void villain::move(void)': non è consentito dichiarare di nuovo il membro
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(138,32): error C2448: 'villain::move': l'inizializzatore di tipo funzione sembra essere una definizione di funzione
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\player.h(131,26): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\player.h(139,4): warning C4551: chiamata di funzione senza elenco di argomenti
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\player.h(151,23): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\player.h(158,4): warning C4551: chiamata di funzione senza elenco di argomenti
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\player.h(170,23): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\player.h(177,4): warning C4551: chiamata di funzione senza elenco di argomenti
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\player.h(189,23): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\player.h(196,4): warning C4551: chiamata di funzione senza elenco di argomenti
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\game.h(107,22): error C2660: 'villain::move': la funzione non accetta 1 argomenti
+D:\Desktop\RoboAssalto06\Base OpenGL 3.3 Camera\villain.h(47,7): message : vedere la dichiarazione di 'villain::move'

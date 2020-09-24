@@ -16,16 +16,20 @@
 
 #include <gl/glu.h>
 
+#include "update.h"
 #include "model.h"
 #include "game.h"
 #include "gameMap.h"
 #include "cube.h"
 #include "update.h"
 #include "villain.h"
+#include "player.h"
+#include "playerShot.h"
 #include "globalPathData.h"
 
 // dichiarazione oggetti
 game* gameuno = new game();
+update* update_game = new update();
 
 glm::vec3 pos_camera_mobile_global(1.0f);
 glm::mat4 view_global(1.0f);
@@ -177,21 +181,24 @@ void render(Shader lightShader)
 	double timeInterval = currentTime - previousTime;
 	if (timeInterval >= RENDER_SPEED) {
 
+		player* player = gameuno->getPlayer();
+		vector <villain*> botList = gameuno->getBotList();
+
 		// ------- PLAYER MOVES ------- //
 		if (muoviDx) {
-			gameuno->getPlayer()->moveDx();
+			update_game->moveRight(player, botList);
 		}
 
 		if (muoviSx) {
-			gameuno->getPlayer()->moveSx();
+			update_game->moveLeft(player, botList);
 		}
 
 		if (muoviSu) {
-			gameuno->getPlayer()->moveUp();
+			update_game->moveUp(player, botList);
 		}
 
 		if (muoviGiu) {
-			gameuno->getPlayer()->moveDown();
+			update_game->moveDown(player, botList);
 		}
 		if (mouseSx) {
 			gameuno->getPlayer()->mouseSxIsSelected = true;
@@ -206,19 +213,20 @@ void render(Shader lightShader)
 		// ------- BOT ------- //
 		if (spawnBot == true) {
 			gameuno->spawn_BOT(path1_Matrix);
-			gameuno->spawn_BOT(path2_Matrix);
-			gameuno->spawn_BOT(path3_Matrix);
-			gameuno->spawn_BOT(path4_Matrix);
-			gameuno->spawn_BOT(path5_Matrix);
-			gameuno->spawn_BOT(path6_Matrix);
-			gameuno->spawn_BOT(path7_Matrix);
-			gameuno->spawn_BOT(path8_Matrix);
-			gameuno->spawn_BOT(path9_Matrix);
-			gameuno->spawn_BOT(path10_Matrix);
+			//gameuno->spawn_BOT(path2_Matrix);
+			//gameuno->spawn_BOT(path3_Matrix);
+			//gameuno->spawn_BOT(path4_Matrix);
+			//gameuno->spawn_BOT(path5_Matrix);
+			//gameuno->spawn_BOT(path6_Matrix);
+			//gameuno->spawn_BOT(path7_Matrix);
+			//gameuno->spawn_BOT(path8_Matrix);
+			//gameuno->spawn_BOT(path9_Matrix);
+			//gameuno->spawn_BOT(path10_Matrix);
 
 			spawnBot = false;
 		}
-		gameuno->moveAllBots();
+		
+		update_game->moveAllBots(botList, player);
 
 		
 		previousTime = currentTime;
@@ -232,9 +240,9 @@ void render(Shader lightShader)
 	//glm::vec3 pos_camera_mobile(x, 10.0f, z + 5.0);
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 5.0f);
 
-	////corretta
-	//glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0);
-	//glm::vec3 at_camera_mobile(x, 0.0f, z );
+	//corretta
+	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0);
+	glm::vec3 at_camera_mobile(x, 0.0f, z );
 
 	////dal basso
 	//glm::vec3 pos_camera_mobile(x, 12.0f, z + 3.0);
@@ -244,9 +252,9 @@ void render(Shader lightShader)
 	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
-	//dall alto
-	glm::vec3 pos_camera_mobile(x, 60.0f, z);
-	glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
+	////dall alto
+	//glm::vec3 pos_camera_mobile(x, 60.0f, z);
+	//glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
 
 	////prima persona
 	//glm::vec3 pos_camera_mobile(x, 0.8f, z);

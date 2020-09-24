@@ -1,9 +1,8 @@
 #pragma once
-#include "point3D.h"
-#include "weapon.h"
 #include "model.h"
-#include "gameMap.h"
-#include "globalData.h"
+#include "weapon.h"
+//#include "villain.h"
+
 
 class player {
 
@@ -29,20 +28,17 @@ public:
 	Model* player_model;
 
 	weapon* wea = new weapon(3.0f, 90.0f, 2.0f); //arma posseduta al momento
-
-	void drawPlayer(Shader myShader, glm::vec3 mousePoint); //disegna il player
-	void animate(); //animazione del player
-	void initPlayer(); //inizializza il player
-
-	//movimenti
-	void moveDx();
-	void moveSx();
-	void moveUp();
-	void moveDown();
+	
 	bool mouseSxIsSelected = false;
 
 	unsigned int texturePlayer;
 
+	//prototipi
+	void drawPlayer(Shader myShader, glm::vec3 mousePoint); //disegna il player
+	void animate(); //animazione del player
+	void initPlayer(); //inizializza il player
+
+	//get e set
 	float getX() {
 		return x;
 	}
@@ -53,6 +49,18 @@ public:
 
 	float getZ() {
 		return z;
+	}
+
+	void setX(float new_x) {
+		x = new_x;
+	}
+
+	void setY(float new_y) {
+		y = new_y;
+	}
+
+	void setZ(float new_z) {
+		z = new_z;
 	}
 
 };
@@ -124,81 +132,4 @@ void player::drawPlayer(Shader lightShader, glm::vec3 mousePoint) {
 
 void player::animate() {
 
-}
-
-void player::moveDx() {
-    float epsilon = 0.001;
-
-	bool ostacolo = false;
-	for (int i = 0; i < mapObjectsCoord.size(); i++) {
-		float x_obj = (float)mapObjectsCoord[i].x;
-		float z_obj = (float)mapObjectsCoord[i].y;
-		if (isEqual(x, x_obj - (TILE_DIM / 2 + MOVE_STEP), EPSILON_1) && (z >= z_obj - TILE_DIM / 2 && z <= z_obj + TILE_DIM / 2)) {
-			ostacolo = true;
-			exit;
-		}
-	}
-	if (ostacolo == true) {
-		x = x;
-	}
-	else {
-		x = x + MOVE_STEP;
-	}
-}
-
-void player::moveSx() {
-	float epsilon = 0.001;
-	bool ostacolo = false;
-	for (int i = 0; i < mapObjectsCoord.size(); i++) {
-		float x_obj = (float)mapObjectsCoord[i].x;
-		float z_obj = (float)mapObjectsCoord[i].y;
-		if (isEqual(x, x_obj + (TILE_DIM / 2 + MOVE_STEP), EPSILON_1) && (z >= z_obj - TILE_DIM / 2 && z <= z_obj + TILE_DIM / 2)) {
-			ostacolo = true;
-			exit;
-		}
-	}
-	if (ostacolo == true) {
-		x = x;
-	}
-	else {
-		x = x - MOVE_STEP;
-	}
-}
-
-void player::moveUp() {
-	float epsilon = 0.001;
-	bool ostacolo = false;
-	for (int i = 0; i < mapObjectsCoord.size(); i++) {
-		float x_obj = mapObjectsCoord[i].x;
-		float z_obj = mapObjectsCoord[i].y;
-		if ((x >= x_obj - TILE_DIM / 2 && x <= x_obj + TILE_DIM / 2) && isEqual(z, z_obj + (TILE_DIM / 2 + MOVE_STEP), EPSILON_1)) {
-			ostacolo = true;
-			exit;
-		}
-	}
-	if (ostacolo == true) {
-		z = z;
-	}
-	else {
-		z = z - MOVE_STEP;
-	}
-}
-
-void player::moveDown() {
-	float epsilon = 0.001;
-	bool ostacolo = false;
-	for (int i = 0; i < mapObjectsCoord.size(); i++) {
-		float x_obj = mapObjectsCoord[i].x;
-		float z_obj = mapObjectsCoord[i].y;
-		if ((x >= x_obj - TILE_DIM / 2 && x <= x_obj + TILE_DIM / 2) && isEqual(z, z_obj - (TILE_DIM / 2 + MOVE_STEP), EPSILON_1)) {
-			ostacolo = true;
-			exit;
-		}
-	}
-	if (ostacolo == true) {
-		z = z;
-	}
-	else {
-		z = z + MOVE_STEP;
-	}
 }

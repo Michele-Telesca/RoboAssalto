@@ -83,6 +83,8 @@ void path::inizializzaPath(int path_M[DIM][DIM]) {
 				int coord_z = i - 19;
 				glm::vec2 coord_bot_iesima(coord_x, coord_z);
 				path_map[step] = coord_bot_iesima;
+				cout << path_map[step].x << ", " << path_map[step].y << "; step numero: " << step << endl;
+
 			}
 		}
 	}
