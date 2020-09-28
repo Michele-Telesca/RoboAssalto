@@ -1,6 +1,7 @@
 #pragma once
 #include "point3D.h"
 #include "weapon.h"
+#include "globalData.h"
 
 class weapon {
 
@@ -14,7 +15,7 @@ public:
 	float lengthBase;
 	float angleRange; //apertura della mira
 
-	void drawTarget(Shader myShader, float x, float y, float z, int texturePlayer, float angle); //disegna la mira... avrà bisogno della posizione del player e dalla direzione
+	void drawTarget(Shader myShader, glm::mat4 view, float x, float y, float z, int texturePlayer, float angle); //disegna la mira... avrà bisogno della posizione del player e dalla direzione
 
 	bool isShotArea(); //controlla se ci troviamo all'interno dell'area di mira
 	void initWeapon();
@@ -30,7 +31,9 @@ void weapon::initWeapon() {
 
 }
 
-void weapon::drawTarget(Shader lightShader, float x, float y, float z, int texturePlayer, float angle) {
+void weapon::drawTarget(Shader lightShader, glm::mat4 view, float x, float y, float z, int texturePlayer, float angle) {
+
+	lightShader.use();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texturePlayer);
@@ -45,8 +48,6 @@ void weapon::drawTarget(Shader lightShader, float x, float y, float z, int textu
 	modelW = glm::rotate(modelW, angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	modelW = glm::translate(modelW, glm::vec3(0.0f, 0.0f, 0.0f));
 	modelW = glm::scale(modelW, glm::vec3(lengthBase, 0.01f, lengthRange));
-
-	//cout << "*** weapon (X,Z): (" << x << ", " << z << ")" << endl;
 
 	lightShader.setMat4("model", modelW);
 	glDrawArrays(GL_TRIANGLES, 0, 36);

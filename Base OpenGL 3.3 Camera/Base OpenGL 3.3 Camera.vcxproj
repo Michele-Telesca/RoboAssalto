@@ -156,11 +156,15 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="skinned_mesh.cpp" />
+    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="fragment_anim.fs" />
     <None Include="fragment_shader.fs" />
     <None Include="fragment_shader_lights.fs" />
     <None Include="packages.config" />
+    <None Include="vertex_anim.vs" />
     <None Include="vertex_shader.vs" />
     <None Include="vertex_shader_lights.vs" />
   </ItemGroup>
@@ -177,6 +181,8 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="point3D.h" />
     <ClInclude Include="shader_m.h" />
     <ClInclude Include="mapObject.h" />
+    <ClInclude Include="skinned_mesh.h" />
+    <ClInclude Include="texture.h" />
     <ClInclude Include="update.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="villainShot.h" />

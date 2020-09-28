@@ -14,6 +14,7 @@
 #include "camera.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include <vector> 
+#include "globalData.h"
 
 unsigned int cubeVBO, cubeVAO;
 
@@ -120,21 +121,24 @@ public:
 	}
 
 
-	void drawCube(Shader shader) {
+	void drawCube(Shader lightShader, unsigned int texture) {
 
-		// material properties
-		shader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
-		shader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-		shader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
-		shader.setFloat("material.shininess", 76.8f);
+		lightShader.use();
+
+		// texture
+		lightShader.setInt("myTexture1", 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glBindVertexArray(cubeVAO);
 
 		glm::mat4 model = glm::mat4(1.0f);	//identity matrix
 		model = glm::translate(model, glm::vec3(posizione_x, posizione_y, posizione_z));
 		model = glm::rotate(model, angle, glm::vec3(rotation_x, rotation_y, rotation_z));
 		model = glm::scale(model, glm::vec3(dimensione, dimensione, dimensione));
-		shader.setMat4("model", model);
+		lightShader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 

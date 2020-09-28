@@ -30,10 +30,8 @@ public:
 	};
 
 	void inizializza();
-	void draw(Shader lightShader);
+	void draw(Shader lightShader, Shader animShader, glm::mat4 view);
 	void spawn_BOT(int path_Matrix[DIM][DIM]);
-	void moveAllBots();
-
 
 	glm::vec3 getMousePoint() {
 		return mousePoint;
@@ -83,11 +81,11 @@ void game::inizializza() {
 	map->initMap();
 }
 
-void game::draw(Shader lightShader) {
+void game::draw(Shader lightShader, Shader animShader, glm::mat4 view) {
 
 	//DRAW PLAYER
-	p->drawPlayer(lightShader, getMousePoint()); 
-	
+	p->drawPlayer(animShader, lightShader, view, getMousePoint());
+
 	//DRAW MAP
 	map->drawMap(lightShader);
 
@@ -100,11 +98,4 @@ void game::draw(Shader lightShader) {
 
 }
 
-//void game::moveAllBots() {
-//	if (botList.size() >= 1) {
-//		for (int i = 0; i < botList.size(); i++) {
-//			botList[i]->move(p->getX(), p->getZ());
-//		}
-//	}
-//}
 

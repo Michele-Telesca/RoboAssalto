@@ -1,3 +1,5 @@
+#include "skinned_mesh.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -25,7 +27,9 @@
 #include "villain.h"
 #include "player.h"
 #include "playerShot.h"
+#include "globalData.h"
 #include "globalPathData.h"
+
 
 // dichiarazione oggetti
 game* gameuno = new game();
@@ -41,17 +45,6 @@ double previousTime = glfwGetTime();
 
 bool spawnBot = true;
 
-//movimenti
-bool muoviDx = false;
-bool muoviSx = false;
-bool muoviSu = false;
-bool muoviGiu = false;
-bool mouseSx = false;
-
-
-// settings
-const unsigned int SCR_WIDTH = 1920;
-const unsigned int SCR_HEIGHT = 1080;
 
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
@@ -60,8 +53,6 @@ float lastFrame = 0.0f;
 //vettore up della camera
 glm::vec3 up(0.0, 1.0, 0.0);
 
-//posizione luce
-glm::vec3 lightPos(0.0f, 80.0f, 0.0f);
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow* window)
@@ -157,9 +148,7 @@ void mouse_position() {
 	glm::vec3 plane_pos_word(-0.75f, 1.0f, 0.75f);
 	ray_plane(plane_normal_word, plane_pos_word, ray_word, pos_camera_mobile_global, DIM);
 
-
 }
-
 
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -172,10 +161,27 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
-void render(Shader lightShader)
+void render(Shader lightShader, Shader animShader)
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//projection
+	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
+	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	lightShader.setMat4("projection", projection);
+
+	//light properties
+	lightShader.setVec3("light.position", lightPos);
+	lightShader.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
+	lightShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+	lightShader.setVec3("light.specular", 0.5f, 0.5f, 0.5f);
+
+	//material properties
+	lightShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	lightShader.setFloat("material.shininess", 76.8f);
 
 	currentTime = glfwGetTime();
 	double timeInterval = currentTime - previousTime;
@@ -222,13 +228,13 @@ void render(Shader lightShader)
 			//gameuno->spawn_BOT(path8_Matrix);
 			//gameuno->spawn_BOT(path9_Matrix);
 			//gameuno->spawn_BOT(path10_Matrix);
-
 			spawnBot = false;
 		}
 		
 		update_game->moveAllBots(botList, player);
 
-		
+		animationTime = animationTime + 0.1f; //più è basso l'incremento e più saranno lente le animazioni
+
 		previousTime = currentTime;
 	}
 
@@ -260,6 +266,7 @@ void render(Shader lightShader)
 	//glm::vec3 pos_camera_mobile(x, 0.8f, z);
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
+	//view
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::lookAt(pos_camera_mobile, at_camera_mobile, up);
 	pos_camera_mobile_global = pos_camera_mobile;
@@ -267,7 +274,8 @@ void render(Shader lightShader)
 	lightShader.setMat4("view", view);
 
 	// ------- DRAW ------- //
-	gameuno->draw(lightShader);
+
+	gameuno->draw(lightShader, animShader, view);
 
 }
 
@@ -344,7 +352,6 @@ int main()
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
-	//gameuno->getGameMap()->texturePrato = loadtexture("texture/unibas.jpg");
 	gameuno->getPlayer()->texturePlayer = loadtexture("texture/target.png");
 
 
@@ -382,21 +389,7 @@ int main()
 	//dichiarazione degli shader
 	Shader myShader("vertex_shader.vs", "fragment_shader.fs");
 	Shader lightShader("vertex_shader_lights.vs", "fragment_shader_lights.fs");
-	lightShader.use();
-
-	//projection
-	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
-	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	lightShader.setMat4("projection", projection);
-
-	// ??
-	//lightShader.setVec3("viewPos", camera.Position);
-
-	// light properties
-	lightShader.setVec3("light.position", lightPos);
-	lightShader.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
-	lightShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-	lightShader.setVec3("light.specular", 0.5f, 0.5f, 0.5f);
+	Shader animationShader("vertex_anim.vs", "fragment_anim.fs");
 
 	init();
 
@@ -406,7 +399,7 @@ int main()
 		// input
 		processInput(window);
 
-		render(lightShader);
+		render(lightShader, animationShader);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);

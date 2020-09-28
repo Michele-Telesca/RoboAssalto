@@ -1,6 +1,8 @@
 #pragma once
 #include "model.h"
 #include "weapon.h"
+#include "skinned_mesh.h"
+#include "globalData.h"
 //#include "villain.h"
 
 
@@ -25,7 +27,11 @@ public:
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
 
 	// modello 3D del player
-	Model* player_model;
+	SkinnedMesh meshRunning;
+	SkinnedMesh meshStanding;
+	SkinnedMesh meshAttacking;
+
+	//float animationCounter = 0.0f;
 
 	weapon* wea = new weapon(3.0f, 90.0f, 2.0f); //arma posseduta al momento
 	
@@ -34,7 +40,7 @@ public:
 	unsigned int texturePlayer;
 
 	//prototipi
-	void drawPlayer(Shader myShader, glm::vec3 mousePoint); //disegna il player
+	void drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint); //disegna il player
 	void animate(); //animazione del player
 	void initPlayer(); //inizializza il player
 
@@ -84,9 +90,11 @@ void player::initPlayer() {
 	//tempo ultimo colpo
 	timeLastShot = 0.0;
 
-	//caricamento modello
-	player_model = new Model();
-	player_model->loadModel("models/michelle/Ch03_nonPBR.DAE");
+	//loading meshes with animation
+	meshRunning.loadMesh("animation/player_michelle/running/Running.dae");
+	meshStanding.loadMesh("animation/player_michelle/standing/Idle.dae");
+	meshAttacking.loadMesh("animation/player_michelle/kick/Flying Kick.dae");
+
 }
 
 float angleBetween(const glm::vec3 a, const glm::vec3 b) {
@@ -95,19 +103,43 @@ float angleBetween(const glm::vec3 a, const glm::vec3 b) {
 	return angle;
 }
 
-void player::drawPlayer(Shader lightShader, glm::vec3 mousePoint) {
+void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint) {
+	
+	animShader.use();
 
-	// material properties
-	lightShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
-	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
-	lightShader.setFloat("material.shininess", 76.8f);
+	//projection
+	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
+	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	animShader.setMat4("projection", projection);
 
+	//view
+	animShader.setMat4("view", view);
+	
+	//model
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, 0.5f, z));
 	model = glm::rotate(model, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
-	lightShader.setMat4("model", model);
+	animShader.setMat4("model", model);
+
+	vector <glm::mat4> transforms;
+
+	if (muoviDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) { //se non mi muovo -> meshStanding
+		meshStanding.boneTransform(animationTime, transforms);
+		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+			transforms.size(),
+			GL_FALSE,
+			glm::value_ptr(transforms[0]));
+		meshStanding.render();
+	}
+	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning
+		meshRunning.boneTransform(animationTime, transforms);
+		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+			transforms.size(),
+			GL_FALSE,
+			glm::value_ptr(transforms[0]));
+		meshRunning.render();
+	}
 
 
 	float mouseX = mousePoint.x;
@@ -121,12 +153,9 @@ void player::drawPlayer(Shader lightShader, glm::vec3 mousePoint) {
 	if (mouseY < z) {
 		//angle = - 3.14f;
 	}
-	
-
-	player_model->Draw(lightShader);
 
 	if (mouseSxIsSelected) {
-		wea->drawTarget(lightShader, x, y, z, texturePlayer, angle);
+		wea->drawTarget(lightShader, view, x, y, z, texturePlayer, angle);
 	}
 }
 

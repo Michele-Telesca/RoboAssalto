@@ -109,12 +109,6 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 
 void villain::drawVillain(Shader myShader){
 
-	// material properties
-	myShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
-	myShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	myShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
-	myShader.setFloat("material.shininess", 76.8f);
-
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, 0.5f, z));
 	model = glm::rotate(model, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));

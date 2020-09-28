@@ -200,16 +200,9 @@ void gameMap::initMap() {
 void gameMap::drawMap(Shader lightShader) {
 
 	// ---- FLOOR ---- //
-	lightShader.setInt("myTexture1", 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texturePrato);
-	glBindVertexArray(cubeVAO);
-	lightShader.setVec3("colorcube", 1.0f, 1.0f, 1.0f); //bianco (colore neutro)
 	for (int i = 0; i < tiles.size(); i++) {
-		tiles[i]->drawCube(lightShader);
+		tiles[i]->drawCube(lightShader, texturePrato);
 	}
-	//floor->drawCube(lightShader);
-	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// ---- Objects ---- //
 	for (int i = 0; i < mapObjects.size(); i++) {

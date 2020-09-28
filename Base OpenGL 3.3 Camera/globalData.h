@@ -1,6 +1,11 @@
 #pragma once
 
 //GAME SETTINGS
+
+// settings
+const unsigned int SCR_WIDTH = 1920;
+const unsigned int SCR_HEIGHT = 1080;
+
 float RENDER_SPEED = 0.03f; //Più è alto e più rallenta; più è basso e più velocizza
 
 const int DIM = 40; //Dimensione floor 20x20
@@ -13,9 +18,9 @@ float EPSILON_1 = TILE_DIM / 100; // epsilon di collisione tra player e gameObje
 float EPSILON_2 = BOT_MOVE_STEP / 10;
 float EPSILON_3 = 0.25f; // epsilon di collisione tra player e bot
 
+glm::vec3 lightPos(0.0f, 80.0f, 0.0f); //posizione luce
 
 // ---- //
-
 const int STONE1 = 1;
 const int STONE2 = 2;
 const int STONE3 = 3;
@@ -32,3 +37,16 @@ const int BUSH1 = 13;
 const int BUSH2 = 14;
 const int CHEST = 15;
 
+const int PLAYER_STANDING = 0;
+const int PLAYER_RUNNING = 1;
+
+
+// ---- Variabili ---- //
+float animationTime = 0.0f; //contatore per le animazioni -> serve per gestire la verlocità delle animazioni che incrementano in base alla velocità di incremento della variabile
+
+//movimenti
+bool muoviDx = false;
+bool muoviSx = false;
+bool muoviSu = false;
+bool muoviGiu = false;
+bool mouseSx = false;
