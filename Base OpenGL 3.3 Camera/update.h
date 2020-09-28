@@ -195,6 +195,7 @@ void update::moveSingleBot(villain* bot, player* p) {
 			
 			//Se il bot NON collide col player
 			if (!botCollideVSPlayer(bot, p)) { 
+				villain_walking = true;
 
 				if (isEqual(bot->getZ(), newCoord_z, EPSILON_2)) {
 					if (newCoord_x > bot->getX()) {
@@ -220,11 +221,13 @@ void update::moveSingleBot(villain* bot, player* p) {
 				}
 			}
 			else {
+				villain_walking = false;
 				//SE IL BOT COLLIDE NON AVANZA
 			}
 		}
 	}
 	else {
+		villain_walking = false;
 		//SE IL BOT è ARRIVATO ALLA FINE DEL PATH NON VANZA
 	}
 

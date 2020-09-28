@@ -12,7 +12,7 @@ const int DIM = 40; //Dimensione floor 20x20
 float TILE_DIM = 1.0; //Dimensione singola mattonella
 
 float MOVE_STEP = TILE_DIM / 8; // = 0.125f; //Incremento dello spostamento del player 
-float BOT_MOVE_STEP = TILE_DIM / 20; // = 0.05; //Incremento dello spostamento del BOT 
+float BOT_MOVE_STEP = TILE_DIM / 30; // = 0.05; //Incremento dello spostamento del BOT 
 
 float EPSILON_1 = TILE_DIM / 100; // epsilon di collisione tra player e gameObject
 float EPSILON_2 = BOT_MOVE_STEP / 10;
@@ -42,7 +42,10 @@ const int PLAYER_RUNNING = 1;
 
 
 // ---- Variabili ---- //
-float animationTime = 0.0f; //contatore per le animazioni -> serve per gestire la verlocità delle animazioni che incrementano in base alla velocità di incremento della variabile
+float animationTime_player = 0.0f; //contatore per le animazioni -> serve per gestire la verlocità delle animazioni che incrementano in base alla velocità di incremento della variabile
+float animationTime_villain = 0.0f;
+
+bool villain_walking = true;
 
 //movimenti
 bool muoviDx = false;

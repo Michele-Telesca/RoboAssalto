@@ -86,15 +86,15 @@ void game::draw(Shader lightShader, Shader animShader, glm::mat4 view) {
 	//DRAW PLAYER
 	p->drawPlayer(animShader, lightShader, view, getMousePoint());
 
-	//DRAW MAP
-	map->drawMap(lightShader);
-
 	//DRAW BOTS
 	if (botList.size() >= 1) {
 		for (int i = 0; i < botList.size(); i++) {
-			botList[i]->drawVillain(lightShader);
+			botList[i]->drawVillain(animShader, view);
 		}
 	}
+
+	//DRAW MAP
+	map->drawMap(lightShader);
 
 }
 

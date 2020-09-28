@@ -125,7 +125,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	vector <glm::mat4> transforms;
 
 	if (muoviDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) { //se non mi muovo -> meshStanding
-		meshStanding.boneTransform(animationTime, transforms);
+		meshStanding.boneTransform(animationTime_player, transforms);
 		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
 			transforms.size(),
 			GL_FALSE,
@@ -133,7 +133,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		meshStanding.render();
 	}
 	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning
-		meshRunning.boneTransform(animationTime, transforms);
+		meshRunning.boneTransform(animationTime_player, transforms);
 		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
 			transforms.size(),
 			GL_FALSE,

@@ -2,6 +2,8 @@
 #include "model.h"
 #include "weapon.h"
 #include "path.h"
+#include "skinned_mesh.h"
+#include "globalData.h"
 
 class villain {
 
@@ -23,14 +25,16 @@ public:
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. serve per dare un tempo tra l'ultimo colpo e il prossimo
 
-	Model* villain_model;
+	//Model* villain_model;
+	SkinnedMesh meshWalking;
+	SkinnedMesh meshAttacking;
 
 	weapon* weapon; //per avere la gittata del villain
 	path* percorso;
 	player* p;
 
 	//Prototipi
-	void drawVillain(Shader myShader);			 //disegna il player
+	void drawVillain(Shader animShader, glm::mat4 view);			 //disegna il player
 	void animate();								 //animazione del player
 	void initVillain(int path_Matrix[DIM][DIM]); //inializza il villain
 
@@ -94,8 +98,8 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 	life = 100;
 
 	//caricamento modello villain
-	villain_model = new Model();
-	villain_model->loadModel("models/bot/boty.DAE");
+	/*villain_model = new Model();
+	villain_model->loadModel("models/bot/boty.DAE");*/
 	
 	//creo ed inizializzo il path del villain
 	percorso = new path(); 
@@ -103,19 +107,49 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 
 	//setto lo step corrente (relativo al path) del villain
 	path_currentStep = 1;
-	
+
+	meshWalking.loadMesh("animation/villain/walking/Walking.dae");
+	meshAttacking.loadMesh("animation/villain/attack/Zombie Punching.dae");
 }
 
 
-void villain::drawVillain(Shader myShader){
+void villain::drawVillain(Shader animShader, glm::mat4 view){
 
+	animShader.use();
+
+	//projection
+	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
+	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	animShader.setMat4("projection", projection);
+
+	//view
+	animShader.setMat4("view", view);
+
+	//model
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, 0.5f, z));
 	model = glm::rotate(model, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
-	myShader.setMat4("model", model);
+	animShader.setMat4("model", model);
 
-	villain_model->Draw(myShader);
+	vector <glm::mat4> transforms;
+
+	if (villain_walking == true) {
+		meshWalking.boneTransform(animationTime_villain, transforms);
+		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+			transforms.size(),
+			GL_FALSE,
+			glm::value_ptr(transforms[0]));
+		meshWalking.render();
+	}
+	else if (villain_walking == false) {
+		meshAttacking.boneTransform(animationTime_villain, transforms);
+		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+			transforms.size(),
+			GL_FALSE,
+			glm::value_ptr(transforms[0]));
+		meshAttacking.render();
+	}
 
 }
 
