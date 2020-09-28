@@ -16,24 +16,23 @@ public:
 
 	update() {}
 
-	bool collideFromRight = false;
-	bool collideFromLeft = false;
-	bool collideFromUp = false;
-	bool collideFromDown = false;
-
-	bool playerCollideFromRight(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
-	bool playerCollideFromLeft(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
-	bool playerCollideFromUp(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
-	bool playerCollideFromDown(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
-
+	//Movimento del player
 	void moveRight(player* p, vector <villain*> botList);
 	void moveLeft(player* p, vector <villain*> botList);
 	void moveUp(player* p, vector <villain*> botList);
 	void moveDown(player* p, vector <villain*> botList);
 
-	void moveSingleBot(villain* bot, player* p);
+	//Collisioni del player 
+	bool playerCollideFromRight(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon); 
+	bool playerCollideFromLeft(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
+	bool playerCollideFromUp(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
+	bool playerCollideFromDown(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
+
+	//Movimento dei bot
+	void moveSingleBot(villain* bot, player* p); 
 	void moveAllBots(vector <villain*> botList, player* p);
-	bool botCollideVSPlayer(villain* bot, player* p);
+	void rotateBot(villain* bot); //rotazione del bot
+	bool botCollideVSPlayer(villain* bot, player* p); //collisione del bot
 
 };
 
@@ -162,22 +161,36 @@ void update::moveDown(player* p, vector <villain*> botList) {
 	}
 }
 
-
-
-void update::moveAllBots(vector <villain*> botList, player* p) {
-	if (botList.size() >= 1) {
-		for (int i = 0; i < botList.size(); i++) {
-			moveSingleBot(botList[i], p);
-		}
-	}
-}
-
 bool update::botCollideVSPlayer(villain* bot, player* p) {
-	if ((bot->getX() >= p->getX() - TILE_DIM  && bot->getX() <= p->getX() + TILE_DIM) && (bot->getZ() >= p->getZ() - TILE_DIM && bot->getZ() <= p->getZ() + TILE_DIM)) {
+	if ((bot->getX() >= p->getX() - TILE_DIM && bot->getX() <= p->getX() + TILE_DIM) && (bot->getZ() >= p->getZ() - TILE_DIM && bot->getZ() <= p->getZ() + TILE_DIM)) {
 		return true;
 	}
 	else {
 		return false;
+	}
+}
+
+void update::moveAllBots(vector <villain*> botList, player* p) {
+	if (botList.size() >= 1) {
+		for (int i = 0; i < botList.size(); i++) {
+			moveSingleBot(botList[i], p); //movimento del singolo bot
+			rotateBot(botList[i]);	      //effettua le rotazioni del singolo bot (in caso c'è un cambio di direzione)
+		}
+	}
+}
+
+void update::rotateBot(villain* bot) {
+	if (bot->rotationAngle != bot->angleToReach) { //se l'angolo di rotazione corrente è diverso dall'angolo di rotazione da raggiungere
+		// IL BOT DEVE RUOTARE
+		if (bot->sensoOrario == true) { 
+			bot->rotationAngle = bot->rotationAngle - 10.0f;
+		}
+		else {
+			bot->rotationAngle = bot->rotationAngle + 10.0f;
+		}
+	}
+	else {
+		//IL BOT NON DEVO RUOTARE
 	}
 }
 
@@ -187,7 +200,6 @@ void update::moveSingleBot(villain* bot, player* p) {
 
 	//se il bot non è arrivato alla fine del suo path
 	if (path_nextStep <= bot->getPath()->getPath_EndPath()) {
-
 		//se il nextStep sia maggiore del currentStep
 		if (path_nextStep > bot->getPath_currentStep()) {
 			float newCoord_x = bot->getPath()->getPath_map()[path_nextStep].x;
@@ -197,38 +209,78 @@ void update::moveSingleBot(villain* bot, player* p) {
 			if (!botCollideVSPlayer(bot, p)) { 
 				villain_walking = true;
 
-				if (isEqual(bot->getZ(), newCoord_z, EPSILON_2)) {
-					if (newCoord_x > bot->getX()) {
-						bot->setX(bot->getX() + BOT_MOVE_STEP); //muovi a destra
+				if (isEqual(bot->getZ(), newCoord_z, EPSILON_2)) { //mi muovo lungo l'asse x
+
+					if (newCoord_x > bot->getX()) {                         //dovrò muovere a destra
+						if (bot->old_direction == 2) {                          //se la vecchia direzione era verso il basso     
+							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
+							bot->sensoOrario = false;					           //setto il senso di rotazione ANTIORARIO
+						}
+						else if (bot->old_direction == 3) {                     //se la vecchia direzione era verso l'alto
+							bot->rotationAngle = bot->rotationAngle - 90.0f;       //setto l'angolo di rotazione da raggiungere a -90
+							bot->sensoOrario = true;						       //setto il senso di rotazione ORARIO
+						}
+						bot->setX(bot->getX() + BOT_MOVE_STEP);                 //muovi verso destra
+						bot->old_direction = 0;
 					}
-					else if (newCoord_x < bot->getX()) {
-						bot->setX(bot->getX() - BOT_MOVE_STEP); //muovi a sinistra
+
+					else if (newCoord_x < bot->getX()) {                    //dovrò muovere a sinistra
+						if (bot->old_direction == 2) {                          //se la vecchia direzione era verso il basso
+							bot->angleToReach = bot->rotationAngle - 90.0f;        //setto l'angolo di rotazioe da raggiungere a -90
+							bot->sensoOrario = true;                               //setto il senso di rotazione ORARIO
+						}
+						else if (bot->old_direction == 3) {                     //se la vecchia direzione era verso l'alto
+							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
+							bot->sensoOrario = false;							   //setto il senso di rotazione ANTIORARIO
+						}
+						bot->setX(bot->getX() - BOT_MOVE_STEP);                 //muovi verso sinistra
+						bot->old_direction = 1;
 					}
 				}
 
-				else if (isEqual(bot->getX(), newCoord_x, EPSILON_2)) {
-					if (newCoord_z > bot->getZ()) {
-						bot->setZ(bot->getZ() + BOT_MOVE_STEP); //muovi in basso
+				else if (isEqual(bot->getX(), newCoord_x, EPSILON_2)) { //mi muovo lungo l'asse z
+
+					if (newCoord_z > bot->getZ()) {                         //dovrò muovere in basso
+						if (bot->old_direction == 0) {                          //se la vecchia direzione era verso destra
+							bot->angleToReach = bot->rotationAngle - 90.0f;        //setto l'angolo di rotazione da raggiungere a -90
+							bot->sensoOrario = true;                               //setto il senso di rotazione ORARIO
+						}
+						else if (bot->old_direction == 1) {                     //se la vecchia direzione era verso sinistra
+							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
+							bot->sensoOrario = false;                              //setto il senso di rotazione ANTIORARIO
+						}
+						bot->setZ(bot->getZ() + BOT_MOVE_STEP);                 //muovi verso il basso
+						bot->old_direction = 2;
 					}
-					else if (newCoord_z < bot->getZ()) {
-						bot->setZ(bot->getZ() - BOT_MOVE_STEP); //muovi in alto
+
+					else if (newCoord_z < bot->getZ()) {                    //dovrò muovere in alto
+						if (bot->old_direction == 0) {                          //se la vecchia direzione era verso destra
+							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
+							bot->sensoOrario = false;							   //setto il senso di rotazione ANTIORARIO
+						}
+						else if (bot->old_direction == 0) {					    //se la vecchia direzione era verso sinistra
+							bot->angleToReach = bot->rotationAngle - 90.0f;        //setto l'angolo di rotazione da raggiungere a -90
+							bot->sensoOrario = true;							   //setto il senso di rotazione ORARIO
+						}
+						bot->setZ(bot->getZ() - BOT_MOVE_STEP);                 //muovo verso l'alto
+						bot->old_direction = 3;
 					}
 				}
 
 				//Se le coordinate del bot (path_currentStep) hanno raggunto il nextStep
 				if (isEqual(bot->getX(), newCoord_x, EPSILON_2) && isEqual(bot->getZ(), newCoord_z, EPSILON_2)) {
-					bot->path_currentStep++;
+					bot->path_currentStep++; //incremento lo step
 				}
 			}
 			else {
-				villain_walking = false;
-				//SE IL BOT COLLIDE NON AVANZA
+				//se il bot collide con il player NON AVANZA
+				villain_walking = false;			
 			}
 		}
 	}
 	else {
-		villain_walking = false;
-		//SE IL BOT è ARRIVATO ALLA FINE DEL PATH NON VANZA
+		//se il bot è arrivato a fine path NON AVANZA
+		villain_walking = false;	
 	}
 
 }

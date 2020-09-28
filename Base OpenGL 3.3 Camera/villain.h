@@ -17,15 +17,21 @@ public:
 	float x;
 	float y;
 	float z;
-	
-	float path_currentStep; //contatore dello step iesimo in cui si trova il bot 
 
+	float rotationAngle; //angolo di rotazione corrente 
+
+	// ---- variabili per gestire le rotazioni
+	float angleToReach;  //angolo di rotazione che deve raggiungere quando effettua una rotazione
+	bool sensoOrario;    //senso di rotazione 
+
+	int old_direction; //Direzione da cui il bot arriva 
+	float path_currentStep; //contatore dello step iesimo in cui si trova il bot 
+	
 	int life; //vita del player aggiornata 
 
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. serve per dare un tempo tra l'ultimo colpo e il prossimo
 
-	//Model* villain_model;
 	SkinnedMesh meshWalking;
 	SkinnedMesh meshAttacking;
 
@@ -35,8 +41,7 @@ public:
 
 	//Prototipi
 	void drawVillain(Shader animShader, glm::mat4 view);			 //disegna il player
-	void animate();								 //animazione del player
-	void initVillain(int path_Matrix[DIM][DIM]); //inializza il villain
+	void initVillain(int path_Matrix[DIM][DIM]);					 //inializza il villain
 
 	//GET e SET
 	float getX() {
@@ -49,6 +54,10 @@ public:
 
 	float getZ() {
 		return z;
+	}
+
+	float getRotationAngle() {
+		return rotationAngle;
 	}
 
 	float getPath_currentStep() {
@@ -71,10 +80,13 @@ public:
 		z = posz;
 	}
 
+	void setRotationAngle(float angle) {
+		rotationAngle = angle;
+	}
+
 	void setPath_currentStep(float valore) {
 		path_currentStep = valore;
 	}
-
 
 };
 
@@ -94,12 +106,52 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 		}
 	}
 
+	if (path_Matrix == path1_Matrix) {
+		old_direction = START_DIRECTION_PATH1; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH1;  //setto la rotazione iniziale
+	}
+	else if (path_Matrix == path2_Matrix) {
+		old_direction = START_DIRECTION_PATH2; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH2;  //setto la rotazione iniziale
+	}
+	else if (path_Matrix == path3_Matrix) {
+		old_direction = START_DIRECTION_PATH3; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH3;  //setto la rotazione iniziale
+	}
+	else if (path_Matrix == path4_Matrix) {
+		old_direction = START_DIRECTION_PATH4; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH4;  //setto la rotazione iniziale
+	}
+	else if (path_Matrix == path5_Matrix) {
+		old_direction = START_DIRECTION_PATH5; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH5;  //setto la rotazione iniziale
+	}
+	else if (path_Matrix == path6_Matrix) {
+		old_direction = START_DIRECTION_PATH6; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH6;  //setto la rotazione iniziale
+	}
+	else if (path_Matrix == path7_Matrix) {
+		old_direction = START_DIRECTION_PATH7; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH7;  //setto la rotazione iniziale
+	}
+	else if (path_Matrix == path8_Matrix) {
+		old_direction = START_DIRECTION_PATH8; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH8;  //setto la rotazione iniziale
+	}
+	else if (path_Matrix == path9_Matrix) {
+		old_direction = START_DIRECTION_PATH9; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH9;  //setto la rotazione iniziale
+	}
+	else if (path_Matrix == path10_Matrix) {
+		old_direction = START_DIRECTION_PATH10; //setto la direzione di movimento iniziale 
+		rotationAngle = START_ROTATION_PATH10;  //setto la rotazione iniziale
+	}
+
+	angleToReach = rotationAngle;
+	//sensoOrario = true;
+
 	//vita iniziale
 	life = 100;
-
-	//caricamento modello villain
-	/*villain_model = new Model();
-	villain_model->loadModel("models/bot/boty.DAE");*/
 	
 	//creo ed inizializzo il path del villain
 	percorso = new path(); 
@@ -128,7 +180,7 @@ void villain::drawVillain(Shader animShader, glm::mat4 view){
 	//model
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, 0.5f, z));
-	model = glm::rotate(model, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 	animShader.setMat4("model", model);
 
@@ -150,10 +202,6 @@ void villain::drawVillain(Shader animShader, glm::mat4 view){
 			glm::value_ptr(transforms[0]));
 		meshAttacking.render();
 	}
-
-}
-
-void villain::animate() {
 
 }
 

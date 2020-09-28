@@ -20,7 +20,7 @@ public:
 	//proprietà
 	map <int, glm::vec2> path_map; //mappa per gestire il path del bot -> Viene inizializzata scansionando la matrice
 								   //la chiave è un intero che rappresenta lo step del path, a cui corrispondono le rispettive coordinate x,z (vec2) 
-	int path_EndPath; //il valore dell'ultimo step del path
+	int path_EndPath;			   //il valore dell'ultimo step del path
 
 	//prototipi
 	void inizializzaPath(int path_M[DIM][DIM]);

@@ -233,7 +233,8 @@ void render(Shader lightShader, Shader animShader)
 		
 		update_game->moveAllBots(botList, player);
 
-		animationTime_player = animationTime_player + 0.1f; //più è basso l'incremento e più saranno lente le animazioni
+		//più è basso l'incremento e più saranno lente le animazioni
+		animationTime_player = animationTime_player + 0.1f; 
 		animationTime_villain = animationTime_villain + 0.05f;
 
 		previousTime = currentTime;

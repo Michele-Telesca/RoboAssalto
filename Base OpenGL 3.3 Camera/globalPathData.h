@@ -295,7 +295,7 @@ int path7_Matrix[DIM][DIM] = {{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-
 							  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
-int path8_Matrix[DIM][DIM] ={{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 1, 0},
+int path8_Matrix[DIM][DIM] ={ { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 1, 0},
 							  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0},
 							  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,16,15,14,13,12,11,10, 9, 8, 7, 6, 5, 0, 0, 0},
 							  { 0, 0, 0, 0, 0,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,17, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -380,7 +380,7 @@ int path9_Matrix[DIM][DIM] = {{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-
 							  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
-int path10_Matrix[DIM][DIM] = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+int path10_Matrix[DIM][DIM] ={{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							  { 0, 0, 0, 0, 0,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -422,17 +422,42 @@ int path10_Matrix[DIM][DIM] = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 							  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
-int PATH1_ENDPATH = 37; //spawn in alto-sx 1)
-int PATH2_ENDPATH = 36; //spawn in alto-sx 2)
+int PATH1_ENDPATH = 37;						//spawn in alto-sx 1)
+int START_DIRECTION_PATH1 = DIRECTION_RIGHT;
+float START_ROTATION_PATH1 = 90.0f;
 
-int PATH3_ENDPATH = 37; //spawn basso a sx 1)
-int PATH4_ENDPATH = 36; //spawn basso a sx 2)
+int PATH2_ENDPATH = 36;						 //spawn in alto-sx 2)
+int START_DIRECTION_PATH2 = DIRECTION_DOWN;
+float START_ROTATION_PATH2 = 0.0f;
+
+int PATH3_ENDPATH = 37;						 //spawn basso a sx 1)
+int START_DIRECTION_PATH3 = DIRECTION_UP;
+float START_ROTATION_PATH3 = 180.0f;
+
+int PATH4_ENDPATH = 36;						 //spawn basso a sx 2)
+int START_DIRECTION_PATH4 = DIRECTION_RIGHT;
+float START_ROTATION_PATH4 = 90.0f;
 
 int PATH5_ENDPATH = 39; //spawn basso a dx 1)
+int START_DIRECTION_PATH5 = DIRECTION_LEFT;
+float START_ROTATION_PATH5 = 270.0f;
+
 int PATH6_ENDPATH = 39; //spawn basso a dx 2)
+int START_DIRECTION_PATH6 = DIRECTION_UP;
+float START_ROTATION_PATH6 = 180.0f;
 
 int PATH7_ENDPATH = 46; //spawn alto a dx 1)
+int START_DIRECTION_PATH7 = DIRECTION_DOWN;
+float START_ROTATION_PATH7 = 0.0f;
+
 int PATH8_ENDPATH = 37; //spawn alto a dx 2)
+int START_DIRECTION_PATH8 = DIRECTION_LEFT;
+float START_ROTATION_PATH8 = 270.0f;
 
 int PATH9_ENDPATH = 40; //lato sx -> entra in alto
+int START_DIRECTION_PATH9 = DIRECTION_RIGHT;
+float START_ROTATION_PATH9  = 90.0f;
+
 int PATH10_ENDPATH = 40; //lato dx -> entra in basso
+int START_DIRECTION_PATH10 = DIRECTION_LEFT;
+float START_ROTATION_PATH10 = 270.0f;

@@ -40,6 +40,11 @@ const int CHEST = 15;
 const int PLAYER_STANDING = 0;
 const int PLAYER_RUNNING = 1;
 
+const int DIRECTION_RIGHT = 0;
+const int DIRECTION_LEFT = 1;
+const int DIRECTION_DOWN = 2;
+const int DIRECTION_UP = 3;
+
 
 // ---- Variabili ---- //
 float animationTime_player = 0.0f; //contatore per le animazioni -> serve per gestire la verlocità delle animazioni che incrementano in base alla velocità di incremento della variabile
