@@ -67,28 +67,36 @@ void processInput(GLFWwindow* window)
 		glfwSetWindowShouldClose(window, true);
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		muoviDx = true;
+		if (muoviSx != true) {
+			muoviDx = true;
+		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
 		muoviDx = false;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		muoviSx = true;
+		if (muoviDx != true) {
+			muoviSx = true;
+		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE) {
 		muoviSx = false;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		muoviSu = true;
+		if (muoviGiu!= true) {
+			muoviSu = true;
+		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
 		muoviSu = false;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		muoviGiu = true;
+		if (muoviSu != true) {
+			muoviGiu = true;
+		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE) {
 		muoviGiu = false;
