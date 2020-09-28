@@ -33,7 +33,7 @@ public:
 	void moveAllBots(vector <villain*> botList, player* p);
 	void rotateBot(villain* bot); //rotazione del bot
 	bool botCollideVSPlayer(villain* bot, player* p); //collisione del bot
-
+	void calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool muoviGiu, bool muoviSu);
 };
 
 											                                   	
@@ -285,3 +285,40 @@ void update::moveSingleBot(villain* bot, player* p) {
 
 }
 
+
+void update::calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool muoviGiu, bool muoviSu) {
+
+	float anglePlayer = 0.0f;
+	if (muoviDx == true) {
+		anglePlayer = 90.0f;
+		if (muoviSu == true) {
+			anglePlayer = 135.0f;
+		}
+		if (muoviGiu == true) {
+			anglePlayer = 45.0f;
+		}
+	}
+	if (muoviSx == true) {
+		anglePlayer = 270.0f;
+		if (muoviSu == true) {
+			anglePlayer = 225.0f;
+		}
+		if (muoviGiu == true) {
+			anglePlayer = 315.0f;
+		}
+	}
+
+	if (muoviGiu == true) {
+		if (muoviDx == false && muoviSx == false) {
+			anglePlayer = 0.0f;
+		}
+	}
+	if (muoviSu == true) {
+		if (muoviDx == false && muoviSx == false) {
+			anglePlayer = 180.0;
+		}
+	}
+
+	p->setAnglePlayer(anglePlayer);
+
+}

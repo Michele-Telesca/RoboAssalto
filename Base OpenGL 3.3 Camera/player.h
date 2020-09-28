@@ -14,8 +14,6 @@ public:
 
 	player(float x, float y, float z) : x(x), y(y), z(z) {}
 
-	float angleP = 0.0f;
-
 	//coordinate
 	float x;
 	float y;
@@ -42,7 +40,6 @@ public:
 	//prototipi
 	void drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint); //disegna il player
 	void initPlayer(); //inizializza il player
-	void calculateAngle();
 
 	//get e set
 	float getX() {
@@ -67,6 +64,10 @@ public:
 
 	void setZ(float new_z) {
 		z = new_z;
+	}
+
+	void setAnglePlayer(float angle) {
+		anglePlayer = angle;
 	}
 
 };
@@ -107,8 +108,6 @@ float angleBetween(const glm::vec3 a, const glm::vec3 b) {
 void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint) {
 	
 	animShader.use();
-
-	calculateAngle();
 	
 	//projection
 	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
@@ -164,38 +163,3 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		wea->drawTarget(lightShader, view, x, y, z, texturePlayer, angle);
 	}
 }
-
-void player::calculateAngle() {
-
-	if (muoviDx == true) {
-		anglePlayer = 90.0f;
-		if (muoviSu == true) {
-			anglePlayer = 135.0f;
-		}
-		if (muoviGiu == true) {
-			anglePlayer = 45.0f;
-		}
-	}
-	if (muoviSx == true) {
-		anglePlayer = 270.0f;
-		if (muoviSu == true) {
-			anglePlayer = 225.0f;
-		}
-		if (muoviGiu == true) {
-			anglePlayer = 315.0f;
-		}
-	}
-
-	if (muoviGiu == true) {
-		if (muoviDx == false && muoviSx == false) {
-			anglePlayer = 0.0f;
-		}
-	}
-	if (muoviSu == true) {
-		if (muoviDx == false && muoviSx == false) {
-			anglePlayer =  180.0;
-		}
-	}
-}
-
-

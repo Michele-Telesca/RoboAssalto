@@ -221,6 +221,8 @@ void render(Shader lightShader, Shader animShader)
 			gameuno->getPlayer()->mouseSxIsSelected = false;
 		}
 
+		//player rotation
+		update_game->calculateAnglePlayer(player, muoviDx , muoviSx , muoviGiu , muoviSu);
 		// ------- MOUSE ------- //
 		mouse_position();
 
