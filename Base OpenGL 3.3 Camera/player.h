@@ -25,7 +25,7 @@ public:
 	int numShotsAvailable; //colpi a disposizione
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
-
+	float anglePlayer;
 	// modello 3D del player
 	SkinnedMesh meshRunning;
 	SkinnedMesh meshStanding;
@@ -41,8 +41,8 @@ public:
 
 	//prototipi
 	void drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint); //disegna il player
-	void animate(); //animazione del player
 	void initPlayer(); //inizializza il player
+	void calculateAngle();
 
 	//get e set
 	float getX() {
@@ -78,6 +78,7 @@ void player::initPlayer() {
 	y = 0.5f;
 	z = 0.0f;
 
+	anglePlayer = true;
 	//vita iniziale
 	life = 100;
 
@@ -107,6 +108,8 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	
 	animShader.use();
 
+	calculateAngle();
+	
 	//projection
 	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -118,7 +121,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	//model
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, 0.5f, z));
-	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(anglePlayer), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 	animShader.setMat4("model", model);
 
@@ -133,13 +136,16 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		meshStanding.render();
 	}
 	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning
+		
 		meshRunning.boneTransform(animationTime_player, transforms);
 		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
 			transforms.size(),
 			GL_FALSE,
 			glm::value_ptr(transforms[0]));
 		meshRunning.render();
+
 	}
+
 
 
 	float mouseX = mousePoint.x;
@@ -159,6 +165,37 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	}
 }
 
-void player::animate() {
+void player::calculateAngle() {
 
+	if (muoviDx == true) {
+		anglePlayer = 90.0f;
+		if (muoviSu == true) {
+			anglePlayer = 135.0f;
+		}
+		if (muoviGiu == true) {
+			anglePlayer = 45.0f;
+		}
+	}
+	if (muoviSx == true) {
+		anglePlayer = 270.0f;
+		if (muoviSu == true) {
+			anglePlayer = 225.0f;
+		}
+		if (muoviGiu == true) {
+			anglePlayer = 315.0f;
+		}
+	}
+
+	if (muoviGiu == true) {
+		if (muoviDx == false && muoviSx == false) {
+			anglePlayer = 0.0f;
+		}
+	}
+	if (muoviSu == true) {
+		if (muoviDx == false && muoviSx == false) {
+			anglePlayer =  180.0;
+		}
+	}
 }
+
+
