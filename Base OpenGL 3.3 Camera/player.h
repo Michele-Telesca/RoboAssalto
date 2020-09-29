@@ -54,6 +54,10 @@ public:
 		return z;
 	}
 
+	float getAnglePlayer() {
+		return anglePlayer;
+	}
+
 	void setX(float new_x) {
 		x = new_x;
 	}
@@ -79,7 +83,7 @@ void player::initPlayer() {
 	y = 0.5f;
 	z = 0.0f;
 
-	anglePlayer = true;
+	anglePlayer = 0.0f;
 	//vita iniziale
 	life = 100;
 

@@ -288,35 +288,79 @@ void update::moveSingleBot(villain* bot, player* p) {
 
 void update::calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool muoviGiu, bool muoviSu) {
 
-	float anglePlayer = 0.0f;
+	float anglePlayerR = 0.0f;
+	float anglePlayer = p->getAnglePlayer();
+
 	if (muoviDx == true) {
-		anglePlayer = 90.0f;
+		anglePlayerR = 90.0f;
 		if (muoviSu == true) {
-			anglePlayer = 135.0f;
+			anglePlayerR = 135.0f;
 		}
 		if (muoviGiu == true) {
-			anglePlayer = 45.0f;
+			anglePlayerR = 45.0f;
 		}
 	}
 	if (muoviSx == true) {
-		anglePlayer = 270.0f;
+		anglePlayerR = 270.0f;
 		if (muoviSu == true) {
-			anglePlayer = 225.0f;
+			anglePlayerR = 225.0f;
 		}
 		if (muoviGiu == true) {
-			anglePlayer = 315.0f;
+			anglePlayerR = 315.0f;
 		}
 	}
 
 	if (muoviGiu == true) {
 		if (muoviDx == false && muoviSx == false) {
-			anglePlayer = 0.0f;
+			anglePlayerR = 0.0f;
 		}
 	}
 	if (muoviSu == true) {
 		if (muoviDx == false && muoviSx == false) {
-			anglePlayer = 180.0;
+			anglePlayerR = 180.0;
 		}
+	}
+	if (muoviDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) {
+		anglePlayerR = anglePlayer;
+	}
+
+	/*
+	if (anglePlayer == 360.0f && muoviSx != true) {
+		anglePlayer = 0.0f;
+	}
+	if (anglePlayer == 0.0f && muoviSx == true) {
+		anglePlayer = 360.0f;
+	}
+	*/
+
+
+
+	if (anglePlayer - anglePlayerR > 0.0f ) {
+		if (anglePlayer - anglePlayerR < 180.0f) {
+			anglePlayer = anglePlayer - 15.0f;
+		}
+		else {
+			anglePlayer = anglePlayer + 15.0f;
+
+		}
+	}
+	if (anglePlayer - anglePlayerR < 0.0f) {
+		if (anglePlayer - anglePlayerR > -180.0f) {
+			anglePlayer = anglePlayer + 15.0f;
+		}
+		else {
+			anglePlayer = anglePlayer - 15.0f;
+		}
+	}
+	
+	if(anglePlayerR == anglePlayer){
+		anglePlayer = anglePlayerR;
+	}
+	if (anglePlayer == 360.0f) {
+		anglePlayer = 0.0f;
+	}
+	if (anglePlayer < 0.0f) {
+		anglePlayer = 345.0f;
 	}
 
 	p->setAnglePlayer(anglePlayer);
