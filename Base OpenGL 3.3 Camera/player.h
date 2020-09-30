@@ -25,10 +25,10 @@ public:
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
 	float anglePlayer;
-	// modello 3D del player
+
+	// modello 3D con scheletro e animazione
 	SkinnedMesh meshRunning;
 	SkinnedMesh meshStanding;
-	SkinnedMesh meshAttacking;
 
 	//float animationCounter = 0.0f;
 
@@ -36,9 +36,9 @@ public:
 	
 	bool mouseSxIsSelected = false;
 	bool startPlayerShot = false;
+
 	//lista colpi
 	playerShot listShot[numShot];
-
 
 	unsigned int texturePlayer;
 
@@ -108,9 +108,9 @@ void player::initPlayer() {
 	}
 
 	//loading meshes with animation
-	meshRunning.loadMesh("animation/player_michelle/running/Running.dae");
-	meshStanding.loadMesh("animation/player_michelle/standing/Idle.dae");
-	meshAttacking.loadMesh("animation/player_michelle/kick/Flying Kick.dae");
+	//meshRunning.loadMesh("animation/player_michelle/running/Running.dae");
+	meshRunning.loadMesh("animation/player_michelle/shotgun_running/shotgun_running.dae");
+	meshStanding.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
 
 }
 
@@ -141,7 +141,8 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, 0.5f, z));
 	model = glm::rotate(model, glm::radians(anglePlayer), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //per metterlo in posizione verticale sul pavimento
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	animShader.setMat4("model", model);
 
 	vector <glm::mat4> transforms;
@@ -154,18 +155,15 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 			glm::value_ptr(transforms[0]));
 		meshStanding.render();
 	}
-	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning
-		
+	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning		
 		meshRunning.boneTransform(animationTime_player, transforms);
 		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
 			transforms.size(),
 			GL_FALSE,
 			glm::value_ptr(transforms[0]));
 		meshRunning.render();
-
 	}
-
-
+	
 
 	float mouseX = mousePoint.x;
 	float mouseY = mousePoint.z;
@@ -174,8 +172,6 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	float d2 = mouseY - z;
 
 	float angle = atan2(d1, d2);
-
-
 
 	//controllo la lista dei colpi e ne setto gli angoli 
 	if (startPlayerShot) {
@@ -209,5 +205,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 			listShot[i].draw(lightShader, texturePlayer);
 		}
 	}
+
+
 
 }

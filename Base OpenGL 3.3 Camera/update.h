@@ -207,10 +207,27 @@ void update::moveSingleBot(villain* bot, player* p) {
 		if (path_nextStep > bot->getPath_currentStep()) {
 			float newCoord_x = bot->getPath()->getPath_map()[path_nextStep].x;
 			float newCoord_z = bot->getPath()->getPath_map()[path_nextStep].y; //coordinata z
-			
+		
 			//Se il bot NON collide col player
 			if (!botCollideVSPlayer(bot, p)) { 
-				villain_walking = true;
+
+				//Setto l'angolo nella direzione del path
+				if (bot->old_direction == DIRECTION_RIGHT) {
+					bot->rotationAngle = 90.0f;
+				}
+				else if (bot->old_direction == DIRECTION_LEFT) {
+					bot->rotationAngle = 270.0f;
+
+				}
+				else if (bot->old_direction == DIRECTION_UP) {
+					bot->rotationAngle = 180.0f;
+
+				}
+				else if (bot->old_direction == DIRECTION_DOWN) {
+					bot->rotationAngle = 0.0f;
+				}
+
+				villain_walking = true; //setto a true il booleano per l'animazione walking
 
 				if (isEqual(bot->getZ(), newCoord_z, EPSILON_2)) { //mi muovo lungo l'asse x
 
@@ -276,14 +293,16 @@ void update::moveSingleBot(villain* bot, player* p) {
 				}
 			}
 			else {
-				//se il bot collide con il player NON AVANZA
-				villain_walking = false;			
+				//se il bot collide con il player NON AVANZA ma si gira verso il player e lo attacca
+				villain_walking = false;
+				float new_rotationAngle = p->getAnglePlayer() - 180.0f;
+				bot->setRotationAngle(new_rotationAngle);
 			}
 		}
 	}
 	else {
-		//se il bot è arrivato a fine path NON AVANZA
-		villain_walking = false;	
+		//se il bot è arrivato a fine path NON AVANZA ma attacca il tesoro
+		villain_walking = false;	 
 	}
 
 }

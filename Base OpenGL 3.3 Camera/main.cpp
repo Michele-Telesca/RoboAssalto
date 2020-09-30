@@ -45,6 +45,7 @@ double previousTime = glfwGetTime();
 
 bool spawnBot = true;
 
+bool ondeggio = true;
 
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
@@ -240,7 +241,7 @@ void render(Shader lightShader, Shader animShader)
 
 
 		// ------- BOT ------- //
-		/*if (spawnBot == true) {
+		if (spawnBot == true) {
 			gameuno->spawn_BOT(path1_Matrix);
 			//gameuno->spawn_BOT(path2_Matrix);
 			//gameuno->spawn_BOT(path3_Matrix);
@@ -252,13 +253,22 @@ void render(Shader lightShader, Shader animShader)
 			//gameuno->spawn_BOT(path9_Matrix);
 			//gameuno->spawn_BOT(path10_Matrix);
 			spawnBot = false;
-		}*/
+		}
 		
 		update_game->moveAllBots(botList, player);
 
-		//più è basso l'incremento e più saranno lente le animazioni
-		animationTime_player = animationTime_player + 0.1f; 
-		animationTime_villain = animationTime_villain + 0.05f;
+		//più è basso l'incremento e più saranno lente le animazioni. Quando il contatore super 10.0f riparte da 0 (evita il bug delle gambe)
+		if (animationTime_player > 10.0f) {
+			animationTime_player = 0.0f;
+		} else {
+			animationTime_player = animationTime_player + 0.06f;
+		}
+		
+		if (animationTime_villain > 10.0f) {
+			animationTime_villain = 0.0f;
+		} else {
+			animationTime_villain = animationTime_villain + 0.05f;
+		}
 
 		previousTime = currentTime;
 	}
@@ -268,7 +278,7 @@ void render(Shader lightShader, Shader animShader)
 	float z = gameuno->getPlayer()->getZ();
 
 	////dal basso
-	//glm::vec3 pos_camera_mobile(x, 10.0f, z + 5.0);
+	//glm::vec3 pos_camera_mobile(x, 5.0f, z + 5.0);
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 5.0f);
 
 	//corretta
