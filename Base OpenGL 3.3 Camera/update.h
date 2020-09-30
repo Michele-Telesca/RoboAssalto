@@ -6,6 +6,7 @@
 #include "gameMap.h"
 #include "player.h"
 #include "villain.h"
+#include "playerShot.h"
 
 /* classe Update qui vengono gestiti tutti
 gli aggiornamenti relativi allo stato degli 
@@ -34,6 +35,8 @@ public:
 	void rotateBot(villain* bot); //rotazione del bot
 	bool botCollideVSPlayer(villain* bot, player* p); //collisione del bot
 	void calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool muoviGiu, bool muoviSu);
+	void updateShot(playerShot listShot[3]);
+
 };
 
 											                                   	
@@ -337,19 +340,19 @@ void update::calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool mu
 
 	if (anglePlayer - anglePlayerR > 0.0f ) {
 		if (anglePlayer - anglePlayerR < 180.0f) {
-			anglePlayer = anglePlayer - 15.0f;
+			anglePlayer = anglePlayer - 45.0f;
 		}
 		else {
-			anglePlayer = anglePlayer + 15.0f;
+			anglePlayer = anglePlayer + 45.0f;
 
 		}
 	}
 	if (anglePlayer - anglePlayerR < 0.0f) {
 		if (anglePlayer - anglePlayerR > -180.0f) {
-			anglePlayer = anglePlayer + 15.0f;
+			anglePlayer = anglePlayer + 45.0f;
 		}
 		else {
-			anglePlayer = anglePlayer - 15.0f;
+			anglePlayer = anglePlayer - 45.0f;
 		}
 	}
 	
@@ -360,9 +363,19 @@ void update::calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool mu
 		anglePlayer = 0.0f;
 	}
 	if (anglePlayer < 0.0f) {
-		anglePlayer = 345.0f;
+		anglePlayer = 315.0f;
 	}
 
 	p->setAnglePlayer(anglePlayer);
 
+}
+
+//update shot
+void update::updateShot(playerShot listShot[3]) {
+	for (int i = 0; i < numShot; i++) {
+		if (listShot[i].isShot) {
+			listShot[i].direction = listShot[i].direction + 0.05f;
+			listShot[i].direction = listShot[i].direction + 0.05f;
+		}
+	}
 }

@@ -89,6 +89,7 @@ void gameMap::initMap() {
 
 	//floor = new cube(DIM, 0.0f, 1.0f, 0.0f, 0.0f, -0.5f, (DIM/2) + 0.5f, 0.5f);
 
+	
 	// ---- mapObject ---- //
 	for (int i = 0; i < DIM; i++) {
 		for (int j = 0; j < DIM; j++) {
@@ -194,6 +195,7 @@ void gameMap::initMap() {
 
 		}
 	}
+	
 	
 }
 

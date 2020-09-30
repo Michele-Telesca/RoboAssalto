@@ -61,6 +61,9 @@ void processInput(GLFWwindow* window)
 		mouseSx = true;
 	}
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+		if (mouseSx) {
+			startPlayerShot = true;
+		}
 		mouseSx = false;
 	}
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -220,14 +223,24 @@ void render(Shader lightShader, Shader animShader)
 		else {
 			gameuno->getPlayer()->mouseSxIsSelected = false;
 		}
+		if (startPlayerShot) {
+			gameuno->getPlayer()->startPlayerShot = true;
+			startPlayerShot = false;
+		}
+		else {
+			gameuno->getPlayer()->startPlayerShot = false;
+		}
 
 		//player rotation
 		update_game->calculateAnglePlayer(player, muoviDx , muoviSx , muoviGiu , muoviSu);
 		// ------- MOUSE ------- //
 		mouse_position();
 
+		update_game->updateShot(gameuno->getPlayer()->listShot);
+
+
 		// ------- BOT ------- //
-		if (spawnBot == true) {
+		/*if (spawnBot == true) {
 			gameuno->spawn_BOT(path1_Matrix);
 			//gameuno->spawn_BOT(path2_Matrix);
 			//gameuno->spawn_BOT(path3_Matrix);
@@ -239,7 +252,7 @@ void render(Shader lightShader, Shader animShader)
 			//gameuno->spawn_BOT(path9_Matrix);
 			//gameuno->spawn_BOT(path10_Matrix);
 			spawnBot = false;
-		}
+		}*/
 		
 		update_game->moveAllBots(botList, player);
 

@@ -3,6 +3,7 @@
 #include "weapon.h"
 #include "skinned_mesh.h"
 #include "globalData.h"
+#include "playerShot.h"
 //#include "villain.h"
 
 
@@ -34,6 +35,10 @@ public:
 	weapon* wea = new weapon(3.0f, 90.0f, 2.0f); //arma posseduta al momento
 	
 	bool mouseSxIsSelected = false;
+	bool startPlayerShot = false;
+	//lista colpi
+	playerShot listShot[numShot];
+
 
 	unsigned int texturePlayer;
 
@@ -96,6 +101,12 @@ void player::initPlayer() {
 	//tempo ultimo colpo
 	timeLastShot = 0.0;
 
+
+	//inizializzo la lista dei colpi
+	for (int i = 0; i < numShot; i++) {
+		listShot[i].inizializza();
+	}
+
 	//loading meshes with animation
 	meshRunning.loadMesh("animation/player_michelle/running/Running.dae");
 	meshStanding.loadMesh("animation/player_michelle/standing/Idle.dae");
@@ -107,6 +118,11 @@ float angleBetween(const glm::vec3 a, const glm::vec3 b) {
 
 	float angle = atan2(b.x, a.x) - atan2(b.z, a.y);
 	return angle;
+}
+
+bool checkShotIsAvaiable(int numShot, float chargingTime, float timeLastShot) {
+
+	return true;
 }
 
 void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint) {
@@ -159,11 +175,39 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 
 	float angle = atan2(d1, d2);
 
-	if (mouseY < z) {
-		//angle = - 3.14f;
+
+
+	//controllo la lista dei colpi e ne setto gli angoli 
+	if (startPlayerShot) {
+		bool shotIsAvaiable = checkShotIsAvaiable(numShotsAvailable, chargingTime, timeLastShot);
+		if (shotIsAvaiable) {
+			listShot[numShotsAvailable - 1].x = x;
+			listShot[numShotsAvailable - 1].y = y;
+			listShot[numShotsAvailable - 1].z = z;
+			listShot[numShotsAvailable - 1].startX = x;
+			listShot[numShotsAvailable - 1].startZ = z;
+			listShot[numShotsAvailable - 1].angle = angle;
+			listShot[numShotsAvailable - 1].isShot = true;
+			numShotsAvailable = numShotsAvailable - 1;
+		}
+		startPlayerShot = false;
 	}
 
 	if (mouseSxIsSelected) {
 		wea->drawTarget(lightShader, view, x, y, z, texturePlayer, angle);
 	}
+
+	// material properties
+	lightShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	lightShader.setFloat("material.shininess", 76.8f);
+
+
+	for (int i = 0; i < numShot; i++) {
+		if (listShot[i].isShot) {
+			listShot[i].draw(lightShader, texturePlayer);
+		}
+	}
+
 }
