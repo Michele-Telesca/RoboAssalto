@@ -26,19 +26,27 @@ public:
 	void draw(Shader lightShader, int texturePlayer); //disegna il colpo in base al weapon 
 	float direction;
 
+	float getX() {
+		return x;
+	}
+
+	float getZ() {
+		return z;
+	}
+
 };
 
 void playerShot::inizializza() {
-
 	x = -1000.0f;
-	y = -1000.0f;
 	z = -1000.0f;
+	startX = -1000.0f;
+	startZ = -1000.0f;
+	y = 1.4f;
 	direction = 0.0f;
 
 }
 
 void playerShot::draw(Shader lightShader, int texturePlayer) {
-
 
 	lightShader.use();
 
@@ -50,18 +58,15 @@ void playerShot::draw(Shader lightShader, int texturePlayer) {
 	glm::mat4 modelW = glm::mat4(1.0f);
 	float dx = (direction)*sin(angle);
 	float dy = (direction)*cos(angle);
-
-	modelW = glm::translate(modelW, glm::vec3(x + dx, y + 1.4f, z + dy));
+	x = startX + dx * SHOT_SPEED;
+	z = startZ + dy * SHOT_SPEED;
+	modelW = glm::translate(modelW, glm::vec3(x, y, z));
 	modelW = glm::rotate(modelW, angle, glm::vec3(0.0f, 1.0f, 0.0f));
-	modelW = glm::translate(modelW, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelW = glm::scale(modelW, glm::vec3(1.0f, 0.01f, 1.0f));
-
-	//cout << "'sono in draw shot" << x << " " << y << " " << endl;
-
-
-	//cout << "*** weapon (X,Z): (" << x << ", " << z << ")" << endl;
+	modelW = glm::scale(modelW, glm::vec3(SHOT_DIM, SHOT_DIM, SHOT_DIM));
 
 	lightShader.setMat4("model", modelW);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
 }
 

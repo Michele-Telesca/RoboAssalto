@@ -201,6 +201,7 @@ void render(Shader lightShader, Shader animShader)
 
 		player* player = gameuno->getPlayer();
 		vector <villain*> botList = gameuno->getBotList();
+		
 
 		// ------- PLAYER MOVES ------- //
 		if (muoviDx) {
@@ -233,13 +234,10 @@ void render(Shader lightShader, Shader animShader)
 		}
 
 		//player rotation
-		update_game->calculateAnglePlayer(player, muoviDx , muoviSx , muoviGiu , muoviSu);
+		update_game->calculateAnglePlayer(player);
 
 		// ------- MOUSE ------- //
 		mouse_position();
-
-		update_game->updateShot(gameuno->getPlayer()->listShot);
-
 
 		// ------- BOT ------- //
 		if (spawnBot == true) {
@@ -257,6 +255,10 @@ void render(Shader lightShader, Shader animShader)
 		}
 		
 		update_game->moveAllBots(botList, player);
+
+		// ------- SHOT ------- //
+		update_game->updateShot(player->listShot, botList);
+		update_game->shotHitBot(player->listShot, botList);
 
 		//più è basso l'incremento e più saranno lente le animazioni. Quando il contatore super 10.0f riparte da 0 (evita il bug delle gambe)
 		if (animationTime_player > 10.0f) {
@@ -310,7 +312,6 @@ void render(Shader lightShader, Shader animShader)
 	lightShader.setMat4("view", view);
 
 	// ------- DRAW ------- //
-
 	gameuno->draw(lightShader, animShader, view);
 
 }
@@ -388,7 +389,7 @@ int main()
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
-	gameuno->getPlayer()->texturePlayer = loadtexture("texture/target.png");
+	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png");
 
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).

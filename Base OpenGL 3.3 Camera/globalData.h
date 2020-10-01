@@ -45,9 +45,10 @@ const int DIRECTION_LEFT = 1;
 const int DIRECTION_DOWN = 2;
 const int DIRECTION_UP = 3;
 
-//numero proiettili
-const int numShot = 3;
-
+//SHOT
+const int numShot = 3; //numero proiettili
+const float SHOT_SPEED = 3.0f; //velocità proiettili
+const float SHOT_DIM = 0.5f; //dimensione x,z del proiettile
 
 // ---- Variabili ---- //
 float animationTime_player = 0.0f; //contatore per le animazioni -> serve per gestire la verlocità delle animazioni che incrementano in base alla velocità di incremento della variabile

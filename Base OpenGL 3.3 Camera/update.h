@@ -17,25 +17,27 @@ public:
 
 	update() {}
 
-	//Movimento del player
+	// ---- Movimento e collisioni del PLAYER ---- //
 	void moveRight(player* p, vector <villain*> botList);
 	void moveLeft(player* p, vector <villain*> botList);
 	void moveUp(player* p, vector <villain*> botList);
 	void moveDown(player* p, vector <villain*> botList);
+	void calculateAnglePlayer(player* p); 
 
-	//Collisioni del player 
 	bool playerCollideFromRight(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon); 
 	bool playerCollideFromLeft(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
 	bool playerCollideFromUp(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
 	bool playerCollideFromDown(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
 
-	//Movimento dei bot
+	// ---- Movimento e collisioni dei BOT ---- //
 	void moveSingleBot(villain* bot, player* p); 
 	void moveAllBots(vector <villain*> botList, player* p);
 	void rotateBot(villain* bot); //rotazione del bot
 	bool botCollideVSPlayer(villain* bot, player* p); //collisione del bot
-	void calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool muoviGiu, bool muoviSu);
-	void updateShot(playerShot listShot[3]);
+
+	// ---- Movimento e collisioni degli SHOT ---- //
+	void updateShot(vector <playerShot*> listShot, vector <villain*> botList);
+	void shotHitBot(vector <playerShot*> listShot, vector <villain*> botList);
 
 };
 
@@ -193,7 +195,7 @@ void update::rotateBot(villain* bot) {
 		}
 	}
 	else {
-		//IL BOT NON DEVO RUOTARE
+		//IL BOT NON DEVE RUOTARE
 	}
 }
 
@@ -308,7 +310,7 @@ void update::moveSingleBot(villain* bot, player* p) {
 }
 
 
-void update::calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool muoviGiu, bool muoviSu) {
+void update::calculateAnglePlayer(player* p) {
 
 	float anglePlayerR = 0.0f;
 	float anglePlayer = p->getAnglePlayer();
@@ -380,11 +382,22 @@ void update::calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool mu
 }
 
 //update shot
-void update::updateShot(playerShot listShot[3]) {
+void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList) {
 	for (int i = 0; i < numShot; i++) {
-		if (listShot[i].isShot) {
-			listShot[i].direction = listShot[i].direction + 0.05f;
-			listShot[i].direction = listShot[i].direction + 0.05f;
+		if (listShot[i]->isShot) {
+			listShot[i]->direction = listShot[i]->direction + 0.05f;
+			listShot[i]->direction = listShot[i]->direction + 0.05f;
+		}	
+	}
+
+}
+
+void update::shotHitBot(vector <playerShot*> listShot, vector <villain*> botList) {
+	for (int s = 0; s < numShot; s++) {
+		for (int b = 0; b < botList.size(); b++) {
+			if ((listShot[s]->getX() >= botList[b]->getX() - TILE_DIM/2 && listShot[s]->getX() <= botList[b]->getX() + TILE_DIM/2) && (listShot[s]->getZ() >= botList[b]->getZ() - TILE_DIM/2 && listShot[s]->getZ() <= botList[b]->getZ() + TILE_DIM/2)) {
+				cout << "HIT" << endl;
+			}
 		}
 	}
 }

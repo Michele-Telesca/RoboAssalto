@@ -30,24 +30,24 @@ public:
 	SkinnedMesh meshRunning;
 	SkinnedMesh meshStanding;
 
-	//float animationCounter = 0.0f;
-
+	// target dell'arma
 	weapon* wea = new weapon(3.0f, 90.0f, 2.0f); //arma posseduta al momento
 	
 	bool mouseSxIsSelected = false;
 	bool startPlayerShot = false;
 
 	//lista colpi
-	playerShot listShot[numShot];
+	vector<playerShot*> listShot;
 
-	unsigned int texturePlayer;
+	//texture
+	unsigned int texture1;
 
 	//prototipi
 	void drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint); //disegna il player
 	void initPlayer(); //inizializza il player
 	void updateAngleShot(float tempDegree, float anglePlayer);
+	
 	//get e set
-
 	bool getStartPlayerShot() {
 		return startPlayerShot;
 	}
@@ -68,6 +68,10 @@ public:
 		return anglePlayer;
 	}
 
+	//playerShot* getListShot() {
+	//	return listShot;
+	//}
+
 	void setX(float new_x) {
 		x = new_x;
 	}
@@ -84,7 +88,6 @@ public:
 		anglePlayer = angle;
 	}
 
-	
 
 };
 
@@ -96,11 +99,12 @@ void player::initPlayer() {
 	z = 0.0f;
 
 	anglePlayer = 0.0f;
+
 	//vita iniziale
 	life = 100;
 
 	//numero colpi a disposizione
-	numShotsAvailable = 3;
+	numShotsAvailable = numShot;
 
 	//tempo ricarica colpo
 	chargingTime = 0.0;
@@ -108,10 +112,11 @@ void player::initPlayer() {
 	//tempo ultimo colpo
 	timeLastShot = 0.0;
 
-
 	//inizializzo la lista dei colpi
 	for (int i = 0; i < numShot; i++) {
-		listShot[i].inizializza();
+		playerShot* playerShot_i = new playerShot();
+		listShot.push_back(playerShot_i);
+		listShot[i]->inizializza();
 	}
 
 	//loading meshes with animation
@@ -210,26 +215,22 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		meshRunning.render();
 	}
 	
-	
 
 	//controllo la lista dei colpi e ne setto gli angoli 
 	if (startPlayerShot) {
 		bool shotIsAvaiable = checkShotIsAvaiable(numShotsAvailable, chargingTime, timeLastShot);
 		if (shotIsAvaiable) {
-			listShot[numShotsAvailable - 1].x = x;
-			listShot[numShotsAvailable - 1].y = y;
-			listShot[numShotsAvailable - 1].z = z;
-			listShot[numShotsAvailable - 1].startX = x;
-			listShot[numShotsAvailable - 1].startZ = z;
-			listShot[numShotsAvailable - 1].angle = angleWeapon;
-			listShot[numShotsAvailable - 1].isShot = true;
+			listShot[numShotsAvailable - 1]->startX = x; //posizione x del player
+			listShot[numShotsAvailable - 1]->startZ = z; //posizione z del player
+			listShot[numShotsAvailable - 1]->angle = angleWeapon;
+			listShot[numShotsAvailable - 1]->isShot = true;
 			numShotsAvailable = numShotsAvailable - 1;
 		}
 		startPlayerShot = false;
 	}
 
 	if (mouseSxIsSelected) {
-		wea->drawTarget(lightShader, view, x, y, z, texturePlayer, angleWeapon);
+		wea->drawTarget(lightShader, view, x, y, z, texture1, angleWeapon);
 	}
 
 	// material properties
@@ -240,8 +241,8 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 
 
 	for (int i = 0; i < numShot; i++) {
-		if (listShot[i].isShot) {
-			listShot[i].draw(lightShader, texturePlayer);
+		if (listShot[i]->isShot) {
+			listShot[i]->draw(lightShader, texture1);
 		}
 	}
 
