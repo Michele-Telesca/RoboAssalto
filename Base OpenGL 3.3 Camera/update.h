@@ -346,32 +346,21 @@ void update::calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool mu
 		anglePlayerR = anglePlayer;
 	}
 
-	/*
-	if (anglePlayer == 360.0f && muoviSx != true) {
-		anglePlayer = 0.0f;
-	}
-	if (anglePlayer == 0.0f && muoviSx == true) {
-		anglePlayer = 360.0f;
-	}
-	*/
-
-
-
 	if (anglePlayer - anglePlayerR > 0.0f ) {
 		if (anglePlayer - anglePlayerR < 180.0f) {
-			anglePlayer = anglePlayer - 45.0f;
+			anglePlayer = anglePlayer - 15.0f;
 		}
 		else {
-			anglePlayer = anglePlayer + 45.0f;
+			anglePlayer = anglePlayer + 15.0f;
 
 		}
 	}
 	if (anglePlayer - anglePlayerR < 0.0f) {
 		if (anglePlayer - anglePlayerR > -180.0f) {
-			anglePlayer = anglePlayer + 45.0f;
+			anglePlayer = anglePlayer + 15.0f;
 		}
 		else {
-			anglePlayer = anglePlayer - 45.0f;
+			anglePlayer = anglePlayer - 15.0f;
 		}
 	}
 	
@@ -382,8 +371,9 @@ void update::calculateAnglePlayer(player* p, bool muoviDx, bool muoviSx, bool mu
 		anglePlayer = 0.0f;
 	}
 	if (anglePlayer < 0.0f) {
-		anglePlayer = 315.0f;
+		anglePlayer = 345.0f;
 	}
+
 
 	p->setAnglePlayer(anglePlayer);
 

@@ -234,6 +234,7 @@ void render(Shader lightShader, Shader animShader)
 
 		//player rotation
 		update_game->calculateAnglePlayer(player, muoviDx , muoviSx , muoviGiu , muoviSu);
+
 		// ------- MOUSE ------- //
 		mouse_position();
 

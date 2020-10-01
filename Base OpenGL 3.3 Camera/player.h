@@ -45,8 +45,13 @@ public:
 	//prototipi
 	void drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint); //disegna il player
 	void initPlayer(); //inizializza il player
-
+	void updateAngleShot(float tempDegree, float anglePlayer);
 	//get e set
+
+	bool getStartPlayerShot() {
+		return startPlayerShot;
+	}
+
 	float getX() {
 		return x;
 	}
@@ -78,6 +83,8 @@ public:
 	void setAnglePlayer(float angle) {
 		anglePlayer = angle;
 	}
+
+	
 
 };
 
@@ -121,12 +128,38 @@ float angleBetween(const glm::vec3 a, const glm::vec3 b) {
 }
 
 bool checkShotIsAvaiable(int numShot, float chargingTime, float timeLastShot) {
-
+	if (numShot == 0) {
+		return false;
+	}
 	return true;
+}
+
+void player::updateAngleShot(float tempDegree, float anglePlayer) {
+
+	if (tempDegree > 0 and tempDegree < 90) {
+		setAnglePlayer(45.0f);
+	}
+	if (tempDegree > 90 and tempDegree < 180) {
+		setAnglePlayer(135.0f);
+	}
+	if (tempDegree < 0 and tempDegree > -90) {
+		setAnglePlayer(315.0f);
+	}
+	if (tempDegree < -90 and tempDegree > -180) {
+		setAnglePlayer(225.0f);
+	}
 }
 
 void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint) {
 	
+	float mouseX = mousePoint.x;
+	float mouseY = mousePoint.z;
+
+	float d1 = mouseX - x;
+	float d2 = mouseY - z;
+
+	float angleWeapon = atan2(d1, d2);
+
 	animShader.use();
 	
 	//projection
@@ -137,10 +170,23 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	//view
 	animShader.setMat4("view", view);
 	
+	float radiansAngle = glm::radians(anglePlayer);
+
+	if (startPlayerShot) {
+		radiansAngle = angleWeapon;
+		float tempDegree = glm::degrees(radiansAngle);
+
+		updateAngleShot(tempDegree, anglePlayer);
+		
+		//cout << "*** angle player (X,Z): (" << anglePlayer << ")" << endl;
+		//cout << "*** angle Mouse: (" << tempDegree << ")" << endl;
+
+	}
+
 	//model
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, 0.5f, z));
-	model = glm::rotate(model, glm::radians(anglePlayer), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, radiansAngle, glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //per metterlo in posizione verticale sul pavimento
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	animShader.setMat4("model", model);
@@ -164,14 +210,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		meshRunning.render();
 	}
 	
-
-	float mouseX = mousePoint.x;
-	float mouseY = mousePoint.z;
-
-	float d1 = mouseX - x;
-	float d2 = mouseY - z;
-
-	float angle = atan2(d1, d2);
+	
 
 	//controllo la lista dei colpi e ne setto gli angoli 
 	if (startPlayerShot) {
@@ -182,7 +221,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 			listShot[numShotsAvailable - 1].z = z;
 			listShot[numShotsAvailable - 1].startX = x;
 			listShot[numShotsAvailable - 1].startZ = z;
-			listShot[numShotsAvailable - 1].angle = angle;
+			listShot[numShotsAvailable - 1].angle = angleWeapon;
 			listShot[numShotsAvailable - 1].isShot = true;
 			numShotsAvailable = numShotsAvailable - 1;
 		}
@@ -190,7 +229,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	}
 
 	if (mouseSxIsSelected) {
-		wea->drawTarget(lightShader, view, x, y, z, texturePlayer, angle);
+		wea->drawTarget(lightShader, view, x, y, z, texturePlayer, angleWeapon);
 	}
 
 	// material properties
@@ -209,3 +248,4 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 
 
 }
+
