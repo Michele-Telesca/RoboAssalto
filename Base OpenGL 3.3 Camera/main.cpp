@@ -259,7 +259,7 @@ void render(Shader lightShader, Shader animShader)
 
 		// ------- SHOT ------- //
 		update_game->updateShot(player->listShot, botList);
-		update_game->shotHitBot(player->listShot, botList);
+		//update_game->shotHitBot(player->listShot, botList);
 
 		update_animation->updateAllAnimations(player, botList);
 

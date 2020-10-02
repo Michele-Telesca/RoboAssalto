@@ -33,6 +33,8 @@ class updateAnimation
 	//bot animation time
 	void increaseBotTime(vector<villain*> botList);
 	void increaseBot_Walk_Attack(vector<villain*> botList);
+	void increaseBot_Hit(vector<villain*> botList);
+	void increaseBot_Dead(vector<villain*> botList);
 
 	//player animation time
 	void increasePlayerTime(player* player);
@@ -47,6 +49,8 @@ void updateAnimation::updateAllAnimations(player* player, vector<villain*> botLi
 
 void updateAnimation::increaseBotTime(vector<villain*> botList) {
 	increaseBot_Walk_Attack(botList);
+	increaseBot_Hit(botList);
+	increaseBot_Dead(botList);
 }
 
 void updateAnimation::increasePlayerTime(player* player) {
@@ -71,6 +75,31 @@ void updateAnimation::increaseBot_Walk_Attack(vector<villain*> botList) {
 		}
 	}
 }
+
+void updateAnimation::increaseBot_Hit(vector<villain*> botList) {
+	for (int i = 0; i < botList.size(); i++) {
+		if (botList[i]->animation_botHit == true) {
+			botList[i]->animationTime_botHit = botList[i]->animationTime_botHit + 0.04f;
+		}
+		if (botList[i]->animationTime_botHit >= 2.0f) {
+			botList[i]->animationTime_botHit = 0.08f;
+			botList[i]->animation_botHit = false;
+		}
+	}
+}
+
+void updateAnimation::increaseBot_Dead(vector<villain*> botList) {
+	for (int i = 0; i < botList.size(); i++) {
+		if (botList[i]->animation_botDead == true) {
+			botList[i]->animationTime_botDead = botList[i]->animationTime_botDead + 0.04f;
+		}
+		if (botList[i]->animationTime_botDead >= 4.0f) {
+			botList[i]->animation_botDead = false; // setto l'animazione a false
+			botList[i]->isDead = true; // setto il booleano isDead a true
+		}
+	}
+}
+
 
 void updateAnimation::increasePlayerStand_Run(player* player) {
 	player->animationTime_playerStanding = player->animationTime_playerStanding + 0.06f;
