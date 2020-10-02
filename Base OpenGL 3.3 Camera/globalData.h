@@ -37,9 +37,6 @@ const int BUSH1 = 13;
 const int BUSH2 = 14;
 const int CHEST = 15;
 
-const int PLAYER_STANDING = 0;
-const int PLAYER_RUNNING = 1;
-
 const int DIRECTION_RIGHT = 0;
 const int DIRECTION_LEFT = 1;
 const int DIRECTION_DOWN = 2;
@@ -50,16 +47,11 @@ const int numShot = 3; //numero proiettili
 const float SHOT_SPEED = 3.0f; //velocità proiettili
 const float SHOT_DIM = 0.5f; //dimensione x,z del proiettile
 
-// ---- Variabili ---- //
-float animationTime_player = 0.0f; //contatore per le animazioni -> serve per gestire la verlocità delle animazioni che incrementano in base alla velocità di incremento della variabile
-float animationTime_villain = 0.0f;
-
-bool villain_walking = true;
-
-//movimenti
+//Movimenti
 bool muoviDx = false;
 bool muoviSx = false;
 bool muoviSu = false;
 bool muoviGiu = false;
 bool mouseSx = false;
+
 bool startPlayerShot = false;

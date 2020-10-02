@@ -26,15 +26,19 @@ public:
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
 	float anglePlayer;
 
-	// modello 3D con scheletro e animazione
+	bool mouseSxIsSelected = false;
+	bool startPlayerShot = false;
+
+	// modelli 3D con scheletro e animazione
 	SkinnedMesh meshRunning;
 	SkinnedMesh meshStanding;
 
+	// tempo per le animazioni
+	float animationTime_playerStanding;
+	float animationTime_playerRunning;
+
 	// target dell'arma
 	weapon* wea = new weapon(3.0f, 90.0f, 2.0f); //arma posseduta al momento
-	
-	bool mouseSxIsSelected = false;
-	bool startPlayerShot = false;
 
 	//lista colpi
 	vector<playerShot*> listShot;
@@ -44,6 +48,7 @@ public:
 
 	//prototipi
 	void drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint); //disegna il player
+	void animatePlayer(Shader animShader);
 	void initPlayer(); //inizializza il player
 	void updateAngleShot(float tempDegree, float anglePlayer);
 	
@@ -67,10 +72,6 @@ public:
 	float getAnglePlayer() {
 		return anglePlayer;
 	}
-
-	//playerShot* getListShot() {
-	//	return listShot;
-	//}
 
 	void setX(float new_x) {
 		x = new_x;
@@ -123,6 +124,10 @@ void player::initPlayer() {
 	//meshRunning.loadMesh("animation/player_michelle/running/Running.dae");
 	meshRunning.loadMesh("animation/player_michelle/shotgun_running/shotgun_running.dae");
 	meshStanding.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
+
+	// tempo per le animazioni
+	animationTime_playerStanding = 0.0f;
+	animationTime_playerRunning = 0.0f;
 
 }
 
@@ -182,9 +187,6 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		float tempDegree = glm::degrees(radiansAngle);
 
 		updateAngleShot(tempDegree, anglePlayer);
-		
-		//cout << "*** angle player (X,Z): (" << anglePlayer << ")" << endl;
-		//cout << "*** angle Mouse: (" << tempDegree << ")" << endl;
 
 	}
 
@@ -194,27 +196,9 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	model = glm::rotate(model, radiansAngle, glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //per metterlo in posizione verticale sul pavimento
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	animShader.setMat4("model", model);
+	animShader.setMat4("model", model);	
 
-	vector <glm::mat4> transforms;
-
-	if (muoviDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) { //se non mi muovo -> meshStanding
-		meshStanding.boneTransform(animationTime_player, transforms);
-		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
-			transforms.size(),
-			GL_FALSE,
-			glm::value_ptr(transforms[0]));
-		meshStanding.render();
-	}
-	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning		
-		meshRunning.boneTransform(animationTime_player, transforms);
-		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
-			transforms.size(),
-			GL_FALSE,
-			glm::value_ptr(transforms[0]));
-		meshRunning.render();
-	}
-	
+	animatePlayer(animShader); //animazione
 
 	//controllo la lista dei colpi e ne setto gli angoli 
 	if (startPlayerShot) {
@@ -246,7 +230,26 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		}
 	}
 
+}
 
+void player::animatePlayer(Shader animShader) {
+	vector <glm::mat4> transforms;
 
+	if (muoviDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) { //se non mi muovo -> meshStanding
+		meshStanding.boneTransform(animationTime_playerStanding, transforms);
+		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+			transforms.size(),
+			GL_FALSE,
+			glm::value_ptr(transforms[0]));
+		meshStanding.render();
+	}
+	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning		
+		meshRunning.boneTransform(animationTime_playerRunning, transforms);
+		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+			transforms.size(),
+			GL_FALSE,
+			glm::value_ptr(transforms[0]));
+		meshRunning.render();
+	}
 }
 

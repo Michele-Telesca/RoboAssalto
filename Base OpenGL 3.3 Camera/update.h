@@ -229,7 +229,8 @@ void update::moveSingleBot(villain* bot, player* p) {
 					bot->rotationAngle = 0.0f;
 				}
 
-				villain_walking = true; //setto a true il booleano per l'animazione walking
+				bot->animation_botWalking = true; //setto a true il booleano per l'animazione walking
+				bot->animation_botAttacking = false;
 
 				if (isEqual(bot->getZ(), newCoord_z, EPSILON_2)) { //mi muovo lungo l'asse x
 
@@ -288,7 +289,6 @@ void update::moveSingleBot(villain* bot, player* p) {
 						bot->old_direction = 3;
 					}
 				}
-
 				//Se le coordinate del bot (path_currentStep) hanno raggunto il nextStep
 				if (isEqual(bot->getX(), newCoord_x, EPSILON_2) && isEqual(bot->getZ(), newCoord_z, EPSILON_2)) {
 					bot->path_currentStep++; //incremento lo step
@@ -296,7 +296,8 @@ void update::moveSingleBot(villain* bot, player* p) {
 			}
 			else {
 				//se il bot collide con il player NON AVANZA ma si gira verso il player e lo attacca
-				villain_walking = false;
+				bot->animation_botWalking = false;
+				bot->animation_botAttacking = true;
 				float new_rotationAngle = p->getAnglePlayer() - 180.0f;
 				bot->setRotationAngle(new_rotationAngle);
 			}
@@ -304,7 +305,8 @@ void update::moveSingleBot(villain* bot, player* p) {
 	}
 	else {
 		//se il bot è arrivato a fine path NON AVANZA ma attacca il tesoro
-		villain_walking = false;	 
+		bot->animation_botWalking = false;
+		bot->animation_botAttacking = true;
 	}
 
 }
@@ -385,8 +387,11 @@ void update::calculateAnglePlayer(player* p) {
 void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList) {
 	for (int i = 0; i < numShot; i++) {
 		if (listShot[i]->isShot) {
-			listShot[i]->direction = listShot[i]->direction + 0.05f;
-			listShot[i]->direction = listShot[i]->direction + 0.05f;
+			listShot[i]->direction = listShot[i]->direction + 0.1f;
+			float dx = (listShot[i]->direction)*sin(listShot[i]->angle); //direction * sin(angle)
+			float dy = (listShot[i]->direction)*cos(listShot[i]->angle); 
+			listShot[i]->x = listShot[i]->startX + dx * SHOT_SPEED; //startx + dx*speed
+			listShot[i]->z = listShot[i]->startZ + dy * SHOT_SPEED;
 		}	
 	}
 
@@ -396,7 +401,11 @@ void update::shotHitBot(vector <playerShot*> listShot, vector <villain*> botList
 	for (int s = 0; s < numShot; s++) {
 		for (int b = 0; b < botList.size(); b++) {
 			if ((listShot[s]->getX() >= botList[b]->getX() - TILE_DIM/2 && listShot[s]->getX() <= botList[b]->getX() + TILE_DIM/2) && (listShot[s]->getZ() >= botList[b]->getZ() - TILE_DIM/2 && listShot[s]->getZ() <= botList[b]->getZ() + TILE_DIM/2)) {
+				listShot[s]->startX = -1000.0f;
+				listShot[s]->startZ = -1000.0f;
+				botList[b]->life = botList[b]->life - 100.0f;
 				cout << "HIT" << endl;
+				cout << "bot life: " << botList[b]->life << endl;
 			}
 		}
 	}

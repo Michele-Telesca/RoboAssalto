@@ -56,10 +56,11 @@ void playerShot::draw(Shader lightShader, int texturePlayer) {
 
 	lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 	glm::mat4 modelW = glm::mat4(1.0f);
-	float dx = (direction)*sin(angle);
+	/*float dx = (direction)*sin(angle);
 	float dy = (direction)*cos(angle);
+
 	x = startX + dx * SHOT_SPEED;
-	z = startZ + dy * SHOT_SPEED;
+	z = startZ + dy * SHOT_SPEED;*/
 	modelW = glm::translate(modelW, glm::vec3(x, y, z));
 	modelW = glm::rotate(modelW, angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	modelW = glm::scale(modelW, glm::vec3(SHOT_DIM, SHOT_DIM, SHOT_DIM));

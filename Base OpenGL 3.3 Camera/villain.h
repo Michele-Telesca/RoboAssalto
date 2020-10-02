@@ -32,15 +32,31 @@ public:
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. serve per dare un tempo tra l'ultimo colpo e il prossimo
 
+	// modelli 3D con scheletro e animazione
 	SkinnedMesh meshWalking;
 	SkinnedMesh meshAttacking;
+	SkinnedMesh meshHit;
+	SkinnedMesh meshDead;
 
-	weapon* weapon; //per avere la gittata del villain
+	// booleani per le animazioni
+	bool animation_botWalking;
+	bool animation_botAttacking;
+	bool animation_botHit;
+	bool animation_botDead;
+
+	// tempo per le animazioni
+	float animationTime_botWalking;
+	float animationTime_botAttacking;
+	float animationTime_botHit;
+	float animationTime_botDead;
+	
+	//weapon* weapon; //per avere la gittata del villain
 	path* percorso;
 	player* p;
 
 	//Prototipi
 	void drawVillain(Shader animShader, glm::mat4 view);			 //disegna il player
+	void animate(Shader animShader);
 	void initVillain(int path_Matrix[DIM][DIM]);					 //inializza il villain
 
 	//GET e SET
@@ -148,7 +164,6 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 	}
 
 	angleToReach = rotationAngle;
-	//sensoOrario = true;
 
 	//vita iniziale
 	life = 100;
@@ -162,6 +177,16 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 
 	meshWalking.loadMesh("animation/villain/walking/Walking.dae");
 	meshAttacking.loadMesh("animation/villain/attack/Zombie Punching.dae");
+	
+	animation_botWalking = true;
+	animation_botHit = false;
+	animation_botDead = false;
+	animation_botHit = false;
+
+	animationTime_botWalking = 0.0f;
+	animationTime_botAttacking = 0.0f;
+	animationTime_botHit = 0.0f;
+	animationTime_botDead = 0.0f;
 }
 
 
@@ -184,24 +209,28 @@ void villain::drawVillain(Shader animShader, glm::mat4 view){
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 	animShader.setMat4("model", model);
 
-	vector <glm::mat4> transforms;
+	animate(animShader); //animazione
+	
+}
 
-	if (villain_walking == true) {
-		meshWalking.boneTransform(animationTime_villain, transforms);
+void villain::animate(Shader animShader) {
+
+	vector <glm::mat4> transforms;
+	if (animation_botWalking == true) {
+		meshWalking.boneTransform(animationTime_botWalking, transforms);
 		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
 			transforms.size(),
 			GL_FALSE,
 			glm::value_ptr(transforms[0]));
 		meshWalking.render();
 	}
-	else if (villain_walking == false) {
-		meshAttacking.boneTransform(animationTime_villain, transforms);
+	else if (animation_botWalking == false) {
+		meshAttacking.boneTransform(animationTime_botAttacking, transforms);
 		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
 			transforms.size(),
 			GL_FALSE,
 			glm::value_ptr(transforms[0]));
 		meshAttacking.render();
 	}
-
 }
 

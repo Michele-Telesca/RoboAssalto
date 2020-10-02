@@ -19,11 +19,11 @@
 #include <gl/glu.h>
 
 #include "update.h"
+#include "updateAnimation.h"
 #include "model.h"
 #include "game.h"
 #include "gameMap.h"
 #include "cube.h"
-#include "update.h"
 #include "villain.h"
 #include "player.h"
 #include "playerShot.h"
@@ -34,6 +34,7 @@
 // dichiarazione oggetti
 game* gameuno = new game();
 update* update_game = new update();
+updateAnimation* update_animation = new updateAnimation();
 
 glm::vec3 pos_camera_mobile_global(1.0f);
 glm::mat4 view_global(1.0f);
@@ -242,8 +243,8 @@ void render(Shader lightShader, Shader animShader)
 		// ------- BOT ------- //
 		if (spawnBot == true) {
 			gameuno->spawn_BOT(path1_Matrix);
-			//gameuno->spawn_BOT(path2_Matrix);
-			//gameuno->spawn_BOT(path3_Matrix);
+			gameuno->spawn_BOT(path2_Matrix);
+			gameuno->spawn_BOT(path3_Matrix);
 			//gameuno->spawn_BOT(path4_Matrix);
 			//gameuno->spawn_BOT(path5_Matrix);
 			//gameuno->spawn_BOT(path6_Matrix);
@@ -260,18 +261,7 @@ void render(Shader lightShader, Shader animShader)
 		update_game->updateShot(player->listShot, botList);
 		update_game->shotHitBot(player->listShot, botList);
 
-		//più è basso l'incremento e più saranno lente le animazioni. Quando il contatore super 10.0f riparte da 0 (evita il bug delle gambe)
-		if (animationTime_player > 10.0f) {
-			animationTime_player = 0.0f;
-		} else {
-			animationTime_player = animationTime_player + 0.06f;
-		}
-		
-		if (animationTime_villain > 10.0f) {
-			animationTime_villain = 0.0f;
-		} else {
-			animationTime_villain = animationTime_villain + 0.05f;
-		}
+		update_animation->updateAllAnimations(player, botList);
 
 		previousTime = currentTime;
 	}

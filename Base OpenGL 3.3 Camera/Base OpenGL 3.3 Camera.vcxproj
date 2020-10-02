@@ -184,6 +184,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="skinned_mesh.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="update.h" />
+    <ClInclude Include="updateAnimation.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="villainShot.h" />
     <ClInclude Include="weapon.h" />
