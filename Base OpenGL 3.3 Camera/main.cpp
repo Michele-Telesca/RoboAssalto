@@ -46,8 +46,6 @@ double previousTime = glfwGetTime();
 
 bool spawnBot = true;
 
-bool ondeggio = true;
-
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
@@ -202,9 +200,10 @@ void render(Shader lightShader, Shader animShader)
 
 		player* player = gameuno->getPlayer();
 		vector <villain*> botList = gameuno->getBotList();
-		
+
 
 		// ------- PLAYER MOVES ------- //
+
 		if (muoviDx) {
 			update_game->moveRight(player, botList);
 		}
@@ -234,17 +233,16 @@ void render(Shader lightShader, Shader animShader)
 			gameuno->getPlayer()->startPlayerShot = false;
 		}
 
-		//player rotation
-		update_game->calculateAnglePlayer(player);
+		update_game->calculateAnglePlayer(player); //player rotation
 
 		// ------- MOUSE ------- //
 		mouse_position();
 
 		// ------- BOT ------- //
-		if (spawnBot == true) {
+		if (botList.empty()) {
 			gameuno->spawn_BOT(path1_Matrix);
-			gameuno->spawn_BOT(path2_Matrix);
-			gameuno->spawn_BOT(path3_Matrix);
+			//gameuno->spawn_BOT(path2_Matrix);
+			//gameuno->spawn_BOT(path3_Matrix);
 			//gameuno->spawn_BOT(path4_Matrix);
 			//gameuno->spawn_BOT(path5_Matrix);
 			//gameuno->spawn_BOT(path6_Matrix);
@@ -252,15 +250,14 @@ void render(Shader lightShader, Shader animShader)
 			//gameuno->spawn_BOT(path8_Matrix);
 			//gameuno->spawn_BOT(path9_Matrix);
 			//gameuno->spawn_BOT(path10_Matrix);
-			spawnBot = false;
 		}
-		
-		update_game->moveAllBots(botList, player);
+
+		update_game->updateBot(botList, player, gameuno); 
 
 		// ------- SHOT ------- //
 		update_game->updateShot(player->listShot, botList);
-		//update_game->shotHitBot(player->listShot, botList);
 
+		// ------- ANIMATION ------- //
 		update_animation->updateAllAnimations(player, botList);
 
 		previousTime = currentTime;

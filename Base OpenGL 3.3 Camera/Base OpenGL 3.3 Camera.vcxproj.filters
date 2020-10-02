@@ -122,14 +122,14 @@
     <ClInclude Include="globalPathData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="skinned_mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="updateAnimation.h">
       <Filter>Header Files\Controllo</Filter>
+    </ClInclude>
+    <ClInclude Include="skinned_mesh.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>Header Files\Tool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

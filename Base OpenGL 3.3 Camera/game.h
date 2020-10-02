@@ -32,6 +32,7 @@ public:
 	void inizializza();
 	void draw(Shader lightShader, Shader animShader, glm::mat4 view);
 	void spawn_BOT(int path_Matrix[DIM][DIM]);
+	void eliminate_BOT();
 
 	glm::vec3 getMousePoint() {
 		return mousePoint;
@@ -65,6 +66,10 @@ public:
 	}
 
 };
+
+void game::eliminate_BOT() {
+	botList.pop_back();
+}
 
 void game::spawn_BOT(int path_Matrix[DIM][DIM]) {
 	villain* bot = new villain();
