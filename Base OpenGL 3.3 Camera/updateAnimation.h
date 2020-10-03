@@ -43,8 +43,12 @@ class updateAnimation
 };
 
 void updateAnimation::updateAllAnimations(player* player, vector<villain*> botList) {
-	increasePlayerTime(player);
-	increaseBotTime(botList);
+	
+	increasePlayerTime(player); 
+	
+	if (!botList.empty()) { 
+		increaseBotTime(botList); //incrementa le animazioni dei bot solo se la lista dei bot NON è vuota
+	}
 }
 
 void updateAnimation::increaseBotTime(vector<villain*> botList) {
@@ -93,7 +97,7 @@ void updateAnimation::increaseBot_Dead(vector<villain*> botList) {
 		if (botList[i]->animation_botDead == true) {
 			botList[i]->animationTime_botDead = botList[i]->animationTime_botDead + 0.04f; //incremento l'animazione
 		}
-		if (botList[i]->animationTime_botDead >= 4.0f) {  //quando l'animazione è finita
+		if (botList[i]->animationTime_botDead >= 3.3f) {  //quando l'animazione è finita
 			botList[i]->animationTime_botDead = 0.04f;    //resetto il tempo di animazione all'inizio
 			botList[i]->animation_botDead = false;        //setto l'animazione a false
 			botList[i]->isDead = true;					  //setto il booleano del bot "isDead" a true
