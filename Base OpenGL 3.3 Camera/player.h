@@ -146,17 +146,18 @@ bool checkShotIsAvaiable(int numShot, float chargingTime, float timeLastShot) {
 
 void player::updateAngleShot(float tempDegree, float anglePlayer) {
 
-	if (tempDegree > 0 and tempDegree < 90) {
-		setAnglePlayer(45.0f);
+
+	for (float ang = 0.0f; ang < 180.0f; ang = ang + 15.0f) {
+		float tempAng = ang + 15.0f;
+		if (tempDegree >= ang && tempDegree < tempAng) {
+			setAnglePlayer(ang);
+		}
 	}
-	if (tempDegree > 90 and tempDegree < 180) {
-		setAnglePlayer(135.0f);
-	}
-	if (tempDegree < 0 and tempDegree > -90) {
-		setAnglePlayer(315.0f);
-	}
-	if (tempDegree < -90 and tempDegree > -180) {
-		setAnglePlayer(225.0f);
+	for (float ang = -180.0f; ang < 0.0f; ang = ang + 15.0f) {
+		float tempAng = ang + 15.0f;
+		if (tempDegree >= ang && tempDegree < tempAng) {
+			setAnglePlayer(ang + 360.0f);
+		}
 	}
 }
 
