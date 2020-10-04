@@ -162,10 +162,6 @@ bool player::checkShotIsAvaiable(float currentTime) {
 	}
 	if (numShotsAvailable < 3) {
 		if ((currentTime - timeLastShot) > chargingTime) {
-
-			cout << "*** Shot: " << numShotsAvailable << ")" << endl;
-			cout << "*** Current Time: " << currentTime << ")" << endl;
-			cout << "*** last Shot: " << timeLastShot << ")" << endl;
 			addNumShotAvailable();
 			setTimeLastShot(currentTime);
 			return true;
@@ -250,6 +246,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 			listShot[numShotsAvailable - 1]->startZ = z; //posizione z del player
 			listShot[numShotsAvailable - 1]->angle = angleWeapon;
 			listShot[numShotsAvailable - 1]->isShot = true;
+
 			removeShot();
 
 		}

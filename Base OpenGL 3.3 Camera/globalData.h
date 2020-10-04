@@ -47,7 +47,7 @@ const int ZOMBIE_DERRICK = 2;
 const int ZOMBIE_COP = 3;
 
 //SHOT
-const int numShot = 20; //numero proiettili
+const int numShot = 3; //numero proiettili
 const float SHOT_SPEED = 3.0f; //velocità proiettili
 const float SHOT_DIM = 0.5f; //dimensione x,z del proiettile
 
