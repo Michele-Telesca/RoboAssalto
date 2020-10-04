@@ -64,7 +64,7 @@ public:
 	void initModel_Zombie1();
 	void initModel_Zombie2();
 	void initModel_Zombie3();
-	void initVillain(int path_Matrix[DIM][DIM]);
+	void initVillain(path* path);
 
 	//GET e SET
 	float getX() {
@@ -113,61 +113,17 @@ public:
 
 };
 
-void villain::initVillain(int path_Matrix[DIM][DIM]) {
+void villain::initVillain(path* path) {
+	
+	//assegno il path al bot
+	percorso = path;
+
 	//inizializzo le coordinate di spawn
-	for (int i = 0; i < DIM; i++) {
-		for (int j = 0; j < DIM; j++) {
-			if (path_Matrix[i][j] == 1) {
-				//conversione coordinate matrice -> game
-				int coord_x = j - 20;
-				int coord_z = i - 19;
+	x = path->path_map[1].x;
+	z = path->path_map[1].y;
 
-				x = coord_x;
-				z = coord_z;
-			}
-		}
-	}
-
-	if (path_Matrix == path1_Matrix) {
-		old_direction = START_DIRECTION_PATH1; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH1;  //setto la rotazione iniziale
-	}
-	else if (path_Matrix == path2_Matrix) {
-		old_direction = START_DIRECTION_PATH2; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH2;  //setto la rotazione iniziale
-	}
-	else if (path_Matrix == path3_Matrix) {
-		old_direction = START_DIRECTION_PATH3; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH3;  //setto la rotazione iniziale
-	}
-	else if (path_Matrix == path4_Matrix) {
-		old_direction = START_DIRECTION_PATH4; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH4;  //setto la rotazione iniziale
-	}
-	else if (path_Matrix == path5_Matrix) {
-		old_direction = START_DIRECTION_PATH5; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH5;  //setto la rotazione iniziale
-	}
-	else if (path_Matrix == path6_Matrix) {
-		old_direction = START_DIRECTION_PATH6; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH6;  //setto la rotazione iniziale
-	}
-	else if (path_Matrix == path7_Matrix) {
-		old_direction = START_DIRECTION_PATH7; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH7;  //setto la rotazione iniziale
-	}
-	else if (path_Matrix == path8_Matrix) {
-		old_direction = START_DIRECTION_PATH8; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH8;  //setto la rotazione iniziale
-	}
-	else if (path_Matrix == path9_Matrix) {
-		old_direction = START_DIRECTION_PATH9; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH9;  //setto la rotazione iniziale
-	}
-	else if (path_Matrix == path10_Matrix) {
-		old_direction = START_DIRECTION_PATH10; //setto la direzione di movimento iniziale 
-		rotationAngle = START_ROTATION_PATH10;  //setto la rotazione iniziale
-	}
+	old_direction = path->path_StartDirectionBot; //setto la direzione di movimento iniziale 
+	rotationAngle = path->path_startRotationBot;  //setto la rotazione iniziale
 
 	angleToReach = rotationAngle;
 
@@ -192,9 +148,6 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 	animationTime_botHit = 0.08f;
 	animationTime_botDead = 0.0f;
 
-	//creo ed inizializzo il path del villain
-	percorso = new path(); 
-	percorso->inizializzaPath(path_Matrix);
 }
 
 void villain::initModel_Zombie1() {

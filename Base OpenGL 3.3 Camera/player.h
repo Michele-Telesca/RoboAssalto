@@ -121,7 +121,6 @@ void player::initPlayer() {
 	}
 
 	//loading meshes with animation
-	//meshRunning.loadMesh("animation/player_michelle/running/Running.dae");
 	meshRunning.loadMesh("animation/player_michelle/shotgun_running/shotgun_running.dae");
 	meshStanding.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
 

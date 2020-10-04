@@ -34,7 +34,6 @@ public:
 	void moveBot(villain* bot, player* p);
 	void rotateBot(villain* bot); //rotazione del bot
 	void botCollideVSPlayer(villain* bot, player* p); //collisione del bot
-	void killBOT(vector <villain*> botList, game* game);
 
 	// ---- Movimento e collisioni degli SHOT ---- //
 	void updateShot(vector <playerShot*> listShot, vector <villain*> botList);
@@ -170,9 +169,10 @@ void update::moveDown(player* p, vector <villain*> botList) {
 void update::updateBot(vector <villain*> botList, player* p, game* game) {
 	if (botList.size() >= 1) { //se la lista di bot NON è VUOTA
 		for (int i = 0; i < botList.size(); i++) {
-			moveBot(botList[i], p);				  //movimento del singolo bot
-			rotateBot(botList[i]);				  //effettua le rotazioni del singolo bot (in caso c'è un cambio di direzione)
-			killBOT(botList, game);
+			moveBot(botList[i], p);		 //movimento del bot lungo il path
+			if (botList[i]->animation_botWalking && !botList[i]->animation_botHit && !botList[i]->animation_botDead && !botList[i]->animation_botAttacking) {
+				rotateBot(botList[i]);   //effettua le rotazioni contemporaneamnete al movimento lungo il path (solo se il bot cammina)
+			}
 		}
 	}
 }
@@ -252,60 +252,61 @@ void update::moveBot(villain* bot, player* p) {
 				if (isEqual(bot->getZ(), newCoord_z, EPSILON_2)) { //mi muovo lungo l'asse x
 
 					if (newCoord_x > bot->getX()) {                         //dovrò muovere a destra
-						if (bot->old_direction == 2) {                          //se la vecchia direzione era verso il basso     
+						if (bot->old_direction == DIRECTION_DOWN) {             //se la vecchia direzione era verso il basso     
 							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
 							bot->sensoOrario = false;					           //setto il senso di rotazione ANTIORARIO
 						}
-						else if (bot->old_direction == 3) {                     //se la vecchia direzione era verso l'alto
-							bot->rotationAngle = bot->rotationAngle - 90.0f;       //setto l'angolo di rotazione da raggiungere a -90
+						else if (bot->old_direction == DIRECTION_UP) {          //se la vecchia direzione era verso l'alto
+							bot->angleToReach = bot->rotationAngle - 90.0f;       //setto l'angolo di rotazione da raggiungere a -90
 							bot->sensoOrario = true;						       //setto il senso di rotazione ORARIO
 						}
 						bot->setX(bot->getX() + BOT_MOVE_STEP);                 //muovi verso destra
-						bot->old_direction = 0;
+						bot->old_direction = DIRECTION_RIGHT;
 					}
 
 					else if (newCoord_x < bot->getX()) {                    //dovrò muovere a sinistra
-						if (bot->old_direction == 2) {                          //se la vecchia direzione era verso il basso
+						if (bot->old_direction == DIRECTION_DOWN) {             //se la vecchia direzione era verso il basso
 							bot->angleToReach = bot->rotationAngle - 90.0f;        //setto l'angolo di rotazioe da raggiungere a -90
 							bot->sensoOrario = true;                               //setto il senso di rotazione ORARIO
 						}
-						else if (bot->old_direction == 3) {                     //se la vecchia direzione era verso l'alto
+						else if (bot->old_direction == DIRECTION_UP) {          //se la vecchia direzione era verso l'alto
 							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
 							bot->sensoOrario = false;							   //setto il senso di rotazione ANTIORARIO
 						}
 						bot->setX(bot->getX() - BOT_MOVE_STEP);                 //muovi verso sinistra
-						bot->old_direction = 1;
+						bot->old_direction = DIRECTION_LEFT;
 					}
 				}
 
 				else if (isEqual(bot->getX(), newCoord_x, EPSILON_2)) { //mi muovo lungo l'asse z
 
 					if (newCoord_z > bot->getZ()) {                         //dovrò muovere in basso
-						if (bot->old_direction == 0) {                          //se la vecchia direzione era verso destra
+						if (bot->old_direction == DIRECTION_RIGHT) {           //se la vecchia direzione era verso destra
 							bot->angleToReach = bot->rotationAngle - 90.0f;        //setto l'angolo di rotazione da raggiungere a -90
 							bot->sensoOrario = true;                               //setto il senso di rotazione ORARIO
 						}
-						else if (bot->old_direction == 1) {                     //se la vecchia direzione era verso sinistra
+						else if (bot->old_direction == DIRECTION_LEFT) {       //se la vecchia direzione era verso sinistra
 							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
 							bot->sensoOrario = false;                              //setto il senso di rotazione ANTIORARIO
 						}
 						bot->setZ(bot->getZ() + BOT_MOVE_STEP);                 //muovi verso il basso
-						bot->old_direction = 2;
+						bot->old_direction = DIRECTION_DOWN;
 					}
 
 					else if (newCoord_z < bot->getZ()) {                    //dovrò muovere in alto
-						if (bot->old_direction == 0) {                          //se la vecchia direzione era verso destra
+						if (bot->old_direction == DIRECTION_RIGHT) {            //se la vecchia direzione era verso destra
 							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
 							bot->sensoOrario = false;							   //setto il senso di rotazione ANTIORARIO
 						}
-						else if (bot->old_direction == 0) {					    //se la vecchia direzione era verso sinistra
+						else if (bot->old_direction == DIRECTION_LEFT) {        //se la vecchia direzione era verso sinistra
 							bot->angleToReach = bot->rotationAngle - 90.0f;        //setto l'angolo di rotazione da raggiungere a -90
 							bot->sensoOrario = true;							   //setto il senso di rotazione ORARIO
 						}
 						bot->setZ(bot->getZ() - BOT_MOVE_STEP);                 //muovo verso l'alto
-						bot->old_direction = 3;
+						bot->old_direction = DIRECTION_UP;
 					}
 				}
+
 				//Se le coordinate del bot (path_currentStep) hanno raggunto il nextStep
 				if (isEqual(bot->getX(), newCoord_x, EPSILON_2) && isEqual(bot->getZ(), newCoord_z, EPSILON_2)) {
 					bot->path_currentStep++; //incremento lo step
@@ -434,12 +435,4 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {
 	}
 }
 
-void update::killBOT(vector <villain*> botList, game* game) {
-	for (int i = 0; i < botList.size(); i++) {
-		if (botList[i]->isDead == true) {
-			botList[i]->isDead = false;
-			game->kill_BOT();
-		}
-	}
-}
 

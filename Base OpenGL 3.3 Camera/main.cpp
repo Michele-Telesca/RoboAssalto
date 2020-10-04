@@ -240,13 +240,9 @@ void render(Shader lightShader, Shader animShader)
 		mouse_position();
 
 		// ------- BOT ------- //
-		if (botList.empty()) {
-			gameuno->spawn_BOT(path1_Matrix, 0);
-			gameuno->spawn_BOT(path2_Matrix, 1);
-			gameuno->spawn_BOT(path3_Matrix, 4);
-			gameuno->spawn_BOT(path5_Matrix, 11);
-		}
 
+		gameuno->BOT_spawner();
+		gameuno->kill_BOT();
 		update_game->updateBot(botList, player, gameuno); 
 
 		// ------- SHOT ------- //

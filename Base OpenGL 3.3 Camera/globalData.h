@@ -15,7 +15,7 @@ float MOVE_STEP = TILE_DIM / 10; // = 0.1000f; //Incremento dello spostamento de
 float BOT_MOVE_STEP = TILE_DIM / 30; // = 0.05; //Incremento dello spostamento del BOT 
 
 float EPSILON_1 = TILE_DIM / 100; // epsilon di collisione tra player e gameObject
-float EPSILON_2 = BOT_MOVE_STEP / 10;
+float EPSILON_2 = BOT_MOVE_STEP / 100;
 float EPSILON_3 = 0.25f; // epsilon di collisione tra player e bot
 
 glm::vec3 lightPos(0.0f, 80.0f, 0.0f); //posizione luce
@@ -47,7 +47,7 @@ const int ZOMBIE_DERRICK = 2;
 const int ZOMBIE_COP = 3;
 
 //SHOT
-const int numShot = 3; //numero proiettili
+const int numShot = 20; //numero proiettili
 const float SHOT_SPEED = 3.0f; //velocità proiettili
 const float SHOT_DIM = 0.5f; //dimensione x,z del proiettile
 
