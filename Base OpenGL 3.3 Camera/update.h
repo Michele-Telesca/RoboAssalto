@@ -34,7 +34,7 @@ public:
 	void moveBot(villain* bot, player* p);
 	void rotateBot(villain* bot); //rotazione del bot
 	void botCollideVSPlayer(villain* bot, player* p); //collisione del bot
-	void eliminateBot(vector <villain*> botList, game* game);
+	void killBOT(vector <villain*> botList, game* game);
 
 	// ---- Movimento e collisioni degli SHOT ---- //
 	void updateShot(vector <playerShot*> listShot, vector <villain*> botList);
@@ -172,7 +172,7 @@ void update::updateBot(vector <villain*> botList, player* p, game* game) {
 		for (int i = 0; i < botList.size(); i++) {
 			moveBot(botList[i], p);				  //movimento del singolo bot
 			rotateBot(botList[i]);				  //effettua le rotazioni del singolo bot (in caso c'è un cambio di direzione)
-			eliminateBot(botList, game);    
+			killBOT(botList, game);
 		}
 	}
 }
@@ -423,6 +423,9 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {
 			listShot[s]->inizializza();
 
 			bot->life = bot->life - 50; //diminuisce la vita del bot
+			listShot[s]->startX = -1000.0f; //si ferma
+			listShot[s]->startZ = -1000.0f; //si ferma
+			bot->life = bot->life - 50;		//diminuisce la vita del bot
 			cout << "HIT" << endl;
 			cout << "bot life: " << bot->life << endl;
 
@@ -437,11 +440,11 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {
 	}
 }
 
-void update::eliminateBot(vector <villain*> botList, game* game) {
+void update::killBOT(vector <villain*> botList, game* game) {
 	for (int i = 0; i < botList.size(); i++) {
 		if (botList[i]->isDead == true) {
 			botList[i]->isDead = false;
-			game->eliminate_BOT();
+			game->kill_BOT();
 		}
 	}
 }

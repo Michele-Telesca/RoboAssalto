@@ -61,7 +61,10 @@ public:
 	//Prototipi
 	void drawVillain(Shader animShader, glm::mat4 view);			 //disegna il player
 	void animate(Shader animShader);
-	void initVillain(int path_Matrix[DIM][DIM]);					 //inializza il villain
+	void initModel_Zombie1();
+	void initModel_Zombie2();
+	void initModel_Zombie3();
+	void initVillain(int path_Matrix[DIM][DIM]);
 
 	//GET e SET
 	float getX() {
@@ -111,7 +114,6 @@ public:
 };
 
 void villain::initVillain(int path_Matrix[DIM][DIM]) {
-
 	//inizializzo le coordinate di spawn
 	for (int i = 0; i < DIM; i++) {
 		for (int j = 0; j < DIM; j++) {
@@ -169,6 +171,9 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 
 	angleToReach = rotationAngle;
 
+	//setto lo step corrente (relativo al path) del villain
+	path_currentStep = 1;
+
 	isOnPath = true;
 
 	//vita iniziale
@@ -176,18 +181,6 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 
 	isDead = false;
 	isAttacking = false;
-	
-	//creo ed inizializzo il path del villain
-	percorso = new path(); 
-	percorso->inizializzaPath(path_Matrix);
-
-	//setto lo step corrente (relativo al path) del villain
-	path_currentStep = 1;
-
-	meshWalking.loadMesh("animation/villain/walking/Walking.dae");
-	meshAttacking.loadMesh("animation/villain/attack/Zombie Punching.dae");
-	meshHit.loadMesh("animation/villain/hit/Zombie Reaction Hit.dae");
-	meshDead.loadMesh("animation/villain/dead/Zombie Death.dae");
 
 	animation_botWalking = true;
 	animation_botHit = false;
@@ -198,6 +191,34 @@ void villain::initVillain(int path_Matrix[DIM][DIM]) {
 	animationTime_botAttacking = 0.0f;
 	animationTime_botHit = 0.08f;
 	animationTime_botDead = 0.0f;
+
+	//creo ed inizializzo il path del villain
+	percorso = new path(); 
+	percorso->inizializzaPath(path_Matrix);
+}
+
+void villain::initModel_Zombie1() {
+
+	meshWalking.loadMesh("animation/1_zombie_prisoner/walking/Walking.dae");
+	meshAttacking.loadMesh("animation/1_zombie_prisoner/attack/Zombie Punching.dae");
+	meshHit.loadMesh("animation/1_zombie_prisoner/hit/Zombie Reaction Hit.dae");
+	meshDead.loadMesh("animation/1_zombie_prisoner/dead/Zombie Death.dae");
+}
+
+void villain::initModel_Zombie2() {
+
+	meshWalking.loadMesh("animation/2_zombie_derrick/walking/Walking.dae");
+	meshAttacking.loadMesh("animation/2_zombie_derrick/attack/Zombie Attack.dae");
+	meshHit.loadMesh("animation/2_zombie_derrick/hit/Zombie Reaction Hit.dae");
+	meshDead.loadMesh("animation/2_zombie_derrick/dead/Zombie Dying.dae");
+}
+
+void villain::initModel_Zombie3() {
+
+	meshWalking.loadMesh("animation/3_zombie_cop/walking/Walking.dae");
+	meshAttacking.loadMesh("animation/3_zombie_cop/attack/Zombie Attack.dae");
+	meshHit.loadMesh("animation/3_zombie_cop/hit/Zombie Reaction Hit.dae");
+	meshDead.loadMesh("animation/3_zombie_cop/dead/Zombie Dying.dae");
 }
 
 

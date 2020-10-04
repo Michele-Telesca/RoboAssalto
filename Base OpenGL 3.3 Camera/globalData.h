@@ -32,7 +32,7 @@ const int TREE1 = 8;
 const int TREE2 = 9;
 const int TREE3 = 10;
 const int TREE4 = 11;
-const int TREE5 = 12;
+//const int TREE5 = 12;
 const int BUSH1 = 13;
 const int BUSH2 = 14;
 const int CHEST = 15;
@@ -41,6 +41,10 @@ const int DIRECTION_RIGHT = 0;
 const int DIRECTION_LEFT = 1;
 const int DIRECTION_DOWN = 2;
 const int DIRECTION_UP = 3;
+
+const int ZOMBIE_PRISONER = 1;
+const int ZOMBIE_DERRICK = 2;
+const int ZOMBIE_COP = 3;
 
 //SHOT
 const int numShot = 3; //numero proiettili

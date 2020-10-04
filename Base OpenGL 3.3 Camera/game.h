@@ -13,15 +13,15 @@
 alla partita e inizializzati tutti gli oggetti*/
 class game {
 
-private:
+public:
 
-	gameMap* map;
-	player* p;
-	vector <villain*> botList;
+	gameMap* map;						//MAPPA
+	player* p;							//PLAYER
+	vector <villain*> botList;			//BOT
+
+	vector <villain*> botTypes_list;    //lista dei bot
 
 	glm::vec3 mousePoint;
-
-public:
 
 	//costruttore
 	game() {
@@ -31,8 +31,9 @@ public:
 
 	void inizializza();
 	void draw(Shader lightShader, Shader animShader, glm::mat4 view);
-	void spawn_BOT(int path_Matrix[DIM][DIM]);
-	void eliminate_BOT();
+	void add_BOT(int i);
+	void kill_BOT();
+	void spawn_BOT(int path_Matrix[DIM][DIM], int index);
 
 	glm::vec3 getMousePoint() {
 		return mousePoint;
@@ -67,23 +68,53 @@ public:
 
 };
 
-void game::eliminate_BOT() {
+void game::kill_BOT() {
 	botList.pop_back();
 }
 
-void game::spawn_BOT(int path_Matrix[DIM][DIM]) {
+void game::add_BOT(int i) {
 	villain* bot = new villain();
-	bot->initVillain(path_Matrix);
-	botList.push_back(bot);
+	if (i == ZOMBIE_PRISONER) {     //zombie difficoltà: 1
+		bot->initModel_Zombie1();
+	}
+	else if (i == ZOMBIE_DERRICK) { //zombie difficoltà: 2
+		bot->initModel_Zombie2();
+	}
+	else if (i == ZOMBIE_COP) {     //zombie difficoltà: 3
+		bot->initModel_Zombie3();
+	}
+	botTypes_list.push_back(bot);
+}
+
+void game::spawn_BOT(int path_Matrix[DIM][DIM], int index) {
+	villain* new_bot = botTypes_list[index];	//se 0 1 2 3 4 ...
+	new_bot->initVillain(path_Matrix);			//inizializzo il bot
+	botList.push_back(new_bot);					//lo inserisco nella lista dei bot 
 }
 
 void game::inizializza() {
 
 	//inizializza player
 	p->initPlayer();
+	cout << "***player inizillzato" << endl;
 
 	//inizializza mappa
 	map->initMap();
+	cout << "***mappa inizillzata" << endl;
+
+	//inizializza le tipologie di bot
+	add_BOT(ZOMBIE_PRISONER);		//bot di tipo 1
+	add_BOT(ZOMBIE_PRISONER);		//bot di tipo 1
+	add_BOT(ZOMBIE_PRISONER);       //bot di tipo 1
+	add_BOT(ZOMBIE_PRISONER);		//bot di tipo 1
+	add_BOT(ZOMBIE_DERRICK);		//bot di tipo 2
+	add_BOT(ZOMBIE_DERRICK);		//bot di tipo 2
+	add_BOT(ZOMBIE_DERRICK);		//bot di tipo 2
+	add_BOT(ZOMBIE_DERRICK);		//bot di tipo 2
+	add_BOT(ZOMBIE_COP);			//bot di tipo 3
+	add_BOT(ZOMBIE_COP);			//bot di tipo 3
+	add_BOT(ZOMBIE_COP);			//bot di tipo 3
+	add_BOT(ZOMBIE_COP);			//bot di tipo 3
 }
 
 void game::draw(Shader lightShader, Shader animShader, glm::mat4 view) {

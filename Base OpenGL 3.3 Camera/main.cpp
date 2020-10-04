@@ -174,6 +174,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
 void render(Shader lightShader, Shader animShader)
 {
+
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -200,7 +201,7 @@ void render(Shader lightShader, Shader animShader)
 
 		player* player = gameuno->getPlayer();
 		vector <villain*> botList = gameuno->getBotList();
-
+		
 
 		// ------- PLAYER MOVES ------- //
 
@@ -240,16 +241,10 @@ void render(Shader lightShader, Shader animShader)
 
 		// ------- BOT ------- //
 		if (botList.empty()) {
-			gameuno->spawn_BOT(path1_Matrix);
-			//gameuno->spawn_BOT(path2_Matrix);
-			//gameuno->spawn_BOT(path3_Matrix);
-			//gameuno->spawn_BOT(path4_Matrix);
-			//gameuno->spawn_BOT(path5_Matrix);
-			//gameuno->spawn_BOT(path6_Matrix);
-			//gameuno->spawn_BOT(path7_Matrix);
-			//gameuno->spawn_BOT(path8_Matrix);
-			//gameuno->spawn_BOT(path9_Matrix);
-			//gameuno->spawn_BOT(path10_Matrix);
+			gameuno->spawn_BOT(path1_Matrix, 0);
+			gameuno->spawn_BOT(path2_Matrix, 1);
+			gameuno->spawn_BOT(path3_Matrix, 4);
+			gameuno->spawn_BOT(path5_Matrix, 11);
 		}
 
 		update_game->updateBot(botList, player, gameuno); 
