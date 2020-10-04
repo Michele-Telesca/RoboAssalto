@@ -243,7 +243,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	bool shotIsAvaiable = checkShotIsAvaiable(currentTime);
 	
 
-	cout << "*** Shot: " << numShotsAvailable << ")" << endl;
+	//cout << "*** Shot: " << numShotsAvailable << ")" << endl;
 	
 	if (startPlayerShot) {
 		if (shotIsAvaiable) {
