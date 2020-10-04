@@ -408,6 +408,9 @@ void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList
 			float dy = (listShot[i]->direction)*cos(listShot[i]->angle); 
 			listShot[i]->x = listShot[i]->startX + dx * SHOT_SPEED; //startx + dx*speed
 			listShot[i]->z = listShot[i]->startZ + dy * SHOT_SPEED;
+			if ((listShot[i]->direction > 1.5f)) {
+				listShot[i]->inizializza();
+			}
 		}	
 	}
 
@@ -417,6 +420,9 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {
 	for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
 		//se uno shot ha colpito il bot
 		if ((listShot[s]->getX() >= bot->getX() - TILE_DIM / 2 && listShot[s]->getX() <= bot->getX() + TILE_DIM / 2) && (listShot[s]->getZ() >= bot->getZ() - TILE_DIM / 2 && listShot[s]->getZ() <= bot->getZ() + TILE_DIM / 2)) {
+			listShot[s]->inizializza();
+
+			bot->life = bot->life - 50; //diminuisce la vita del bot
 			listShot[s]->startX = -1000.0f; //si ferma
 			listShot[s]->startZ = -1000.0f; //si ferma
 			bot->life = bot->life - 50;		//diminuisce la vita del bot
