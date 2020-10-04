@@ -43,7 +43,8 @@ void playerShot::inizializza() {
 	startZ = -1000.0f;
 	y = 1.4f;
 	direction = 0.0f;
-
+	isShot = false;
+	angle = 0.0f;
 }
 
 void playerShot::draw(Shader lightShader, int texturePlayer) {

@@ -63,5 +63,6 @@ void mapObject::drawMapObject(Shader lightShader) {
 	lightShader.setMat4("model", model);
 
 	mapObject_i->Draw(lightShader);
+	
 }
 

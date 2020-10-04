@@ -51,7 +51,8 @@ public:
 	void animatePlayer(Shader animShader);
 	void initPlayer(); //inizializza il player
 	void updateAngleShot(float tempDegree, float anglePlayer);
-	
+	bool checkShotIsAvaiable(float currentTime);
+
 	//get e set
 	bool getStartPlayerShot() {
 		return startPlayerShot;
@@ -89,6 +90,24 @@ public:
 		anglePlayer = angle;
 	}
 
+	void setTimeLastShot(float time) {
+		timeLastShot = time;
+	}
+	void setNumShotAvailable(int numShot) {
+		numShotsAvailable = numShot;
+	}
+
+	void addNumShotAvailable() {
+		numShotsAvailable = numShotsAvailable + 1;
+	}
+
+	void removeShot() {
+		numShotsAvailable = numShotsAvailable -1;
+	}
+
+	int getNumShot() {
+		numShotsAvailable;
+	}
 
 };
 
@@ -105,13 +124,13 @@ void player::initPlayer() {
 	life = 100;
 
 	//numero colpi a disposizione
-	numShotsAvailable = numShot;
+	setNumShotAvailable(numShot);
 
 	//tempo ricarica colpo
-	chargingTime = 0.0;
+	chargingTime = 5.0f;
 
 	//tempo ultimo colpo
-	timeLastShot = 0.0;
+	timeLastShot = 0.0f;
 
 	//inizializzo la lista dei colpi
 	for (int i = 0; i < numShot; i++) {
@@ -136,10 +155,29 @@ float angleBetween(const glm::vec3 a, const glm::vec3 b) {
 	return angle;
 }
 
-bool checkShotIsAvaiable(int numShot, float chargingTime, float timeLastShot) {
-	if (numShot == 0) {
+bool player::checkShotIsAvaiable(float currentTime) {
+	//controllo se gli shot disponibili sono minori di tre e se è passato il tempo necessario per caricare un colpo
+	if (numShotsAvailable == 3) {
+		setTimeLastShot(currentTime);
+	}
+	if (numShotsAvailable < 3) {
+		if ((currentTime - timeLastShot) > chargingTime) {
+
+			cout << "*** Shot: " << numShotsAvailable << ")" << endl;
+			cout << "*** Current Time: " << currentTime << ")" << endl;
+			cout << "*** last Shot: " << timeLastShot << ")" << endl;
+			addNumShotAvailable();
+			setTimeLastShot(currentTime);
+			return true;
+		}
+	}
+	//se i colpi disponibili sono minori di 0 non posso sparare
+	if (numShotsAvailable == 0) {
 		return false;
 	}
+	//se ho colpi disponibili setto il tempo di lastShot e torno true
+	//setTimeLastShot(currentTime);
+
 	return true;
 }
 
@@ -199,16 +237,21 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	animShader.setMat4("model", model);	
 
 	animatePlayer(animShader); //animazione
-
+	float currentTime = glfwGetTime();
 	//controllo la lista dei colpi e ne setto gli angoli 
+	bool shotIsAvaiable = checkShotIsAvaiable(currentTime);
+	
+
+	//cout << "*** Shot: " << numShotsAvailable << ")" << endl;
+	
 	if (startPlayerShot) {
-		bool shotIsAvaiable = checkShotIsAvaiable(numShotsAvailable, chargingTime, timeLastShot);
 		if (shotIsAvaiable) {
 			listShot[numShotsAvailable - 1]->startX = x; //posizione x del player
 			listShot[numShotsAvailable - 1]->startZ = z; //posizione z del player
 			listShot[numShotsAvailable - 1]->angle = angleWeapon;
 			listShot[numShotsAvailable - 1]->isShot = true;
-			numShotsAvailable = numShotsAvailable - 1;
+			removeShot();
+
 		}
 		startPlayerShot = false;
 	}
