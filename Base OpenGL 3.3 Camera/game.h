@@ -17,10 +17,13 @@ public:
 	gameMap* mappa;						 //MAPPA
 	player* p;							 //PLAYER
 	vector <villain*> botList;			 //BOT
-	int difficolta;                      //livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
 
 	vector <villain*> modelBotList;    //lista dei bot
 	vector <path*> pathList;		     //lista dei path
+
+	int difficolta;                      //livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
+	int chestLife;
+	
 
 	glm::vec3 mousePoint;
 
@@ -156,7 +159,6 @@ void game::add_BOT(int i) {
 
 void game::BOT_spawner() { //N = numero di bot da spawnare
 	if (botList.empty()) { //se la lista di bot NON è vuota
-		cout << "*** Entrato nello spawner - botList.size: " << botList.size() << endl;
 
 		if (difficolta <= 6) {
 			difficolta++; //aumento la difficoltà
@@ -193,7 +195,7 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 			spawn_BOT(pathList[matrix_index[i]], bot_index[i]);
 		}
 
-		cout << "*** " << N << " Bot spawnati - botList.size: " << botList.size() << endl;
+		cout << "--------> " << N << " Bot spawnati - botList.size(): " << botList.size() << endl;
 
 	}
 }
@@ -224,6 +226,7 @@ void game::inizializza() {
 
 	//setto la difficolta a 0
 	difficolta = 0;
+	cout << "*** Difficolta: 0" << endl;
 
 }
 

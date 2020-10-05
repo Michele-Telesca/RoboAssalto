@@ -21,6 +21,7 @@ public:
 	float z;
 
 	int life; //vita del player aggiornata 
+	int chest_life;
 	int numShotsAvailable; //colpi a disposizione
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
@@ -122,6 +123,7 @@ void player::initPlayer() {
 
 	//vita iniziale
 	life = 100;
+	chest_life = 200;
 
 	//numero colpi a disposizione
 	setNumShotAvailable(numShot);

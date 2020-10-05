@@ -18,6 +18,8 @@ public:
 	float y;
 	float z;
 
+	int botType;
+
 	float rotationAngle; //angolo di rotazione corrente 
 
 	// ---- variabili per gestire le rotazioni
@@ -28,13 +30,8 @@ public:
 	float path_currentStep; //contatore dello step iesimo in cui si trova il bot 
 	bool isOnPath; //true se è nella direzione (di rotazione) corretta del path -> viene setta a false quando il bot attacca, poichè cambia la rotazione verso il player
 
-	int life; //vita del player aggiornata
-
-	bool isDead;
-	bool isAttacking;
-
-	float chargingTime; //tempo di ricarica del colpo
-	float timeLastShot; //tempo dell'ultimo colpo. serve per dare un tempo tra l'ultimo colpo e il prossimo
+	int life; //vita del bot (cambia per modello di bot)
+	int damage; //danno del bot (cambia per modello di bot)
 
 	// modelli 3D con scheletro e animazione
 	SkinnedMesh meshWalking;
@@ -42,11 +39,13 @@ public:
 	SkinnedMesh meshHit;
 	SkinnedMesh meshDead;
 
-	// booleani per le animazioni
+	// booleani per le azioni del bot
 	bool animation_botWalking;
 	bool animation_botAttacking;
 	bool animation_botHit;
 	bool animation_botDead;
+	bool isDead;
+	bool isColliding_vsPlayer;
 
 	// tempo per le animazioni
 	float animationTime_botWalking;
@@ -115,6 +114,19 @@ public:
 
 void villain::initVillain(path* path) {
 	
+	if (botType == ZOMBIE_PRISONER) {
+		life = 100;
+		damage = 25;
+	}
+	else if (botType == ZOMBIE_DERRICK) {
+		life = 200;
+		damage = 50;
+	}
+	else if (botType == ZOMBIE_COP) {
+		life = 300;
+		damage = 75;
+	}
+
 	//assegno il path al bot
 	percorso = path;
 
@@ -132,22 +144,18 @@ void villain::initVillain(path* path) {
 
 	isOnPath = true;
 
-	//vita iniziale
-	life = 100;
-
 	isDead = false;
-	isAttacking = false;
+	isColliding_vsPlayer = false;
 
 	animation_botWalking = true;
 	animation_botHit = false;
 	animation_botDead = false;
-	animation_botHit = false;
+	animation_botAttacking = false;
 
 	animationTime_botWalking = 0.0f;
 	animationTime_botAttacking = 0.0f;
 	animationTime_botHit = 0.08f;
 	animationTime_botDead = 0.0f;
-
 }
 
 void villain::initModel_Zombie1() {
@@ -156,6 +164,8 @@ void villain::initModel_Zombie1() {
 	meshAttacking.loadMesh("animation/1_zombie_prisoner/attack/Zombie Punching.dae");
 	meshHit.loadMesh("animation/1_zombie_prisoner/hit/Zombie Reaction Hit.dae");
 	meshDead.loadMesh("animation/1_zombie_prisoner/dead/Zombie Death.dae");
+
+	botType = ZOMBIE_PRISONER;
 }
 
 void villain::initModel_Zombie2() {
@@ -164,6 +174,8 @@ void villain::initModel_Zombie2() {
 	meshAttacking.loadMesh("animation/2_zombie_derrick/attack/Zombie Attack.dae");
 	meshHit.loadMesh("animation/2_zombie_derrick/hit/Zombie Reaction Hit.dae");
 	meshDead.loadMesh("animation/2_zombie_derrick/dead/Zombie Dying.dae");
+
+	botType = ZOMBIE_DERRICK;
 }
 
 void villain::initModel_Zombie3() {
@@ -172,6 +184,8 @@ void villain::initModel_Zombie3() {
 	meshAttacking.loadMesh("animation/3_zombie_cop/attack/Zombie Attack.dae");
 	meshHit.loadMesh("animation/3_zombie_cop/hit/Zombie Reaction Hit.dae");
 	meshDead.loadMesh("animation/3_zombie_cop/dead/Zombie Dying.dae");
+	
+	botType = ZOMBIE_COP;
 }
 
 

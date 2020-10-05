@@ -21,6 +21,8 @@ public:
 
 	bool destroyed;//true quando il colpo ha hittato un nemico o un oggetto... 
 	bool isShot = false;
+	
+	int damage; //danno del proiettile
 
 	void inizializza();
 	void draw(Shader lightShader, int texturePlayer); //disegna il colpo in base al weapon 
@@ -45,6 +47,7 @@ void playerShot::inizializza() {
 	direction = 0.0f;
 	isShot = false;
 	angle = 0.0f;
+	damage = 50;
 }
 
 void playerShot::draw(Shader lightShader, int texturePlayer) {

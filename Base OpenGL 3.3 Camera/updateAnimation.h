@@ -67,14 +67,14 @@ void updateAnimation::increaseBot_Walk_Attack(vector<villain*> botList) {
 			botList[i]->animationTime_botWalking = botList[i]->animationTime_botWalking + 0.05f;     //incremento l'animazione
 		}
 		if (botList[i]->animation_botAttacking == true) {
-			botList[i]->animationTime_botAttacking = botList[i]->animationTime_botAttacking + 0.05f; //incremento l'animazione
+			botList[i]->animationTime_botAttacking = botList[i]->animationTime_botAttacking + 0.03f; //incremento l'animazione
 		}
 
-		if (botList[i]->animationTime_botWalking > 10.0f) {    //quando l'animazione supera la soglia
+		if (botList[i]->animationTime_botWalking >= 10.0f) {    //quando l'animazione supera la soglia
 			botList[i]->animationTime_botWalking = 0.0f;       //reimposto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
 		}
 
-		if (botList[i]->animationTime_botAttacking > 10.0f || botList[i]->animation_botAttacking == false) {   //quando l'animazione supera la soglia oppure torna ad essere false
+		if (botList[i]->animationTime_botAttacking >= 3.6f || botList[i]->animation_botAttacking == false) {   //quando l'animazione supera la soglia oppure torna ad essere false
 			botList[i]->animationTime_botAttacking = 0.0f;      //resetto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
 		}
 	}

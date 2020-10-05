@@ -34,6 +34,7 @@ public:
 	void moveBot(villain* bot, player* p);
 	void rotateBot(villain* bot); //rotazione del bot
 	void botCollideVSPlayer(villain* bot, player* p); //collisione del bot
+	void botAttacking(villain* bot, player* p);
 
 	// ---- Movimento e collisioni degli SHOT ---- //
 	void updateShot(vector <playerShot*> listShot, vector <villain*> botList);
@@ -166,13 +167,34 @@ void update::moveDown(player* p, vector <villain*> botList) {
 	}
 }
 
+void update::botAttacking(villain* bot, player* p) {
+	if (bot->animation_botAttacking && !bot->animation_botWalking && !bot->animation_botDead && !bot->animation_botHit) {
+		if (bot->isColliding_vsPlayer) {
+			if (bot->animationTime_botAttacking >= 2.09f && bot->animationTime_botAttacking <= 2.11f) { //momento dell'animazione attacco in cui il bot hitta
+				p->life = p->life - bot->damage;
+				cout << "--------> PLAYER life: " << p->life << endl;
+			}
+		}
+		else {
+			if (bot->animationTime_botAttacking >= 2.09f && bot->animationTime_botAttacking <= 2.11f) { //momento dell'animazione attacco in cui il bot hitta
+				p->chest_life = p->chest_life - bot->damage;
+				cout << "--------> CHEST life: " << p->chest_life << endl;
+			}
+		}
+	}
+
+}
+
+
+
 void update::updateBot(vector <villain*> botList, player* p, game* game) {
 	if (botList.size() >= 1) { //se la lista di bot NON è VUOTA
 		for (int i = 0; i < botList.size(); i++) {
-			moveBot(botList[i], p);		 //movimento del bot lungo il path
-			if (botList[i]->animation_botWalking && !botList[i]->animation_botHit && !botList[i]->animation_botDead && !botList[i]->animation_botAttacking) {
-				rotateBot(botList[i]);   //effettua le rotazioni contemporaneamnete al movimento lungo il path (solo se il bot cammina)
-			}
+			moveBot(botList[i], p);		 //gestisce il movimento del bot lungo il path (incluse collisioni con il player e con gli shot)
+	
+			rotateBot(botList[i]);   //gestisce le rotazioni che avvengono contemporaneamnete al movimento lungo il path (solo se il bot cammina)
+
+			botAttacking(botList[i], p); //gestisce gli attacchi del bot contro il player e contro la chest
 		}
 	}
 }
@@ -185,9 +207,10 @@ void update::botCollideVSPlayer(villain* bot, player* p) {
 		float new_rotationAngle = p->getAnglePlayer() - 180.0f;
 		bot->setRotationAngle(new_rotationAngle);
 		bot->isOnPath = false; //segnalo che il bot non è più ruotato correttamente secondo la sequenza del path
+		bot->isColliding_vsPlayer = true; //segnalo che il bot è in collisione con il player
 	}
 	else {
-		//se il bot NON collide con il player -> AVANZA 
+		
 		if (bot->animation_botWalking == false) {
 			bot->animation_botWalking = true; //setto il bool per l'animazione walk a true
 		}
@@ -199,17 +222,19 @@ void update::botCollideVSPlayer(villain* bot, player* p) {
 
 
 void update::rotateBot(villain* bot) {
-	if (bot->rotationAngle != bot->angleToReach) { //se l'angolo di rotazione corrente è diverso dall'angolo di rotazione da raggiungere
-		// IL BOT DEVE RUOTARE
-		if (bot->sensoOrario == true) { 
-			bot->rotationAngle = bot->rotationAngle - 15.0f;
+	if (bot->animation_botWalking && !bot->animation_botHit && !bot->animation_botDead && !bot->animation_botAttacking) {
+		if (bot->rotationAngle != bot->angleToReach) { //se l'angolo di rotazione corrente è diverso dall'angolo di rotazione da raggiungere
+			// IL BOT DEVE RUOTARE
+			if (bot->sensoOrario == true) {
+				bot->rotationAngle = bot->rotationAngle - 15.0f;
+			}
+			else {
+				bot->rotationAngle = bot->rotationAngle + 15.0f;
+			}
 		}
 		else {
-			bot->rotationAngle = bot->rotationAngle + 15.0f;
+			//IL BOT NON DEVE RUOTARE
 		}
-	}
-	else {
-		//IL BOT NON DEVE RUOTARE
 	}
 }
 
@@ -225,11 +250,13 @@ void update::moveBot(villain* bot, player* p) {
 			float newCoord_x = bot->getPath()->getPath_map()[path_nextStep].x;
 			float newCoord_z = bot->getPath()->getPath_map()[path_nextStep].y; //coordinata z
 
-			botCollideVSPlayer(bot, p); //setta il booleano dell' animazione attacco se collide con il player
+			botCollideVSPlayer(bot, p); //setta il booleano della collisione con il player e dell' animazione attacco 
 			shotHitBot(p->listShot, bot); //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead
 
 			//Se il bot NON collide col player, NON è hittato dal proiettile, NON è morto-> AVANZA
 			if (bot->animation_botWalking && !bot->animation_botAttacking && !bot->animation_botHit && !bot->animation_botDead) {
+
+				bot->isColliding_vsPlayer = false; //Segnalo che il bot non è più in collisione
 
 				//Se la rotazione del bot non è corretta secondo il del path
 				if (bot->isOnPath == false) {
@@ -313,7 +340,7 @@ void update::moveBot(villain* bot, player* p) {
 				}
 			}
 			else {
-				//In tutti gli altri casi: quando il bot NON cammina, ma è hittato, attacca o muore -> NON AVANZA
+				//In tutti gli altri casi: quando il bot NON cammina, ma è hittato, attacca o sta morendo -> NON AVANZA
 				
 			}
 		}
@@ -322,8 +349,8 @@ void update::moveBot(villain* bot, player* p) {
 		//se il bot è arrivato a fine path NON AVANZA ma attacca il tesoro
 		bot->animation_botWalking = false;
 		bot->animation_botAttacking = true;
-		shotHitBot(p->listShot, bot);           //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead
-		bot->angleToReach = bot->rotationAngle; //evita il bug della rotazione infinita XD (es bot path3)
+		bot->angleToReach = bot->rotationAngle; //evita il bug della rotazione infinita
+		shotHitBot(p->listShot, bot);           //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead	
 	}
 
 }
@@ -421,14 +448,12 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {
 	for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
 		//se uno shot ha colpito il bot
 		if ((listShot[s]->getX() >= bot->getX() - TILE_DIM / 2 && listShot[s]->getX() <= bot->getX() + TILE_DIM / 2) && (listShot[s]->getZ() >= bot->getZ() - TILE_DIM / 2 && listShot[s]->getZ() <= bot->getZ() + TILE_DIM / 2)) {
+			
 			listShot[s]->inizializza();
-
-			bot->life = bot->life - 50; //diminuisce la vita del bot
+			bot->life = bot->life - listShot[s]->damage; //diminuisce la vita del bot
 			listShot[s]->startX = -1000.0f; //si ferma
 			listShot[s]->startZ = -1000.0f; //si ferma
-			bot->life = bot->life - 50;		//diminuisce la vita del bot
-			cout << "HIT" << endl;
-			cout << "bot life: " << bot->life << endl;
+			cout << "-------- > HIT - BOT life: " << bot->life << endl;
 
 			if (bot->life <= 0) { //se la vita scende a 0 
 				bot->animation_botDead = true; //setto a true l'animazione della morte
