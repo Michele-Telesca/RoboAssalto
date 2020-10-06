@@ -21,6 +21,7 @@ public:
 	float z;
 
 	int life; //vita del player aggiornata 
+	float lifeMax;
 	int numShotsAvailable; //colpi a disposizione
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
@@ -45,6 +46,8 @@ public:
 
 	//texture
 	unsigned int texture1;
+	unsigned int textureLife;
+	unsigned int textureShotBar;
 
 	//prototipi
 	void drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint); //disegna il player
@@ -52,6 +55,7 @@ public:
 	void initPlayer(); //inizializza il player
 	void updateAngleShot(float tempDegree, float anglePlayer);
 	bool checkShotIsAvaiable(float currentTime);
+	void drawLifePlayer(Shader lightShader);
 
 	//get e set
 	bool getStartPlayerShot() {
@@ -121,7 +125,8 @@ void player::initPlayer() {
 	anglePlayer = 0.0f;
 
 	//vita iniziale
-	life = 100;
+	life= 100;
+	lifeMax = life;
 
 	//numero colpi a disposizione
 	setNumShotAvailable(numShot);
@@ -270,6 +275,8 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		}
 	}
 
+	drawLifePlayer(lightShader);
+
 }
 
 void player::animatePlayer(Shader animShader) {
@@ -293,3 +300,31 @@ void player::animatePlayer(Shader animShader) {
 	}
 }
 
+void player::drawLifePlayer(Shader lightShader) {
+
+	float offSet = 0.0f;
+
+	if (life != lifeMax) {
+		 offSet = ((lifeMax - life) / 2)/lifeMax;
+	}
+
+	lightShader.use();
+	float lifeLenght = life / lifeMax;
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureLife);
+	glBindVertexArray(cubeVAO);
+
+	lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	glm::mat4 modelLife = glm::mat4(1.0f);
+
+	modelLife = glm::translate(modelLife, glm::vec3(x - offSet, y + 2.5f, z));
+	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
+	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.25f));
+
+	lightShader.setMat4("model", modelLife);
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+}
