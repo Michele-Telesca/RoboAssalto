@@ -31,7 +31,7 @@ public:
 	bool isOnPath; //true se è nella direzione (di rotazione) corretta del path -> viene setta a false quando il bot attacca, poichè cambia la rotazione verso il player
 
 	int life; //vita del bot (cambia per modello di bot)
-	int damage; //danno del bot (cambia per modello di bot)
+	float damage; //danno del bot (cambia per modello di bot)
 
 	// modelli 3D con scheletro e animazione
 	SkinnedMesh meshWalking;
@@ -116,15 +116,15 @@ void villain::initVillain(path* path) {
 	
 	if (botType == ZOMBIE_PRISONER) {
 		life = 100;
-		damage = 25;
+		damage = 25.0;
 	}
 	else if (botType == ZOMBIE_DERRICK) {
 		life = 200;
-		damage = 50;
+		damage = 50.0;
 	}
 	else if (botType == ZOMBIE_COP) {
 		life = 300;
-		damage = 75;
+		damage = 75.0;
 	}
 
 	//assegno il path al bot

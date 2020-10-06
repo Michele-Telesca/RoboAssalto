@@ -58,6 +58,7 @@ public:
 	void updateAngleShot(float tempDegree, float anglePlayer);
 	bool checkShotIsAvaiable(float currentTime);
 	void drawLifePlayer(Shader lightShader);
+	void drawShotAvaiable(int numShotsAvailable, float currentTime, Shader lightShader);
 
 	//get e set
 	bool getStartPlayerShot() {
@@ -280,9 +281,11 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		}
 	}
 
-	if (life < 0) {
+	if (life > 0.0f) {
 		drawLifePlayer(lightShader);
 	}
+
+	drawShotAvaiable(numShotsAvailable, currentTime, lightShader);
 }
 
 void player::animatePlayer(Shader animShader) {
@@ -306,6 +309,59 @@ void player::animatePlayer(Shader animShader) {
 	}
 }
 
+void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader lightShader) {
+	
+	lightShader.use();
+
+	float shotBarLenght = (lifeMax / 3.0f) / lifeMax;
+	float shotHalfBar = (shotBarLenght / 2.0);
+	float center = x - shotBarLenght;
+
+	for (int i = 0; i < numShotsAvailable; i++) {
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureShotBar);
+		glBindVertexArray(cubeVAO);
+
+		lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+		glm::mat4 modelLife = glm::mat4(1.0f);
+
+		modelLife = glm::translate(modelLife, glm::vec3(center + (shotBarLenght*i), y + 2.22f, z));
+		modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
+		modelLife = glm::scale(modelLife, glm::vec3(shotBarLenght - 0.03f, 0.01f, 0.15f));
+
+		lightShader.setMat4("model", modelLife);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+
+	if (numShotsAvailable < 3) {
+
+		float lenghtCalcShot = ((currentTime - timeLastShot) * shotBarLenght)/chargingTime;
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture1);
+		glBindVertexArray(cubeVAO);
+
+		lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+		glm::mat4 modelLife = glm::mat4(1.0f);
+
+
+		float centerCalcStart = (center + (shotBarLenght * (numShotsAvailable))) - shotHalfBar;
+		float centerCalc = centerCalcStart + (lenghtCalcShot/2.0f);
+
+		modelLife = glm::translate(modelLife, glm::vec3(centerCalc, y + 2.22f, z));
+		modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
+		modelLife = glm::scale(modelLife, glm::vec3(lenghtCalcShot -0.02f, 0.01f, 0.15f));
+
+		lightShader.setMat4("model", modelLife);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+
+}
 void player::drawLifePlayer(Shader lightShader) {
 
 	float offSet = 0.0f;
