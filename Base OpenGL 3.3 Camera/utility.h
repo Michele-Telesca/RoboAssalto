@@ -9,6 +9,9 @@ float randMToN(int M, int N) {
 	return M + (rand() / (RAND_MAX / (N - M)));
 }
 
+float frandMToN(float M, float N) {
+	return M + (rand() / (RAND_MAX / (N - M)));
+}
 bool numeroGiaPresente(int numero, vector<int> lista) {
 	for (int i = 0; i < lista.size(); i++) {
 		if (numero == lista[i]) {

@@ -72,98 +72,113 @@ bool update::playerCollideFromDown(player* p, float obstacle_x, float obstacle_z
 }
 
 void update::moveRight(player* p, vector <villain*> botList) {
-	bool ostacolo = false;
-	for (int i = 0; i < mapObjectsCoord.size(); i++) {
-		float x_obj = (float)mapObjectsCoord[i].x;
-		float z_obj = (float)mapObjectsCoord[i].y;
-		if(playerCollideFromRight(p, x_obj, z_obj, (TILE_DIM / 2), EPSILON_1)){
-			ostacolo = true;
-			exit;
+	
+	if (p->x < (DIM / 2) - TILE_DIM) { //Se non oltrepassa il boundary
+		bool collision = false;
+		for (int i = 0; i < mapObjectsCoord.size(); i++) { //Scansiono gli oggetti della mappa
+			float x_obj = (float)mapObjectsCoord[i].x;
+			float z_obj = (float)mapObjectsCoord[i].y;
+			if (playerCollideFromRight(p, x_obj, z_obj, (TILE_DIM / 2), EPSILON_1)) { //Se il player collide con un oggetto
+				collision = true; //Setto la collisione a true
+				exit;
+			}
 		}
-	}
-	for (int i = 0; i < botList.size(); i++) {
-		if(playerCollideFromRight(p, botList[i]->getX(), botList[i]->getZ(), (TILE_DIM / 4), EPSILON_3)){
-			ostacolo = true;
-			exit;
+		for (int i = 0; i < botList.size(); i++) { //Scansiono la lista di bot attivi nella mappa
+			if (playerCollideFromRight(p, botList[i]->getX(), botList[i]->getZ(), (TILE_DIM / 4), EPSILON_3)) { //Se il player collide con un bot
+				collision = true; //Setto la collisione a true
+				exit;
+			}
 		}
-	}
-	if (ostacolo == true) {
-		p->setX(p->getX());
-	}
-	else {
-		p->setX(p->getX() + MOVE_STEP);
+
+		if (collision == true) { //Se c'è stata collisione (o con un oggetto o con un bot)
+			p->setX(p->getX()); //Il player non avanza
+		}
+		else {
+			p->setX(p->getX() + MOVE_STEP); //Il player avanza
+		}
 	}
 }
 
 void update::moveLeft(player* p, vector <villain*> botList) {
-	bool ostacolo = false;
-	for (int i = 0; i < mapObjectsCoord.size(); i++) {
-		float x_obj = (float)mapObjectsCoord[i].x;
-		float z_obj = (float)mapObjectsCoord[i].y;
-		if (playerCollideFromLeft(p, x_obj, z_obj, (TILE_DIM / 2), EPSILON_1)) {
-			ostacolo = true;
-			exit;
+	
+	if (p->x > -(DIM / 2)) {
+		bool collision = false;
+		for (int i = 0; i < mapObjectsCoord.size(); i++) {
+			float x_obj = (float)mapObjectsCoord[i].x;
+			float z_obj = (float)mapObjectsCoord[i].y;
+			if (playerCollideFromLeft(p, x_obj, z_obj, (TILE_DIM / 2), EPSILON_1)) {
+				collision = true;
+				exit;
+			}
 		}
-	}
-	for (int i = 0; i < botList.size(); i++) {
-		if (playerCollideFromLeft(p, botList[i]->getX(), botList[i]->getZ(), (TILE_DIM / 4), EPSILON_3)) {
-			ostacolo = true;
-			exit;
+		for (int i = 0; i < botList.size(); i++) {
+			if (playerCollideFromLeft(p, botList[i]->getX(), botList[i]->getZ(), (TILE_DIM / 4), EPSILON_3)) {
+				collision = true;
+				exit;
+			}
 		}
-	}
-	if (ostacolo == true) {
-		p->setX(p->getX());
-	}
-	else {
-		p->setX(p->getX() - MOVE_STEP);
+		
+		if (collision == true) {
+			p->setX(p->getX());
+		}
+		else {
+			p->setX(p->getX() - MOVE_STEP);
+		}
+
 	}
 }
 
 void update::moveUp(player* p, vector <villain*> botList) {
-	bool ostacolo = false;
-	for (int i = 0; i < mapObjectsCoord.size(); i++) {
-		float x_obj = mapObjectsCoord[i].x;
-		float z_obj = mapObjectsCoord[i].y;
-		if (playerCollideFromUp(p, x_obj, z_obj, (TILE_DIM / 2), EPSILON_1)) {
-			ostacolo = true;
-			exit;
+	
+	if (p->z  > -(DIM / 2) + TILE_DIM) {
+		bool collision = false;
+		for (int i = 0; i < mapObjectsCoord.size(); i++) {
+			float x_obj = mapObjectsCoord[i].x;
+			float z_obj = mapObjectsCoord[i].y;
+			if (playerCollideFromUp(p, x_obj, z_obj, (TILE_DIM / 2), EPSILON_1)) {
+				collision = true;
+				exit;
+			}
 		}
-	}
-	for (int i = 0; i < botList.size(); i++) {
-		if (playerCollideFromUp(p, botList[i]->getX(), botList[i]->getZ(), (TILE_DIM / 4), EPSILON_3)) {
-			ostacolo = true;
-			exit;
+		for (int i = 0; i < botList.size(); i++) {
+			if (playerCollideFromUp(p, botList[i]->getX(), botList[i]->getZ(), (TILE_DIM / 4), EPSILON_3)) {
+				collision = true;
+				exit;
+			}
 		}
-	}
-	if (ostacolo == true) {
-		p->setZ(p->getZ());
-	}
-	else {
-		p->setZ(p->getZ() - MOVE_STEP);
+		if (collision == true) {
+			p->setZ(p->getZ());
+		}
+		else {
+			p->setZ(p->getZ() - MOVE_STEP);
+		}
 	}
 }
 
 void update::moveDown(player* p, vector <villain*> botList) {
-	bool ostacolo = false;
-	for (int i = 0; i < mapObjectsCoord.size(); i++) {
-		float x_obj = mapObjectsCoord[i].x;
-		float z_obj = mapObjectsCoord[i].y;
-		if (playerCollideFromDown(p, x_obj, z_obj, (TILE_DIM / 2), EPSILON_1)) {
-			ostacolo = true;
-			exit;
+
+	if (p->z < (DIM / 2)) { 
+		bool collision = false;
+		for (int i = 0; i < mapObjectsCoord.size(); i++) { 
+			float x_obj = mapObjectsCoord[i].x; 
+			float z_obj = mapObjectsCoord[i].y;
+			if (playerCollideFromDown(p, x_obj, z_obj, (TILE_DIM / 2), EPSILON_1)) { 
+				collision = true; 
+				exit;
+			}
 		}
-	}
-	for (int i = 0; i < botList.size(); i++) {
-		if (playerCollideFromDown(p, botList[i]->getX(), botList[i]->getZ(), (TILE_DIM / 4), EPSILON_3)) {
-			ostacolo = true;
-			exit;
+		for (int i = 0; i < botList.size(); i++) { 
+			if (playerCollideFromDown(p, botList[i]->getX(), botList[i]->getZ(), (TILE_DIM / 4), EPSILON_3)) { 
+				collision = true; 
+				exit;
+			}
 		}
-	}
-	if (ostacolo == true) {
-		p->setZ(p->getZ());
-	}
-	else {
-		p->setZ(p->getZ() + MOVE_STEP);
+		if (collision == true) { 
+			p->setZ(p->getZ()); 
+		}
+		else {
+			p->setZ(p->getZ() + MOVE_STEP); 
+		}
 	}
 }
 

@@ -240,7 +240,6 @@ void render(Shader lightShader, Shader animShader)
 		mouse_position();
 
 		// ------- BOT ------- //
-
 		gameuno->BOT_spawner();
 		gameuno->kill_BOT();
 		update_game->updateBot(botList, player, gameuno); 
