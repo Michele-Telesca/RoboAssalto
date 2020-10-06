@@ -20,12 +20,10 @@ public:
 	float y;
 	float z;
 
-	int life; //vita del player aggiornata 
-<<<<<<< HEAD
+	float life; //vita del player aggiornata 
 	int chest_life;
-=======
 	float lifeMax;
->>>>>>> c365b974869ccd784b07265e6f69c1895763b99f
+
 	int numShotsAvailable; //colpi a disposizione
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
@@ -129,13 +127,11 @@ void player::initPlayer() {
 	anglePlayer = 0.0f;
 
 	//vita iniziale
-<<<<<<< HEAD
-	life = 100;
+
+	life = 100.0;
 	chest_life = 200;
-=======
-	life= 100;
+
 	lifeMax = life;
->>>>>>> c365b974869ccd784b07265e6f69c1895763b99f
 
 	//numero colpi a disposizione
 	setNumShotAvailable(numShot);
@@ -284,8 +280,9 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		}
 	}
 
-	drawLifePlayer(lightShader);
-
+	if (life < 0) {
+		drawLifePlayer(lightShader);
+	}
 }
 
 void player::animatePlayer(Shader animShader) {
