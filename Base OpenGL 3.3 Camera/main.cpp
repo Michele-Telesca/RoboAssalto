@@ -367,6 +367,8 @@ int main()
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
 	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png");
+	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png");
+	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png");
 
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
