@@ -5,8 +5,12 @@ class utility
 {
 };
 
-float randMToN(int M, int N) {
-	return M + (rand() / (RAND_MAX / (N - M)));
+//float randMToN(int M, int N) {
+//	return M + (rand() / (RAND_MAX / (N - M)));
+//}
+
+int randMtoN(int M, int N) {
+	return M + rand() % N;
 }
 
 float frandMToN(float M, float N) {

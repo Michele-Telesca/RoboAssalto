@@ -7,6 +7,7 @@
 #include "player.h"
 #include "villain.h"
 #include "playerShot.h"
+#include "powerUp.h"
 
 /* classe Update qui vengono gestiti tutti
 gli aggiornamenti relativi allo stato degli 
@@ -28,6 +29,7 @@ public:
 	bool playerCollideFromLeft(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
 	bool playerCollideFromUp(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
 	bool playerCollideFromDown(player* p, float obstacle_x, float obstacle_z, float offset, float epsilon);
+	void hitPowerUp(player* p, powerUp* power_up);
 
 	// ---- BOT ---- //
 	void updateBot(vector <villain*> botList, player* p, game* game);
@@ -185,13 +187,13 @@ void update::moveDown(player* p, vector <villain*> botList) {
 void update::botAttacking(villain* bot, player* p) {
 	if (bot->animation_botAttacking && !bot->animation_botWalking && !bot->animation_botDead && !bot->animation_botHit) {
 		if (bot->isColliding_vsPlayer) {
-			if (bot->animationTime_botAttacking >= 2.09f && bot->animationTime_botAttacking <= 2.11f) { //momento dell'animazione attacco in cui il bot hitta
+			if (bot->animationTime_botAttacking >= 1.49f && bot->animationTime_botAttacking <= 1.51f) { //momento dell'animazione attacco in cui il bot hitta
 				p->life = p->life - bot->damage;
 				cout << "--------> PLAYER life: " << p->life << endl;
 			}
 		}
 		else {
-			if (bot->animationTime_botAttacking >= 2.09f && bot->animationTime_botAttacking <= 2.11f) { //momento dell'animazione attacco in cui il bot hitta
+			if (bot->animationTime_botAttacking >= 1.49f && bot->animationTime_botAttacking <= 1.51f) { //momento dell'animazione attacco in cui il bot hitta
 				p->chest_life = p->chest_life - bot->damage;
 				cout << "--------> CHEST life: " << p->chest_life << endl;
 			}
@@ -440,6 +442,15 @@ void update::calculateAnglePlayer(player* p) {
 
 	p->setAnglePlayer(anglePlayer);
 
+}
+
+void update::hitPowerUp(player* p, powerUp* power_up) {
+	if (power_up->spawned == true) {
+		if ((p->x >= power_up->x - TILE_DIM / 2 && p->x <= power_up->x + TILE_DIM / 2) && (p->z >= power_up->z - TILE_DIM / 2 && p->z <= power_up->z + TILE_DIM / 2)) {
+			cout << "--------> POWERUP HIT " << endl;
+			power_up->spawned = false;
+		}
+	}
 }
 
 //update shot

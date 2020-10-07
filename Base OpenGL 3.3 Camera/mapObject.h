@@ -17,9 +17,11 @@ public:
 	float rotate_z;
 
 	Model* mapObject_i;
-
-	bool destroyed; //true se la roccia è distrutta
 	
+	//costruttore no arg
+	mapObject(){}
+
+	//costruttore con arg
 	mapObject(float px, float py, float pz, float s, float a, float r_x, float r_y, float r_z) {
 		x = px;
 		y = py;

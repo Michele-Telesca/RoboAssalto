@@ -179,6 +179,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="path.h" />
     <ClInclude Include="playerShot.h" />
     <ClInclude Include="point3D.h" />
+    <ClInclude Include="powerUp.h" />
     <ClInclude Include="shader_m.h" />
     <ClInclude Include="mapObject.h" />
     <ClInclude Include="skinned_mesh.h" />

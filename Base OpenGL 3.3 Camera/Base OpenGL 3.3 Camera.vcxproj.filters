@@ -131,5 +131,8 @@
     <ClInclude Include="texture.h">
       <Filter>Header Files\Tool</Filter>
     </ClInclude>
+    <ClInclude Include="powerUp.h">
+      <Filter>Header Files\Modello</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

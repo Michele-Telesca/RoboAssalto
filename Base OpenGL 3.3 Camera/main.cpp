@@ -240,15 +240,19 @@ void render(Shader lightShader, Shader animShader)
 		mouse_position();
 
 		// ------- BOT ------- //
-		//gameuno->BOT_spawner();
-		//gameuno->kill_BOT();
-		//update_game->updateBot(botList, player, gameuno); 
+		gameuno->BOT_spawner();
+		gameuno->kill_BOT();
+		update_game->updateBot(botList, player, gameuno); 
+
+		// ------- POWERUP ------- //
+		gameuno->powerUp_spawner();
+		update_game->hitPowerUp(player, gameuno->power_up);
 
 		// ------- SHOT ------- //
 		update_game->updateShot(player->listShot, botList, player->wea);
 
 		// ------- ANIMATION ------- //
-		update_animation->updateAllAnimations(player, botList);
+		update_animation->updateAllAnimations(player, botList, gameuno->power_up);
 
 		previousTime = currentTime;
 	}
@@ -264,10 +268,6 @@ void render(Shader lightShader, Shader animShader)
 	//corretta
 	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0);
 	glm::vec3 at_camera_mobile(x, 0.0f, z );
-
-	////dal basso
-	//glm::vec3 pos_camera_mobile(x, 12.0f, z + 3.0);
-	//glm::vec3 at_camera_mobile(x, 0.0f, z - 3.0f);
 
 	////terza persona
 	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);

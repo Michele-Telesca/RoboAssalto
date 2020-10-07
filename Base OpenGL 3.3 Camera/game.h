@@ -6,6 +6,7 @@
 #include "villain.h"
 #include "globalPathData.h"
 #include "path.h"
+#include "powerUp.h"
 #include <vector>
 
 /*classe game qui vengono gestiti tutte le azioni relatie
@@ -17,20 +18,20 @@ public:
 	gameMap* mappa;						 //MAPPA
 	player* p;							 //PLAYER
 	vector <villain*> botList;			 //BOT
+	powerUp* power_up;
 
-	vector <villain*> modelBotList;    //lista dei bot
+	vector <villain*> modelBotList;      //lista dei bot
 	vector <path*> pathList;		     //lista dei path
 
 	int difficolta;                      //livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
-	int chestLife;
 	
-
 	glm::vec3 mousePoint;
 
 	//costruttore
 	game() {
 		mappa = new gameMap();
 		p = new player();
+		power_up = new powerUp();
 	};
 
 	void inizializza();
@@ -41,6 +42,7 @@ public:
 	void kill_BOT();
 	void spawn_BOT(path* path, int index);
 	void BOT_spawner();
+	void powerUp_spawner();
 
 	glm::vec3 getMousePoint() {
 		return mousePoint;
@@ -81,11 +83,11 @@ void game::initModelBotList() {
 	add_BOT(ZOMBIE_PRISONER);		 //bot di tipo 1
 	add_BOT(ZOMBIE_PRISONER);        //bot di tipo 1
 	add_BOT(ZOMBIE_PRISONER);		 //bot di tipo 1
+	add_BOT(ZOMBIE_PRISONER);		 //bot di tipo 1
 	add_BOT(ZOMBIE_DERRICK);		 //bot di tipo 2
 	add_BOT(ZOMBIE_DERRICK);		 //bot di tipo 2
 	add_BOT(ZOMBIE_DERRICK);		 //bot di tipo 2
 	add_BOT(ZOMBIE_DERRICK);		 //bot di tipo 2
-	add_BOT(ZOMBIE_COP);			 //bot di tipo 3
 	add_BOT(ZOMBIE_COP);			 //bot di tipo 3
 	add_BOT(ZOMBIE_COP);			 //bot di tipo 3
 	add_BOT(ZOMBIE_COP);			 //bot di tipo 3
@@ -170,7 +172,7 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 		vector <int> bot_index;
 		int j = 0;
 		while (j <= N) {
-			int index = randMToN(0, 11);
+			int index = randMtoN(0, modelBotList.size()-1);
 			if(!numeroGiaPresente(index, bot_index)){
 				bot_index.push_back(index);
 				j++;
@@ -182,7 +184,7 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 		vector <int> matrix_index;
 		int i = 0; 
 		while (i <= N) {
-			int index = randMToN(0, 9);
+			int index = randMtoN(0, pathList.size()-1);
 			if (!numeroGiaPresente(index, matrix_index)) {
 				matrix_index.push_back(index);
 				i++;
@@ -206,6 +208,26 @@ void game::spawn_BOT(path* path, int index) {
 	botList.push_back(new_bot);					//lo inserisco nella lista dei bot 
 }
 
+void game::powerUp_spawner() {
+	if (power_up->spawned == false) {
+		power_up->spawned = true;
+
+		int list_powerUp_index = randMtoN(0, power_up->spawnCoordsList.size()-1);
+		glm::vec3 powerUp_coord = power_up->spawnCoordsList[list_powerUp_index];
+		power_up->x = powerUp_coord.x;
+		power_up->y = powerUp_coord.y;
+		power_up->z = powerUp_coord.z;
+
+		int powerUp_index = randMtoN(1, 2);
+		if (powerUp_index == POWERUP_BULLET) {
+			power_up->powerUp_type = POWERUP_BULLET;
+		}
+		else if (powerUp_index == POWERUP_SIGHT) {
+			power_up->powerUp_type = POWERUP_SIGHT;
+		}
+	}
+}
+
 void game::inizializza() {
 
 	//inizializza player
@@ -216,13 +238,17 @@ void game::inizializza() {
 	mappa->initMap();
 	cout << "*** Map: Loaded -> Initialized" << endl;
 
-	////inizializzo tutti i modelli bot
-	//initModelBotList();
-	//cout << "*** Bot Models: Loaded" << endl;
+	//inizializzo tutti i modelli bot
+	initModelBotList();
+	cout << "*** Bot Models: Loaded" << endl;
 
-	////inizializzo tutti i path
-	//initPathList();
-	//cout << "*** Paths: Loaded" << endl;
+	//inizializzo tutti i path
+	initPathList();
+	cout << "*** Paths: Loaded" << endl;
+
+	//inizializzo i powerUp
+	power_up->initPowerUp();
+	cout << "*** PowerUp: Loaded" << endl;
 
 	//setto la difficolta a 0
 	difficolta = 0;
@@ -244,6 +270,11 @@ void game::draw(Shader lightShader, Shader animShader, glm::mat4 view) {
 
 	//DRAW MAP
 	mappa->drawMap(lightShader);
+
+	//DRAW POWERUP
+	if (power_up->spawned == true) {
+		power_up->drawPowerUp(lightShader);
+	}
 
 }
 

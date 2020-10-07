@@ -7,6 +7,7 @@
 #include "gameMap.h"
 #include "player.h"
 #include "villain.h"
+#include "powerUp.h"
 #include "playerShot.h"
 #include <vector>
 
@@ -28,7 +29,7 @@ class updateAnimation
 	// ---- prototipi ---- //
 
 	//richiamta tutto l'update dei tempi
-	void updateAllAnimations(player* player, vector<villain*> botList);
+	void updateAllAnimations(player* player, vector<villain*> botList, powerUp* powerUp);
 
 	//bot animation time
 	void increaseBotTime(vector<villain*> botList);
@@ -40,14 +41,44 @@ class updateAnimation
 	void increasePlayerTime(player* player);
 	void increasePlayerStand_Run(player* player);
 
+	//power up animation time
+	void increasePowerUpTime(powerUp* powerUp);
+
 };
 
-void updateAnimation::updateAllAnimations(player* player, vector<villain*> botList) {
+void updateAnimation::updateAllAnimations(player* player, vector<villain*> botList, powerUp* powerUp) {
 	
 	increasePlayerTime(player); 
 	
 	if (!botList.empty()) { 
 		increaseBotTime(botList); //incrementa le animazioni dei bot solo se la lista dei bot NON è vuota
+	}
+
+	increasePowerUpTime(powerUp);
+
+}
+
+void updateAnimation::increasePowerUpTime(powerUp* powerUp) {
+	float rotation_speed = 4.0f;
+	float translate_speed = 0.015f;
+	float z_upLimit = 0.6f;
+	float z_downLimit = 0.1f;
+
+	//incremento la variabile per la rotazione
+	powerUp->animationTime_rotate_y = powerUp->animationTime_rotate_y + rotation_speed;
+
+	//incremento e decremento la variabile per la traslazione z+ e z-
+	if (powerUp->animationUp == true) {
+		powerUp->animationTime_translate_y = powerUp->animationTime_translate_y + translate_speed;
+		if (powerUp->animationTime_translate_y >= z_upLimit) {
+			powerUp->animationUp = false;
+		}
+	}
+	else {
+		powerUp->animationTime_translate_y = powerUp->animationTime_translate_y - translate_speed;
+		if (powerUp->animationTime_translate_y <= z_downLimit) {
+			powerUp->animationUp = true;
+		}
 	}
 }
 
@@ -67,7 +98,7 @@ void updateAnimation::increaseBot_Walk_Attack(vector<villain*> botList) {
 			botList[i]->animationTime_botWalking = botList[i]->animationTime_botWalking + 0.05f;     //incremento l'animazione
 		}
 		if (botList[i]->animation_botAttacking == true) {
-			botList[i]->animationTime_botAttacking = botList[i]->animationTime_botAttacking + 0.03f; //incremento l'animazione
+			botList[i]->animationTime_botAttacking = botList[i]->animationTime_botAttacking + 0.05f; //incremento l'animazione
 		}
 
 		if (botList[i]->animationTime_botWalking >= 10.0f) {    //quando l'animazione supera la soglia

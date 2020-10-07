@@ -50,6 +50,9 @@ const int ZOMBIE_PRISONER = 1;
 const int ZOMBIE_DERRICK = 2;
 const int ZOMBIE_COP = 3;
 
+const int POWERUP_BULLET = 1;
+const int POWERUP_SIGHT = 2;
+
 //SHOT
 const int numShot = 3; //numero proiettili
 const float SHOT_SPEED = 3.0f; //velocità proiettili
