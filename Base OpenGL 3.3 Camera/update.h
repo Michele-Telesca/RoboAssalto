@@ -37,7 +37,7 @@ public:
 	void botAttacking(villain* bot, player* p);
 
 	// ---- Movimento e collisioni degli SHOT ---- //
-	void updateShot(vector <playerShot*> listShot, vector <villain*> botList);
+	void updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea);
 	void shotHitBot(vector <playerShot*> listShot, villain* bot);
 
 };
@@ -443,7 +443,7 @@ void update::calculateAnglePlayer(player* p) {
 }
 
 //update shot
-void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList) {
+void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea) {
 	for (int i = 0; i < numShot; i++) {
 		if (listShot[i]->isShot) {
 			listShot[i]->direction = listShot[i]->direction + 0.1f;
@@ -451,7 +451,7 @@ void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList
 			float dy = (listShot[i]->direction)*cos(listShot[i]->angle); 
 			listShot[i]->x = listShot[i]->startX + dx * SHOT_SPEED; //startx + dx*speed
 			listShot[i]->z = listShot[i]->startZ + dy * SHOT_SPEED;
-			if ((listShot[i]->direction > 1.5f)) {
+			if ((listShot[i]->direction*SHOT_SPEED) > wea->lengthRange) {
 				listShot[i]->inizializza();
 			}
 		}	

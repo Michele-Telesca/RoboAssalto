@@ -245,7 +245,7 @@ void render(Shader lightShader, Shader animShader)
 		//update_game->updateBot(botList, player, gameuno); 
 
 		// ------- SHOT ------- //
-		update_game->updateShot(player->listShot, botList);
+		update_game->updateShot(player->listShot, botList, player->wea);
 
 		// ------- ANIMATION ------- //
 		update_animation->updateAllAnimations(player, botList);

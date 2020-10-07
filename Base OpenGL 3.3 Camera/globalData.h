@@ -20,6 +20,10 @@ float EPSILON_3 = 0.25f; // epsilon di collisione tra player e bot
 
 glm::vec3 lightPos(0.0f, 80.0f, 0.0f); //posizione luce
 
+float LENGTH_RANGE_WEAPON1 = 9.0f; //lunghezza di mira
+float LENGTH_BASE_WEAPON1 = 2.0f;
+float ANGLE_RANGE_WEAPON1 = 90.0f;
+
 // ---- //
 const int STONE1 = 1;
 const int STONE2 = 2;

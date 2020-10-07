@@ -41,7 +41,7 @@ public:
 	float animationTime_playerRunning;
 
 	// target dell'arma
-	weapon* wea = new weapon(3.0f, 90.0f, 2.0f); //arma posseduta al momento
+	weapon* wea;  //arma posseduta al momento
 
 	//lista colpi
 	vector<playerShot*> listShot;
@@ -119,6 +119,8 @@ public:
 };
 
 void player::initPlayer() {
+
+	wea =  new weapon(LENGTH_RANGE_WEAPON1, ANGLE_RANGE_WEAPON1, LENGTH_BASE_WEAPON1);
 
 	//punto in cui nasce
 	x = 0.0f;

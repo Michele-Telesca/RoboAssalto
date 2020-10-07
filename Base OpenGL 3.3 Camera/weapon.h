@@ -17,7 +17,6 @@ public:
 
 	void drawTarget(Shader myShader, glm::mat4 view, float x, float y, float z, int texturePlayer, float angle); //disegna la mira... avrà bisogno della posizione del player e dalla direzione
 
-	bool isShotArea(); //controlla se ci troviamo all'interno dell'area di mira
 	void initWeapon();
 
 };
@@ -54,6 +53,3 @@ void weapon::drawTarget(Shader lightShader, glm::mat4 view, float x, float y, fl
 
 }
 
-bool weapon::isShotArea() {
-	return false;
-}
