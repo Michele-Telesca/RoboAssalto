@@ -67,11 +67,6 @@ public:
 
 	unsigned int texturePrato;
 	cube* floor;
-	//mapObject* camp;
-	//mapObject* mountain_front;
-	//mapObject* mountain_left;
-	//mapObject* mountain_right;
-	//mapObject* mountain_back;
 
 	vector <cube*> tiles; //vettore contenente le mattonelle del pavimento
 	vector <mapObject*> mapObjects;
@@ -85,7 +80,7 @@ public:
 void gameMap::initMap() {
 
 	// ---- FLOOR ---- //
-	floor = new cube(DIM, 0.0f, 1.0f, 0.0f, 0.0f, -0.5f, (DIM/2) + 0.5f, 0.5f);
+	floor = new cube(DIM+12, 0.0f, 1.0f, 0.0f, 0.0f, -0.5f, ((DIM+12)/2) + 0.5f, 0.5f);
 	//for (float i = -DIM/2; i < DIM/2; i = i + TILE_DIM) {
 	//	for (float j = DIM/2; j > -DIM/2; j = j - TILE_DIM) {
 	//		// creo la singola mattonella del floor e la inserisco nel vettore tiles
@@ -201,33 +196,97 @@ void gameMap::initMap() {
 	}
 
 	// ---- MOUNTAINS ---- //
-	//up
-	mapObject* mountain_front = new mapObject(0.0f, 0.1f, -34.25f, 0.015f, 0.0f, 1.0f, 0.0f, 0.0f);
-	mountain_front->initMapObject("models/mountains/mountain_front.dae");
-	externalMapObject.push_back(mountain_front);
+
+	//front
+	mapObject* cliff_front = new mapObject(0.0f, 0.2f, -25.0f, 5.0f, glm::radians(-180.0f), 0.0f, 0.0f, 1.0f);
+	cliff_front->initMapObject("models/mountains/cliff_front.dae");
+	externalMapObject.push_back(cliff_front);
 
 	//left
-	mapObject* mountain_left = new mapObject(-35.0f, 0.1f, 0.0f, 0.015f, 0.0f, 1.0f, 0.0f, 0.0f);
-	mountain_left->initMapObject("models/mountains/mountain_left.dae");
-	externalMapObject.push_back(mountain_left);
+	mapObject* cliff_left = new mapObject(-24.4f, 0.2f, -1.0f, 5.0f, glm::radians(-180.0f), 0.0f, 0.0f, 1.0f);
+	cliff_left->initMapObject("models/mountains/cliff_left.dae");
+	externalMapObject.push_back(cliff_left);
 
 	//right
-	mapObject* mountain_right = new mapObject(34.0f, 0.1f, 0.0f, 0.015f, 0.0f, 1.0f, 0.0f, 0.0f);
-	mountain_right->initMapObject("models/mountains/mountain_right.dae");
-	externalMapObject.push_back(mountain_right);
+	mapObject* cliff_right = new mapObject(23.5f, 0.2f, -1.0f, 5.0f, glm::radians(-180.0f), 0.0f, 0.0f, 1.0f);
+	cliff_right->initMapObject("models/mountains/cliff_right.dae");
+	externalMapObject.push_back(cliff_right);
 
-	//down
+	//back
 	mapObject* mountain_back = new mapObject(0.0f, 0.1f, 35.0f, 0.015f, 0.0f, 1.0f, 0.0f, 0.0f);
 	mountain_back->initMapObject("models/mountains/mountain_back.dae");
 	externalMapObject.push_back(mountain_back);
 
+	// ---- FENCE ---- //
+	mapObject* fence1 = new mapObject(17.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence1->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence1);
 
-	// ---- CAMPING ---- //
-	mapObject* tent = new mapObject(3.0f, 1.0f, 23.0f, 0.015f, 180.0f, 0.0f, 1.0f, 0.0f);
-	tent->initMapObject("models/camping/tent.dae");
-	externalMapObject.push_back(tent);
+	mapObject* fence2 = new mapObject(13.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence2->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence2);
 	
-	
+	mapObject* fence3 = new mapObject(9.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence3->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence3);
+
+	mapObject* fence4 = new mapObject(5.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence4->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence4);
+
+	mapObject* fence5 = new mapObject(1.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence5->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence5);
+
+	mapObject* fence6 = new mapObject(-2.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence6->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence6);
+
+	mapObject* fence7 = new mapObject(-6.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence7->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence7);
+
+	mapObject* fence8 = new mapObject(-10.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence8->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence8);
+
+	mapObject* fence9 = new mapObject(-14.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence9->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence9);
+
+	mapObject* fence10 = new mapObject(-18.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
+	fence10->initMapObject("models/fence_chain/chain.dae");
+	externalMapObject.push_back(fence10);
+
+	// ---- OTHERS ---- //
+	mapObject* campfire_tent = new mapObject(0.5f, 1.0f, 23.5f, 0.65f, glm::radians(60.0f), 0.0f, 1.0f, 0.0f);
+	campfire_tent->initMapObject("models/others/campfire_tent.dae");
+	externalMapObject.push_back(campfire_tent);
+
+	mapObject* log_pile = new mapObject(-1.6f, 0.6f, 24.2f, 0.015f, glm::radians(52.5f), 0.0f, 1.0f, 0.0f);
+	log_pile->initMapObject("models/others/log_pile.dae");
+	externalMapObject.push_back(log_pile);
+
+	mapObject* box = new mapObject(6.0f, 1.0f, 22.0f, 1.3f, 0.0f, 1.0f, 0.0f, 0.0f);
+	box->initMapObject("models/others/box.dae");
+	mapObjects.push_back(box);
+
+	mapObject* tree_external1 = new mapObject(8.0f, 1.8f, 25.6f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
+	tree_external1->initMapObject("models/trees/tree2/tree2.dae");
+	mapObjects.push_back(tree_external1);
+
+	mapObject* tree_external2 = new mapObject(8.9f, 1.8f, 25.0f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
+	tree_external2->initMapObject("models/trees/tree2/tree2.dae");
+	mapObjects.push_back(tree_external2);
+
+	mapObject* tree_external3 = new mapObject(9.8f, 1.8f, 24.2f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
+	tree_external3->initMapObject("models/trees/tree2/tree2.dae");
+	mapObjects.push_back(tree_external3);
+
+	mapObject* tree_external4 = new mapObject(-3.0f, 1.8f, 25.5f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
+	tree_external4->initMapObject("models/trees/tree2/tree2.dae");
+	mapObjects.push_back(tree_external4);
+
 }
 
 void gameMap::drawMap(Shader lightShader) {

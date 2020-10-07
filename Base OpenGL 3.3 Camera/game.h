@@ -216,13 +216,13 @@ void game::inizializza() {
 	mappa->initMap();
 	cout << "*** Map: Loaded -> Initialized" << endl;
 
-	//inizializzo tutti i modelli bot
-	initModelBotList();
-	cout << "*** Bot Models: Loaded" << endl;
+	////inizializzo tutti i modelli bot
+	//initModelBotList();
+	//cout << "*** Bot Models: Loaded" << endl;
 
-	//inizializzo tutti i path
-	initPathList();
-	cout << "*** Paths: Loaded" << endl;
+	////inizializzo tutti i path
+	//initPathList();
+	//cout << "*** Paths: Loaded" << endl;
 
 	//setto la difficolta a 0
 	difficolta = 0;
