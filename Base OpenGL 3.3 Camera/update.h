@@ -449,6 +449,18 @@ void update::calculateAnglePlayer(player* p) {
 void update::hitPowerUp(player* p, powerUp* power_up) {
 	if (power_up->spawned == true) {
 		if ((p->x >= power_up->x - TILE_DIM / 2 && p->x <= power_up->x + TILE_DIM / 2) && (p->z >= power_up->z - TILE_DIM / 2 && p->z <= power_up->z + TILE_DIM / 2)) {
+			if (power_up->powerUp_type == 1) {
+				p->wea = new weapon(LENGTH_RANGE_WEAPON2, ANGLE_RANGE_WEAPON2, LENGTH_BASE_WEAPON2);
+				for (int i = 0; i < numShot; i++) {
+					p->listShot[i]->damage = 100.0f;
+				}
+			}
+			if (power_up->powerUp_type == 2) {
+				p->wea = new weapon(LENGTH_RANGE_WEAPON3, ANGLE_RANGE_WEAPON3, LENGTH_BASE_WEAPON3);
+				for (int i = 0; i < numShot; i++) {
+					p->listShot[i]->damage = 50.0f;
+				}
+			}
 			cout << "--------> POWERUP HIT " << endl;
 			power_up->spawned = false;
 		}

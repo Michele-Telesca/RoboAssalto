@@ -1,5 +1,4 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: la directory intermedia (x64\Debug\) contiene file condivisi da un altro progetto (Base OpenGL 3.3 Camera.vcxproj). Tale condizione può comportare un comportamento di pulizia e ricompilazione non corretto.
-  glad.c
   main.cpp
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\shader_s.h(56,35): warning C4101: 'e': variabile locale senza riferimenti
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\mesh.h(84,1): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
@@ -32,9 +31,9 @@ C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Ca
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\gameMap.h(198,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\gameMap.h(198,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\player.h(249,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\player.h(301,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\player.h(309,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\player.h(319,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\player.h(306,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\player.h(314,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\player.h(324,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\villain.h(224,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\villain.h(232,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\villain.h(240,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
@@ -52,10 +51,5 @@ C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Ca
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\update.h(177,5): warning C4551: chiamata di funzione senza elenco di argomenti
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\update.h(199,35): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\update.h(262,20): warning C4244: 'inizializzazione': conversione da 'float' a 'int'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\update.h(481,26): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
-  skinned_mesh.cpp
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\skinned_mesh.cpp(104,71): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\skinned_mesh.cpp(119,17): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-  texture.cpp
-  Generazione del codice in corso...
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\Base OpenGL 3.3 Camera\update.h(493,26): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
   Base OpenGL 3.3 Camera.vcxproj -> C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.26\x64\Debug\RoboAssalto.exe

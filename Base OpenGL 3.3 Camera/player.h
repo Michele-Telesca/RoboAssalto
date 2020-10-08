@@ -279,7 +279,12 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 
 	for (int i = 0; i < numShot; i++) {
 		if (listShot[i]->isShot) {
-			listShot[i]->draw(lightShader, texture1);
+			if (wea->lengthBase == LENGTH_BASE_WEAPON2) {
+				listShot[i]->draw(lightShader, texture1, SHOT_DIM2);
+			}
+			else {
+				listShot[i]->draw(lightShader, texture1, SHOT_DIM);
+			}
 		}
 	}
 

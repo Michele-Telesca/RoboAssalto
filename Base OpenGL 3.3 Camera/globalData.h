@@ -23,10 +23,18 @@ glm::vec3 lightPos(0.0f, 20.0f, 0.0f); //posizione luce
 //glm::vec3 lightPos(0.0f, -0.01f, -0.01f); //DIREZIONE luce
 
 
-float LENGTH_RANGE_WEAPON1 = 9.0f; //lunghezza di mira
+float LENGTH_RANGE_WEAPON1 = 6.0f; //lunghezza di mira
 float LENGTH_BASE_WEAPON1 = 2.0f;
 float ANGLE_RANGE_WEAPON1 = 90.0f;
 
+float LENGTH_RANGE_WEAPON2 = 3.0f; //lunghezza di mira
+float LENGTH_BASE_WEAPON2 = 4.0f;
+float ANGLE_RANGE_WEAPON2 = 90.0f;
+
+
+float LENGTH_RANGE_WEAPON3 = 9.0f; //lunghezza di mira
+float LENGTH_BASE_WEAPON3 = 1.0f;
+float ANGLE_RANGE_WEAPON3 = 90.0f;
 
 // ---- //
 const int STONE1 = 1;
@@ -61,6 +69,8 @@ const int POWERUP_SIGHT = 2;
 const int numShot = 3; //numero proiettili
 const float SHOT_SPEED = 3.0f; //velocità proiettili
 const float SHOT_DIM = 0.5f; //dimensione x,z del proiettile
+
+const float SHOT_DIM2 = 1.5f; //dimensione x,z del proiettile
 
 //Movimenti
 bool muoviDx = false;
