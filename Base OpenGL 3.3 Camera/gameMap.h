@@ -57,6 +57,7 @@ int mapMatrix[DIM][DIM] = { {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,
 
 
 vector <glm::vec2> mapObjectsCoord;
+vector <glm::vec2> mapTree;
 
 
 class gameMap {
@@ -146,24 +147,32 @@ void gameMap::initMap() {
 					tree1->initMapObject("models/trees/tree1/tree1.dae");
 					mapObjects.push_back(tree1);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
+					mapTree.push_back(glm::vec2(x, z));
+
 				}
 				else if (mapMatrix[i][j] == TREE2) {
 					mapObject* tree2 = new mapObject(x, 1.8f, z, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree2->initMapObject("models/trees/tree2/tree2.dae");
 					mapObjects.push_back(tree2);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
+					mapTree.push_back(glm::vec2(x, z));
+
 				}
 				else if (mapMatrix[i][j] == TREE3) {
 					mapObject* tree3 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree3->initMapObject("models/trees/tree3/tree3.dae");
 					mapObjects.push_back(tree3);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
+					mapTree.push_back(glm::vec2(x, z));
+
 				}
 				else if (mapMatrix[i][j] == TREE4) {
 					mapObject* tree4 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree4->initMapObject("models/trees/tree4/tree4.dae");
 					mapObjects.push_back(tree4);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
+					mapTree.push_back(glm::vec2(x, z));
+
 				}
 				else if (mapMatrix[i][j] == BUSH1) {
 					mapObject* bush1 = new mapObject(x, 0.6f, z, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f);

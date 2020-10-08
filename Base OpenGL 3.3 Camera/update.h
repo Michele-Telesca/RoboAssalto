@@ -41,6 +41,8 @@ public:
 	// ---- Movimento e collisioni degli SHOT ---- //
 	void updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea);
 	void shotHitBot(vector <playerShot*> listShot, villain* bot);
+	void shotHitTree(vector <playerShot*> listShot);
+
 
 };
 
@@ -493,3 +495,17 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {
 }
 
 
+void update::shotHitTree(vector <playerShot*> listShot) {
+
+	for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
+		for (int i = 0; i < mapTree.size(); i++) {
+			//se uno shot ha colpito il bot
+			if ((listShot[s]->getX() >= mapTree[i].x - TILE_DIM / 2 && listShot[s]->getX() <= mapTree[i].x + TILE_DIM / 2) && (listShot[s]->getZ() >= mapTree[i].y - TILE_DIM / 2 && listShot[s]->getZ() <= mapTree[i].y + TILE_DIM / 2)) {
+
+				listShot[s]->inizializza();
+
+			}
+		}
+	}
+
+}

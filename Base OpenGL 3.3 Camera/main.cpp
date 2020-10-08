@@ -250,6 +250,8 @@ void render(Shader lightShader, Shader animShader)
 
 		// ------- SHOT ------- //
 		update_game->updateShot(player->listShot, botList, player->wea);
+		update_game->shotHitTree(player->listShot);
+
 
 		// ------- ANIMATION ------- //
 		update_animation->updateAllAnimations(player, botList, gameuno->power_up);

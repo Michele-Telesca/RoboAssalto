@@ -27,6 +27,7 @@ float LENGTH_RANGE_WEAPON1 = 9.0f; //lunghezza di mira
 float LENGTH_BASE_WEAPON1 = 2.0f;
 float ANGLE_RANGE_WEAPON1 = 90.0f;
 
+
 // ---- //
 const int STONE1 = 1;
 const int STONE2 = 2;
