@@ -18,7 +18,10 @@ float EPSILON_1 = TILE_DIM / 100; // epsilon di collisione tra player e gameObje
 float EPSILON_2 = BOT_MOVE_STEP / 100;
 float EPSILON_3 = 0.25f; // epsilon di collisione tra player e bot
 
-glm::vec3 lightPos(0.0f, 80.0f, 0.0f); //posizione luce
+//glm::vec3 lightPos(4.0f,3.0f, 0.0f); //posizione luce
+glm::vec3 lightPos(0.0f, 20.0f, 0.0f); //posizione luce
+//glm::vec3 lightPos(0.0f, -0.01f, -0.01f); //DIREZIONE luce
+
 
 float LENGTH_RANGE_WEAPON1 = 9.0f; //lunghezza di mira
 float LENGTH_BASE_WEAPON1 = 2.0f;

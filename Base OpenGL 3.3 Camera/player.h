@@ -271,7 +271,7 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	}
 
 	// material properties
-	lightShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
 	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
 	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
 	lightShader.setFloat("material.shininess", 76.8f);
@@ -325,7 +325,7 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader l
 		glBindTexture(GL_TEXTURE_2D, textureShotBar);
 		glBindVertexArray(cubeVAO);
 
-		lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+		//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 		glm::mat4 modelLife = glm::mat4(1.0f);
 
 		modelLife = glm::translate(modelLife, glm::vec3(center + (shotBarLenght*i), y + 2.22f, z));
@@ -346,7 +346,7 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader l
 		glBindTexture(GL_TEXTURE_2D, texture1);
 		glBindVertexArray(cubeVAO);
 
-		lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+		//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 		glm::mat4 modelLife = glm::mat4(1.0f);
 
 
@@ -379,7 +379,7 @@ void player::drawLifePlayer(Shader lightShader) {
 	glBindTexture(GL_TEXTURE_2D, textureLife);
 	glBindVertexArray(cubeVAO);
 
-	lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 	glm::mat4 modelLife = glm::mat4(1.0f);
 
 	modelLife = glm::translate(modelLife, glm::vec3(x - offSet, y + 2.5f, z));

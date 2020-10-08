@@ -114,7 +114,7 @@ void ray_plane(glm::vec3 plane_normal_word, glm::vec3 plane_pos_word, glm::vec3 
 		float t = dot((plane_pos_word - origin), plane_normal_word) / denom;
 		glm::vec3 p = origin + t * ray_word; //calcolo del punto intersecato p
 
-		if ((t >= 0.0f) && (p.z >= plane_pos_word.z - dim_square / 2 && p.z <= plane_pos_word.z + dim_square / 2) && (p.x >= plane_pos_word.x - dim_square / 2 && p.x <= plane_pos_word.x + dim_square / 2)) {
+		if ((t >= 0.0f) && (p.z >= plane_pos_word.z - dim_square && p.z <= plane_pos_word.z + dim_square) && (p.x >= plane_pos_word.x - dim_square && p.x <= plane_pos_word.x + dim_square)) {
 
 			//cout << "********************************* HITTATO: (" << p.x << ", " << p.y << ", " << p.z << ")" << endl;
 			float player_xpos = gameuno->getPlayer()->getX(); //coordinata x del player
@@ -186,11 +186,11 @@ void render(Shader lightShader, Shader animShader)
 	//light properties
 	lightShader.setVec3("light.position", lightPos);
 	lightShader.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
-	lightShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-	lightShader.setVec3("light.specular", 0.5f, 0.5f, 0.5f);
+	lightShader.setVec3("light.diffuse", 0.7f, 0.7f, 0.7f);
+	lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
-	//material properties
-	lightShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	// material properties
+	lightShader.setVec3("material.ambient", 0.7f, 0.7f, 0.7f);
 	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
 	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
 	lightShader.setFloat("material.shininess", 76.8f);
@@ -240,9 +240,9 @@ void render(Shader lightShader, Shader animShader)
 		mouse_position();
 
 		// ------- BOT ------- //
-		gameuno->BOT_spawner();
+		/*gameuno->BOT_spawner();
 		gameuno->kill_BOT();
-		update_game->updateBot(botList, player, gameuno); 
+		update_game->updateBot(botList, player, gameuno); */
 
 		// ------- POWERUP ------- //
 		gameuno->powerUp_spawner();

@@ -267,10 +267,6 @@ void gameMap::initMap() {
 	log_pile->initMapObject("models/others/log_pile.dae");
 	externalMapObject.push_back(log_pile);
 
-	mapObject* box = new mapObject(6.0f, 1.0f, 22.0f, 1.3f, 0.0f, 1.0f, 0.0f, 0.0f);
-	box->initMapObject("models/others/box.dae");
-	mapObjects.push_back(box);
-
 	mapObject* tree_external1 = new mapObject(8.0f, 1.8f, 25.6f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 	tree_external1->initMapObject("models/trees/tree2/tree2.dae");
 	mapObjects.push_back(tree_external1);

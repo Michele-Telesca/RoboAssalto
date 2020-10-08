@@ -239,12 +239,12 @@ void game::inizializza() {
 	cout << "*** Map: Loaded -> Initialized" << endl;
 
 	//inizializzo tutti i modelli bot
-	initModelBotList();
-	cout << "*** Bot Models: Loaded" << endl;
+	//initModelBotList();
+	//cout << "*** Bot Models: Loaded" << endl;
 
-	//inizializzo tutti i path
-	initPathList();
-	cout << "*** Paths: Loaded" << endl;
+	////inizializzo tutti i path
+	//initPathList();
+	//cout << "*** Paths: Loaded" << endl;
 
 	//inizializzo i powerUp
 	power_up->initPowerUp();

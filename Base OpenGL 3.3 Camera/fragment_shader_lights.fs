@@ -10,6 +10,7 @@ struct Material {
 
 struct Light {
     vec3 position;
+
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -33,6 +34,7 @@ void main()
     // diffuse 
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(light.position - FragPos);
+	//vec3 lightDir = normalize(-light.position); //direzionale
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
     
@@ -41,7 +43,8 @@ void main()
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * (spec * material.specular);  
-        
+ 
     vec3 result = ambient + diffuse + specular;
     FragColor = mix(texture(myTexture1, TexCoord), texture(myTexture2, TexCoord), 0.6) * vec4(result, 1.0);
+	//FragColor = mix(texture(myTexture1, TexCoord), texture(myTexture2, TexCoord), 0.6) * vec4(result, 1.0); //direizonale
 }

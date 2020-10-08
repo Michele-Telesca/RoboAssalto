@@ -131,6 +131,7 @@ public:
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glBindVertexArray(cubeVAO);
 
+
 		glm::mat4 model = glm::mat4(1.0f);	//identity matrix
 		model = glm::translate(model, glm::vec3(posizione_x, posizione_y, posizione_z));
 		model = glm::rotate(model, angle, glm::vec3(rotation_x, rotation_y, rotation_z));
