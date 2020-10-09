@@ -5,6 +5,7 @@
 #include "globalData.h"
 #include "playerShot.h"
 //#include "villain.h"
+#include <irrKlang/irrKlang.h>
 
 
 class player {
@@ -121,6 +122,8 @@ public:
 void player::initPlayer() {
 
 	wea =  new weapon(LENGTH_RANGE_WEAPON1, ANGLE_RANGE_WEAPON1, LENGTH_BASE_WEAPON1);
+
+	//SoundEngine = irrklang::createIrrKlangDevice();
 
 	//punto in cui nasce
 	x = 0.0f;
