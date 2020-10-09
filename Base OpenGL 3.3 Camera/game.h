@@ -15,44 +15,40 @@ class game {
 
 public:
 	
+	//Da renderizzare:
 	gameMap* mappa;						 //MAPPA
 	player* p;							 //PLAYER
-	vector <villain*> botList;			 //BOT
-	powerUp* power_up;
+	vector <villain*> spawnedBotList;	 //LISTA DEI BOT SPAWNATI
+	powerUp* power_up;					 //POWER UP
 
-	vector <villain*> modelBotList;      //lista dei bot
-	vector <path*> pathList;		     //lista dei path
+	vector <villain*> modelBotList;      //Lista dei bot caricati nel gioco
+	vector <path*> pathList;		     //Lista dei path
 
-	int difficolta;                      //livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
+	int difficolta;                      //Livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
 	
-	glm::vec3 mousePoint;
+	glm::vec3 mousePoint;				 //Coordinate del mouse
 
-	//costruttore
+	//Costruttore
 	game() {
 		mappa = new gameMap();
 		p = new player();
 		power_up = new powerUp();
 	};
 
-	void inizializza();
-	void initPathList();
-	void initModelBotList();
-	void draw(Shader lightShader, Shader animShader, glm::mat4 view);
-	void add_BOT(int i);
-	void kill_BOT();
-	void spawn_BOT(path* path, int index);
-	void BOT_spawner();
-	void powerUp_spawner();
+	// -- Prototipi -- //
+	void init(); //inizializza il game game
+	void initPathList(); //inizializza tutti i path dei bot
+	void initModelBotList(); //inizializza la modelBotList (caricamento di tutti i bot spawnabili nel gioco)
+	void add_BOT(int i); //aggiunge un bot alla modelBotList 
+	void setShadersProperties(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view); //setta le proprietà degli shader
+	void draw(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view);
 
-	glm::vec3 getMousePoint() {
-		return mousePoint;
-	}
+	void spawn_BOT(path* path, int index); //spawna un bot (lo inserisce nella botList)
+	void kill_BOT(); //killa un bot
+	void BOT_spawner(); //gestisce lo spawn dei bot
+	void powerUp_spawner(); //gestisce lo spawn di powerUp
 
-	void setMousePoint(glm::vec3 w) {
-		mousePoint = w;
-	}
-
-	// get //
+	// -- GET -- //
 	gameMap* getGameMap() {
 		return mappa;
 	}
@@ -61,18 +57,25 @@ public:
 		return p;
 	}
 
-	vector <villain*> getBotList() {
-		return botList;
+	vector <villain*> getSpawnedBotList() {
+		return spawnedBotList;
 	}
 
+	glm::vec3 getMousePoint() {
+		return mousePoint;
+	}
 
-	// set //
+	// -- SET -- //
 	void setGameMap(gameMap* gamemap) {
 		mappa = gamemap;
 	}
 
 	void getPlayer(player* player) {
 		p = player;
+	}
+
+	void setMousePoint(glm::vec3 w) {
+		mousePoint = w;
 	}
 
 };
@@ -137,9 +140,9 @@ void game::initPathList() {
 
 void game::kill_BOT() {
 	
-	for (int i = 0; i < botList.size(); i++) {
-		if (botList[i]->isDead == true) {
-			botList.erase(botList.begin() + i); //elimina dall botList il bot in posizione i
+	for (int i = 0; i < spawnedBotList.size(); i++) {
+		if (spawnedBotList[i]->isDead == true) {
+			spawnedBotList.erase(spawnedBotList.begin() + i); //elimina dall botList il bot in posizione i
 		}
 	}
 	
@@ -160,7 +163,7 @@ void game::add_BOT(int i) {
 }
 
 void game::BOT_spawner() { //N = numero di bot da spawnare
-	if (botList.empty()) { //se la lista di bot NON è vuota
+	if (spawnedBotList.empty()) { //se la lista di bot NON è vuota
 
 		if (difficolta <= 6) {
 			difficolta++; //aumento la difficoltà
@@ -197,7 +200,7 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 			spawn_BOT(pathList[matrix_index[i]], bot_index[i]);
 		}
 
-		cout << "--------> " << N << " Bot spawnati - botList.size(): " << botList.size() << endl;
+		cout << "--------> " << N << " Bot spawnati - botList.size(): " << spawnedBotList.size() << endl;
 
 	}
 }
@@ -205,7 +208,7 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 void game::spawn_BOT(path* path, int index) {
 	villain* new_bot = modelBotList[index];	    //se 0 1 2 3 4 ...
 	new_bot->initVillain(path);					//inizializzo il bot
-	botList.push_back(new_bot);					//lo inserisco nella lista dei bot 
+	spawnedBotList.push_back(new_bot);					//lo inserisco nella lista dei bot 
 }
 
 void game::powerUp_spawner() {
@@ -228,7 +231,7 @@ void game::powerUp_spawner() {
 	}
 }
 
-void game::inizializza() {
+void game::init() {
 
 	//inizializza player
 	p->initPlayer();
@@ -239,12 +242,12 @@ void game::inizializza() {
 	cout << "*** Map: Loaded -> Initialized" << endl;
 
 	//inizializzo tutti i modelli bot
-	//initModelBotList();
-	//cout << "*** Bot Models: Loaded" << endl;
+	initModelBotList();
+	cout << "*** Bot Models: Loaded" << endl;
 
-	////inizializzo tutti i path
-	//initPathList();
-	//cout << "*** Paths: Loaded" << endl;
+	//inizializzo tutti i path
+	initPathList();
+	cout << "*** Paths: Loaded" << endl;
 
 	//inizializzo i powerUp
 	power_up->initPowerUp();
@@ -256,23 +259,75 @@ void game::inizializza() {
 
 }
 
-void game::draw(Shader lightShader, Shader animShader, glm::mat4 view) {
+void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view) {
+	
+	// ---- ANIMATION Shader ---- //
+	animShader.use();
 
-	//DRAW PLAYER
-	p->drawPlayer(animShader, lightShader, view, getMousePoint());
+	//projection
+	glm::mat4 projection_animation = glm::mat4(1.0f);	//identity matrix
+	projection_animation = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	animShader.setMat4("projection", projection_animation);
+
+	//view
+	animShader.setMat4("view", view);
+
+	//light properties
+	animShader.setVec3("light.position", lightPos);
+	animShader.setVec3("light.ambient", 1.0f, 1.0f, 1.0f);
+	animShader.setVec3("light.diffuse", 1.0f, 1.0f, 1.0f);
+	animShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+
+	// ---- SIMPLE Shader ---- //
+	simpleShader.use();
+
+	//view
+	simpleShader.setMat4("view", view);
+
+	//projection
+	glm::mat4 projection2 = glm::mat4(1.0f);	//identity matrix
+	projection2 = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	simpleShader.setMat4("projection", projection2);
+
+	// ---- LIGHT Shader ---- //
+	lightShader.use();
+
+	//projection
+	glm::mat4 projection3 = glm::mat4(1.0f);	//identity matrix
+	projection3 = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	lightShader.setMat4("projection", projection3);
+
+	//view
+	lightShader.setMat4("view", view);
+
+	//light per la mappa
+	lightShader.setVec3("light.position", lightPos);
+	lightShader.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
+	lightShader.setVec3("light.diffuse", 0.7f, 0.7f, 0.7f);
+	lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+}
+
+void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view) {
+	
+	//Setto le proprietà view, projection degli shaders
+	setShadersProperties(simpleShader, lightShader, animShader, view); 
 
 	//DRAW BOTS
-	if (botList.size() >= 1) {
-		for (int i = 0; i < botList.size(); i++) {
-			botList[i]->drawVillain(animShader, view);
+	if (spawnedBotList.size() >= 1) {
+		for (int i = 0; i < spawnedBotList.size(); i++) {
+			spawnedBotList[i]->drawVillain(animShader);
 		}
 	}
 
+	//DRAW PLAYER
+	p->drawPlayer(simpleShader, animShader, getMousePoint());
+
 	//DRAW MAP
-	mappa->drawMap(lightShader);
+	mappa->drawMap(lightShader, view);
 
 	//DRAW POWERUP
-	if (power_up->spawned == true) {
+	if (power_up->spawned) {
 		power_up->drawPowerUp(lightShader);
 	}
 

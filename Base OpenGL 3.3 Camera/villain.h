@@ -58,7 +58,7 @@ public:
 	player* p;
 
 	//Prototipi
-	void drawVillain(Shader animShader, glm::mat4 view);			 //disegna il player
+	void drawVillain(Shader animShader);			 //disegna il player
 	void animate(Shader animShader);
 	void initModel_Zombie1();
 	void initModel_Zombie2();
@@ -189,17 +189,9 @@ void villain::initModel_Zombie3() {
 }
 
 
-void villain::drawVillain(Shader animShader, glm::mat4 view){
+void villain::drawVillain(Shader animShader){
 
 	animShader.use();
-
-	//projection
-	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
-	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	animShader.setMat4("projection", projection);
-
-	//view
-	animShader.setMat4("view", view);
 
 	//model
 	glm::mat4 model = glm::mat4(1.0f);
@@ -208,8 +200,13 @@ void villain::drawVillain(Shader animShader, glm::mat4 view){
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 	animShader.setMat4("model", model);
 
+	// material properties
+	animShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	animShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	animShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	animShader.setFloat("material.shininess", 76.8f);
+
 	animate(animShader); //animazione
-	
 }
 
 void villain::animate(Shader animShader) {

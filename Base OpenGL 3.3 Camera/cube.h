@@ -125,6 +125,12 @@ public:
 
 		lightShader.use();
 
+		// material properties
+		lightShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
+		lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+		lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+		lightShader.setFloat("material.shininess", 76.8f);
+
 		// texture
 		lightShader.setInt("myTexture1", 0);
 		glActiveTexture(GL_TEXTURE0);

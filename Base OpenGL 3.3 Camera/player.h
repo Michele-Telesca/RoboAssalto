@@ -52,7 +52,7 @@ public:
 	unsigned int textureShotBar;
 
 	//prototipi
-	void drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint); //disegna il player
+	void drawPlayer(Shader animShader, Shader lightShader, glm::vec3 mousePoint); //disegna il player
 	void animatePlayer(Shader animShader);
 	void initPlayer(); //inizializza il player
 	void updateAngleShot(float tempDegree, float anglePlayer);
@@ -207,8 +207,10 @@ void player::updateAngleShot(float tempDegree, float anglePlayer) {
 	}
 }
 
-void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, glm::vec3 mousePoint) {
+void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mousePoint) {
 	
+	// ----- PLAYER ----- //
+
 	float mouseX = mousePoint.x;
 	float mouseY = mousePoint.z;
 
@@ -217,15 +219,8 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 
 	float angleWeapon = atan2(d1, d2);
 
+	//setto lo shader per il player
 	animShader.use();
-	
-	//projection
-	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
-	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	animShader.setMat4("projection", projection);
-
-	//view
-	animShader.setMat4("view", view);
 	
 	float radiansAngle = glm::radians(anglePlayer);
 
@@ -245,13 +240,20 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	animShader.setMat4("model", model);	
 
-	animatePlayer(animShader); //animazione
-	float currentTime = glfwGetTime();
-	//controllo la lista dei colpi e ne setto gli angoli 
-	bool shotIsAvaiable = checkShotIsAvaiable(currentTime);
-	
+	//material properties
+	animShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	animShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	animShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	animShader.setFloat("material.shininess", 76.8f);
 
-	//cout << "*** Shot: " << numShotsAvailable << ")" << endl;
+	animatePlayer(animShader); //animazione player
+
+
+	// ----- TARGET - SHOT - LIFE ----- //
+
+	//controllo la lista dei colpi e ne setto gli angoli 
+	float currentTime = glfwGetTime();
+	bool shotIsAvaiable = checkShotIsAvaiable(currentTime);
 	
 	if (startPlayerShot) {
 		if (shotIsAvaiable) {
@@ -266,28 +268,25 @@ void player::drawPlayer(Shader animShader, Shader lightShader, glm::mat4 view, g
 		startPlayerShot = false;
 	}
 
+	//DRAW TARGET
 	if (mouseSxIsSelected) {
-		wea->drawTarget(lightShader, view, x, y, z, texture1, angleWeapon);
+		wea->drawTarget(simpleShader, x, y, z, texture1, angleWeapon);
 	}
 
-	// material properties
-	lightShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
-	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
-	lightShader.setFloat("material.shininess", 76.8f);
-
-
+	//DRAW SHOT
 	for (int i = 0; i < numShot; i++) {
 		if (listShot[i]->isShot) {
-			listShot[i]->draw(lightShader, texture1);
+			listShot[i]->drawPlayerShot(simpleShader, texture1);
 		}
 	}
 
+	//DRAW LIFE_INTERFACE
 	if (life > 0.0f) {
-		drawLifePlayer(lightShader);
+		drawLifePlayer(simpleShader);
 	}
 
-	drawShotAvaiable(numShotsAvailable, currentTime, lightShader);
+	//DRAW SHOT_INTERFACE
+	drawShotAvaiable(numShotsAvailable, currentTime, simpleShader);
 }
 
 void player::animatePlayer(Shader animShader) {
@@ -311,9 +310,9 @@ void player::animatePlayer(Shader animShader) {
 	}
 }
 
-void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader lightShader) {
+void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader simpleShader) {
 	
-	lightShader.use();
+	simpleShader.use();
 
 	float shotBarLenght = (lifeMax / 3.0f) / lifeMax;
 	float shotHalfBar = (shotBarLenght / 2.0);
@@ -333,7 +332,7 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader l
 		modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
 		modelLife = glm::scale(modelLife, glm::vec3(shotBarLenght - 0.03f, 0.01f, 0.15f));
 
-		lightShader.setMat4("model", modelLife);
+		simpleShader.setMat4("model", modelLife);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
@@ -358,13 +357,15 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader l
 		modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
 		modelLife = glm::scale(modelLife, glm::vec3(lenghtCalcShot -0.02f, 0.01f, 0.15f));
 
-		lightShader.setMat4("model", modelLife);
+		simpleShader.setMat4("model", modelLife);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 
 }
-void player::drawLifePlayer(Shader lightShader) {
+void player::drawLifePlayer(Shader simpleShader) {
+
+	simpleShader.use();
 
 	float offSet = 0.0f;
 
@@ -372,7 +373,6 @@ void player::drawLifePlayer(Shader lightShader) {
 		 offSet = ((lifeMax - life) / 2)/lifeMax;
 	}
 
-	lightShader.use();
 	float lifeLenght = life / lifeMax;
 
 	glActiveTexture(GL_TEXTURE0);
@@ -387,7 +387,7 @@ void player::drawLifePlayer(Shader lightShader) {
 	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
 	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.25f));
 
-	lightShader.setMat4("model", modelLife);
+	simpleShader.setMat4("model", modelLife);
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 

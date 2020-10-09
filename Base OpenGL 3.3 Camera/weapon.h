@@ -15,7 +15,7 @@ public:
 	float lengthBase;
 	float angleRange; //apertura della mira
 
-	void drawTarget(Shader myShader, glm::mat4 view, float x, float y, float z, int texturePlayer, float angle); //disegna la mira... avrà bisogno della posizione del player e dalla direzione
+	void drawTarget(Shader simpleShader, float x, float y, float z, int texturePlayer, float angle); //disegna la mira... avrà bisogno della posizione del player e dalla direzione
 
 	void initWeapon();
 
@@ -30,15 +30,15 @@ void weapon::initWeapon() {
 
 }
 
-void weapon::drawTarget(Shader lightShader, glm::mat4 view, float x, float y, float z, int texturePlayer, float angle) {
+void weapon::drawTarget(Shader simpleShader, float x, float y, float z, int texturePlayer, float angle) {
 
-	lightShader.use();
+	simpleShader.use();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texturePlayer);
 	glBindVertexArray(cubeVAO);
 
-	lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 	glm::mat4 modelW = glm::mat4(1.0f);
 	float dx = (lengthRange / 2.0f) * sin(angle);
 	float dy = (lengthRange / 2.0f) * cos(angle);
@@ -48,7 +48,7 @@ void weapon::drawTarget(Shader lightShader, glm::mat4 view, float x, float y, fl
 	modelW = glm::translate(modelW, glm::vec3(0.0f, 0.0f, 0.0f));
 	modelW = glm::scale(modelW, glm::vec3(lengthBase, 0.01f, lengthRange));
 
-	lightShader.setMat4("model", modelW);
+	simpleShader.setMat4("model", modelW);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 }

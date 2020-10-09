@@ -68,13 +68,13 @@ public:
 	unsigned int texturePrato;
 	cube* floor;
 
-	vector <cube*> tiles; //vettore contenente le mattonelle del pavimento
-	vector <mapObject*> mapObjects;
-	vector <mapObject*> externalMapObject;
+	//vector <cube*> tiles; //vettore contenente le mattonelle del pavimento
+	vector <mapObject*> mapObjects; //lista di oggetti all'interno della mappa (con cui il player può collidere)
+	vector <mapObject*> externalMapObject; //lista di oggetti esterni alla mappa
 
-	void initMap(); //crea gli oggetti della mappa
-	void drawMap(Shader lightShader); //disegna gli oggetti della mappa
-
+	void initMap(); //inizializza e posiziona la mappa con i relativi oggetti 
+	void drawMap(Shader lightShader, glm::mat4 view); //disegna gli oggetti della mappa
+	void setMapShaderProperties(Shader lightShader, glm::mat4 view); //setta projection, view e light dello shader
 };
 
 void gameMap::initMap() {
@@ -144,36 +144,42 @@ void gameMap::initMap() {
 				else if (mapMatrix[i][j] == TREE1) {
 					mapObject* tree1 = new mapObject(x, 1.8f, z, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree1->initMapObject("models/trees/tree1/tree1.dae");
+					tree1->specular = NONE;
 					mapObjects.push_back(tree1);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == TREE2) {
 					mapObject* tree2 = new mapObject(x, 1.8f, z, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree2->initMapObject("models/trees/tree2/tree2.dae");
+					tree2->specular = NONE;
 					mapObjects.push_back(tree2);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == TREE3) {
 					mapObject* tree3 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree3->initMapObject("models/trees/tree3/tree3.dae");
+					tree3->specular = NONE;
 					mapObjects.push_back(tree3);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == TREE4) {
 					mapObject* tree4 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree4->initMapObject("models/trees/tree4/tree4.dae");
+					tree4->specular = NONE;
 					mapObjects.push_back(tree4);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == BUSH1) {
 					mapObject* bush1 = new mapObject(x, 0.6f, z, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f);
 					bush1->initMapObject("models/bushes/bush1/bush1.dae");
+					bush1->specular = NONE;
 					mapObjects.push_back(bush1);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == BUSH2) {
 					mapObject* bush2 = new mapObject(x, 0.6f, z, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f);
 					bush2->initMapObject("models/bushes/bush2/bush2.dae");
+					bush2->specular = NONE;
 					mapObjects.push_back(bush2);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
@@ -183,7 +189,6 @@ void gameMap::initMap() {
 					mapObject* grass = new mapObject(x_rand, 0.6f, z_rand, 1.0f, 0.0f, 1.0f, 0.5f, 0.0f);
 					grass->initMapObject("models/grass/grass1.dae");
 					mapObjects.push_back(grass);
-					//mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == CHEST) {
 					mapObject* chest1 = new mapObject(x, 0.6f, z, 0.035f, 0.0f, 1.0f, 0.5f, 0.0f);
@@ -200,16 +205,19 @@ void gameMap::initMap() {
 	//front
 	mapObject* cliff_front = new mapObject(0.0f, 0.2f, -25.0f, 5.0f, glm::radians(-180.0f), 0.0f, 0.0f, 1.0f);
 	cliff_front->initMapObject("models/mountains/cliff_front.dae");
+	cliff_front->specular = MODERATE;
 	externalMapObject.push_back(cliff_front);
 
 	//left
 	mapObject* cliff_left = new mapObject(-24.4f, 0.2f, -1.0f, 5.0f, glm::radians(-180.0f), 0.0f, 0.0f, 1.0f);
 	cliff_left->initMapObject("models/mountains/cliff_left.dae");
+	cliff_left->specular = MODERATE;
 	externalMapObject.push_back(cliff_left);
 
 	//right
 	mapObject* cliff_right = new mapObject(23.5f, 0.2f, -1.0f, 5.0f, glm::radians(-180.0f), 0.0f, 0.0f, 1.0f);
 	cliff_right->initMapObject("models/mountains/cliff_right.dae");
+	cliff_right->specular = MODERATE;
 	externalMapObject.push_back(cliff_right);
 
 	//back
@@ -269,23 +277,27 @@ void gameMap::initMap() {
 
 	mapObject* tree_external1 = new mapObject(8.0f, 1.8f, 25.6f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 	tree_external1->initMapObject("models/trees/tree2/tree2.dae");
+	tree_external1->specular = NONE;
 	mapObjects.push_back(tree_external1);
 
 	mapObject* tree_external2 = new mapObject(8.9f, 1.8f, 25.0f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 	tree_external2->initMapObject("models/trees/tree2/tree2.dae");
+	tree_external2->specular = NONE;
 	mapObjects.push_back(tree_external2);
 
 	mapObject* tree_external3 = new mapObject(9.8f, 1.8f, 24.2f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 	tree_external3->initMapObject("models/trees/tree2/tree2.dae");
+	tree_external3->specular = NONE;
 	mapObjects.push_back(tree_external3);
 
 	mapObject* tree_external4 = new mapObject(-3.0f, 1.8f, 25.5f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 	tree_external4->initMapObject("models/trees/tree2/tree2.dae");
+	tree_external4->specular = NONE;
 	mapObjects.push_back(tree_external4);
 
 }
 
-void gameMap::drawMap(Shader lightShader) {
+void gameMap::drawMap(Shader lightShader, glm::mat4 view) {
 
 	// ---- Floor ---- //
 	floor->drawCube(lightShader, texturePrato);
