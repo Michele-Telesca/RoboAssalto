@@ -11,10 +11,15 @@
 #include "playerShot.h"
 #include <vector>
 
-/* classe di update per le animazioni:
-   qui vengono gestiti tutti i tempi per
+#include <irrKlang/irrKlang.h>
+
+
+/* Classe di update per le animazioni:
+   vengono gestiti tutti i tempi per
    gli aggiornamenti delle animazioni 
-   del player e dei bot */
+   del player, dei bot e del powerUp;
+   inoltre sono gestite anche le tracce
+   audio che accompagnano le animazioni*/
 
 /* NOTE - (1): maggiore è il valore attribuito all'incremento del tempo -> maggiore sarà la velocità di animazione 
           (2): per le animazioni ricorsive (camminata, corsa, attacco), quando il tempo dell'animazione supera 
@@ -22,9 +27,14 @@
 
 class updateAnimation
 {
-	public:	
-
-	updateAnimation(){}
+public:	
+		
+	irrklang::ISoundEngine* SoundEngine; //proprietà che gestisce il sound
+	
+	//costruttore no-arg
+	updateAnimation(){
+		SoundEngine = irrklang::createIrrKlangDevice(); //inizializzo il soundEngine
+	}
 
 	// ---- prototipi ---- //
 
@@ -138,13 +148,20 @@ void updateAnimation::increaseBot_Dead(vector<villain*> botList) {
 
 
 void updateAnimation::increasePlayerStand_Run(player* player) {
-	player->animationTime_playerStanding = player->animationTime_playerStanding + 0.06f;  //incremento l'animazione
-	player->animationTime_playerRunning = player->animationTime_playerRunning + 0.06f;    //incremento l'animazione
+	player->animationTime_playerStanding = player->animationTime_playerStanding + 0.06f;   //incremento l'animazione
 	if (player->animationTime_playerStanding > 10.0f) {  //quando l'animazione supera la soglia
 		player->animationTime_playerStanding = 0.0f;     //resetto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
 	}
-	if (player->animationTime_playerRunning > 10.0f) {   //quando l'animazione supera la soglia
-		player->animationTime_playerRunning = 0.0f;      //resetto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
+
+	if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se il player cammina
+		player->animationTime_playerRunning = player->animationTime_playerRunning + 0.05f;  //incremento l'animazione
+		if (player->animationTime_playerRunning >= 0.49f && player->animationTime_playerRunning <= 0.51f) { //quando il player fa primo passo
+			SoundEngine->play2D("audio/player footstep.wav", false); //sound step
+		}
+		if (player->animationTime_playerRunning > 1.0f) {   //quando il player fa il secondo passo
+			SoundEngine->play2D("audio/player footstep.wav", false); //sound step
+			player->animationTime_playerRunning = 0.0f;     //resetto il tempo di animazione all'inizio -> ricomincia da 
+		}
 	}
 }
 

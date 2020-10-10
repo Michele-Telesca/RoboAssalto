@@ -134,5 +134,8 @@
     <ClInclude Include="powerUp.h">
       <Filter>Header Files\Modello</Filter>
     </ClInclude>
+    <ClInclude Include="updateSound.h">
+      <Filter>Header Files\Controllo</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

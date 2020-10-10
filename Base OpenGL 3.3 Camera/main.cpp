@@ -30,6 +30,7 @@
 #include "globalData.h"
 #include "globalPathData.h"
 
+#include <irrKlang/irrKlang.h>
 
 // dichiarazione oggetti
 game* gameuno = new game();
@@ -238,6 +239,8 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 
 		// ------- ANIMATION ------- //
 		update_animation->updateAllAnimations(player, botList, gameuno->power_up);
+		
+		// ------- SOUND ------- //
 
 		previousTime = currentTime;
 	}
