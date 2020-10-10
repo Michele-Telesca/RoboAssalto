@@ -25,7 +25,8 @@ public:
 	float damage; //danno del proiettile
 
 	void inizializza();
-	void draw(Shader lightShader, int texturePlayer,float dim); //disegna il colpo in base al weapon 
+	//void draw(Shader lightShader, int texturePlayer,float dim); //disegna il colpo in base al weapon 
+	void drawPlayerShot(Shader simpleShader, int texturePlayer, float dim); //disegna il colpo in base al weapon 
 	float direction;
 
 	float getX() {
@@ -54,22 +55,23 @@ void playerShot::inizializza() {
 	damage = 75.0f;
 }
 
-void playerShot::draw(Shader lightShader, int texturePlayer,float dim) {
+//void playerShot::draw(Shader lightShader, int texturePlayer,float dim) {
+void playerShot::drawPlayerShot(Shader simpleShader, int texturePlayer, float dim) {
 
-	lightShader.use();
+	simpleShader.use();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texturePlayer);
 	glBindVertexArray(cubeVAO);
 
-	lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 	glm::mat4 modelW = glm::mat4(1.0f);
 
 	modelW = glm::translate(modelW, glm::vec3(x, y, z));
 	modelW = glm::rotate(modelW, angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	modelW = glm::scale(modelW, glm::vec3(dim, dim, dim));
 
-	lightShader.setMat4("model", modelW);
+	simpleShader.setMat4("model", modelW);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 

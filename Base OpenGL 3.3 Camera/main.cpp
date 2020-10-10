@@ -172,35 +172,18 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
-void render(Shader lightShader, Shader animShader)
+void render(Shader simpleShader, Shader lightShader, Shader animShader)
 {
 
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//projection
-	glm::mat4 projection = glm::mat4(1.0f);	//identity matrix
-	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	lightShader.setMat4("projection", projection);
-
-	//light properties
-	lightShader.setVec3("light.position", lightPos);
-	lightShader.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
-	lightShader.setVec3("light.diffuse", 0.7f, 0.7f, 0.7f);
-	lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-
-	// material properties
-	lightShader.setVec3("material.ambient", 0.7f, 0.7f, 0.7f);
-	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
-	lightShader.setFloat("material.shininess", 76.8f);
 
 	currentTime = glfwGetTime();
 	double timeInterval = currentTime - previousTime;
 	if (timeInterval >= RENDER_SPEED) {
 
 		player* player = gameuno->getPlayer();
-		vector <villain*> botList = gameuno->getBotList();
+		vector <villain*> botList = gameuno->getSpawnedBotList();
 		
 
 		// ------- PLAYER MOVES ------- //
@@ -240,9 +223,9 @@ void render(Shader lightShader, Shader animShader)
 		mouse_position();
 
 		// ------- BOT ------- //
-		/*gameuno->BOT_spawner();
+		gameuno->BOT_spawner();
 		gameuno->kill_BOT();
-		update_game->updateBot(botList, player, gameuno); */
+		update_game->updateBot(botList, player, gameuno); 
 
 		// ------- POWERUP ------- //
 		gameuno->powerUp_spawner();
@@ -291,14 +274,14 @@ void render(Shader lightShader, Shader animShader)
 	lightShader.setMat4("view", view);
 
 	// ------- DRAW ------- //
-	gameuno->draw(lightShader, animShader, view);
+	gameuno->draw(simpleShader, lightShader, animShader, view);
 
 }
 
 // viene richiamata prima dell'inizio del while e server per inizializzare il game (vengono creati gli oggetti)
 void init() {
 
-	gameuno->inizializza();
+	gameuno->init();
 
 }
 
@@ -327,7 +310,7 @@ unsigned int loadtexture(std::string filename)
 	}
 	else
 	{
-		std::cout << "Failed to load texture" << std::endl;
+		std::cout << "Failed to load texture " << filename.c_str() << std::endl;
 		return -1;
 	}
 	stbi_image_free(data);
@@ -405,9 +388,9 @@ int main()
 	//glEnable(GL_DEPTH);
 
 	//dichiarazione degli shader
-	Shader myShader("vertex_shader.vs", "fragment_shader.fs");
-	Shader lightShader("vertex_shader_lights.vs", "fragment_shader_lights.fs");
-	Shader animationShader("vertex_anim.vs", "fragment_anim.fs");
+	Shader simpleShader("vertex_simple.vs", "fragment_simple.fs");
+	Shader lightShader("vertex_lights.vs", "fragment_lights.fs");
+	Shader animationShader("vertex_anim_lights.vs", "fragment_anim_lights.fs");
 
 	init();
 
@@ -417,7 +400,7 @@ int main()
 		// input
 		processInput(window);
 
-		render(lightShader, animationShader);
+		render(simpleShader, lightShader, animationShader);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);

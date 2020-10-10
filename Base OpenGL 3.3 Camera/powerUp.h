@@ -67,6 +67,12 @@ void powerUp::drawPowerUp(Shader lightShader) {
 
 	lightShader.use();
 
+	// material properties
+	lightShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
+	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	lightShader.setFloat("material.shininess", 76.8f);
+
 	if (powerUp_type == 1) {
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y + animationTime_translate_y, z));

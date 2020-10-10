@@ -17,6 +17,8 @@ public:
 	float rotate_z;
 
 	Model* mapObject_i;
+
+	int specular; //HIGH - MODERATE - NONE
 	
 	//costruttore no arg
 	mapObject(){}
@@ -51,12 +53,30 @@ void mapObject::initMapObject(string path) {
 	//caricamento modello
 	mapObject_i = new Model();
 	mapObject_i->loadModel(path);
+	specular = HIGH;
 
 }
 
 void mapObject::drawMapObject(Shader lightShader) {
 
 	lightShader.use();
+
+	// material properties
+	lightShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+
+	if (specular == NONE) {
+		lightShader.setVec3("material.specular", 0.0f,0.0f, 0.0f);
+		lightShader.setFloat("material.shininess", 50.0f);
+	}
+	else if (specular == MODERATE) {
+		lightShader.setVec3("material.specular", 0.3f, 0.3f, 0.3f);
+		lightShader.setFloat("material.shininess", 75.0f);
+	}
+	else if (specular == HIGH) {
+		lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+		lightShader.setFloat("material.shininess", 50.0f);
+	}
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(x, y, z));
