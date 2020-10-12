@@ -23,18 +23,17 @@ glm::vec3 lightPos(0.0f, 25.0f, 0.0f); //posizione luce
 //glm::vec3 lightPos(0.0f, -1.0f, 0.0f); //DIREZIONE luce
 
 
-float LENGTH_RANGE_WEAPON1 = 6.0f; //lunghezza di mira
-float LENGTH_BASE_WEAPON1 = 2.0f;
-float ANGLE_RANGE_WEAPON1 = 90.0f;
+const int WEAPON_SHOTGUN = 1;
+const float LENGTH_RANGE_SHOTGUN = 3.0f; //lunghezza di mira
+const float LENGTH_BASE_SHOTGUN = 4.0f;
+const float ANGLE_RANGE_SHOTGUN = 90.0f;
+const float SHOTGUN_DAMAGE = 100.0f;
 
-float LENGTH_RANGE_WEAPON2 = 3.0f; //lunghezza di mira
-float LENGTH_BASE_WEAPON2 = 4.0f;
-float ANGLE_RANGE_WEAPON2 = 90.0f;
-
-
-float LENGTH_RANGE_WEAPON3 = 9.0f; //lunghezza di mira
-float LENGTH_BASE_WEAPON3 = 1.0f;
-float ANGLE_RANGE_WEAPON3 = 90.0f;
+const int WEAPON_SNIPER = 2;
+const float LENGTH_RANGE_SNIPER = 9.0f; //lunghezza di mira
+const float LENGTH_BASE_SNIPER = 1.0f;
+const float ANGLE_RANGE_SNIPER = 90.0f;
+const float SNIPER_DAMAGE = 50.0f;
 
 // ---- //
 const int STONE1 = 1;
@@ -74,8 +73,9 @@ const int NONE = 0;
 const int numShot = 3; //numero proiettili
 const float SHOT_SPEED = 3.0f; //velocità proiettili
 const float SHOT_DIM = 0.5f; //dimensione x,z del proiettile
-
 const float SHOT_DIM2 = 1.5f; //dimensione x,z del proiettile
+const float ejection_bullet_SHOTGUN_TIME = 1.1f; //secondi per l'ejectingBullet SHOTGUN
+const float ejection_bullet_SNIPER_TIME = 2.0f; //secondi per l'ejectingBullet SNIPER
 
 //Movimenti
 bool muoviDx = false;

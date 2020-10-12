@@ -9,11 +9,26 @@ public:
 
 	weapon() {};
 	//costruttore per tutte le armi
-	weapon(float lengthRange, float angleRange, float lengthBase) : angleRange(angleRange), lengthRange(lengthRange), lengthBase(lengthBase) {}
+	//weapon(float lengthRange, float angleRange, float lengthBase, int weapon_type) : angleRange(angleRange), lengthRange(lengthRange), lengthBase(lengthBase), weapon_type(weapon_type) {}
+	weapon(int type) {
+		weapon_type = type;
+		if (weapon_type == WEAPON_SHOTGUN) {
+			lengthRange = LENGTH_RANGE_SHOTGUN;
+			angleRange = ANGLE_RANGE_SHOTGUN;
+			lengthBase = LENGTH_BASE_SHOTGUN;
+		}
+		else if (weapon_type == WEAPON_SNIPER) {
+			lengthRange = LENGTH_RANGE_SNIPER;
+			angleRange = ANGLE_RANGE_SNIPER;
+			lengthBase = LENGTH_BASE_SNIPER;
+		}
+	}
 
 	float lengthRange; //lunghezza di mira
 	float lengthBase;
 	float angleRange; //apertura della mira
+
+	int weapon_type; //WEAPON_SHOTGUN = 1; WEAPON_SNIPER = 2;
 
 	void drawTarget(Shader simpleShader, float x, float y, float z, int texturePlayer, float angle); //disegna la mira... avrà bisogno della posizione del player e dalla direzione
 

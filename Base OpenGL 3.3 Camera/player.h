@@ -28,6 +28,8 @@ public:
 	int numShotsAvailable; //colpi a disposizione
 	float chargingTime; //tempo di ricarica del colpo
 	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
+	float ejectBulletTime;
+	bool bulletEjected;
 	float anglePlayer;
 
 	bool mouseSxIsSelected = false;
@@ -40,6 +42,7 @@ public:
 	// tempo per le animazioni
 	float animationTime_playerStanding;
 	float animationTime_playerRunning;
+	
 
 	// target dell'arma
 	weapon* wea;  //arma posseduta al momento
@@ -60,6 +63,7 @@ public:
 	bool checkShotIsAvaiable(float currentTime);
 	void drawLifePlayer(Shader lightShader);
 	void drawShotAvaiable(int numShotsAvailable, float currentTime, Shader lightShader);
+	bool checkEjectionBullet(float currentTime);
 
 	//get e set
 	bool getStartPlayerShot() {
@@ -121,7 +125,7 @@ public:
 
 void player::initPlayer() {
 
-	wea =  new weapon(LENGTH_RANGE_WEAPON1, ANGLE_RANGE_WEAPON1, LENGTH_BASE_WEAPON1);
+	wea =  new weapon(WEAPON_SHOTGUN);
 
 	//SoundEngine = irrklang::createIrrKlangDevice();
 
@@ -162,13 +166,28 @@ void player::initPlayer() {
 	// tempo per le animazioni
 	animationTime_playerStanding = 0.0f;
 	animationTime_playerRunning = 0.0f;
-
+	ejectBulletTime = 0.0f;
+	bulletEjected = false;
 }
 
 float angleBetween(const glm::vec3 a, const glm::vec3 b) {
 
 	float angle = atan2(b.x, a.x) - atan2(b.z, a.y);
 	return angle;
+}
+
+bool player::checkEjectionBullet(float currentTime) { //tempo tra uno shot e un altro di file
+	if (wea->weapon_type == WEAPON_SHOTGUN) {
+		if (ejectBulletTime == 0.0f || (currentTime - ejectBulletTime) > ejection_bullet_SHOTGUN_TIME) {
+			return true;
+		}
+	}
+	else {
+		if (ejectBulletTime == 0.0f || (currentTime - ejectBulletTime) > 2.0f) {
+			return true;
+		}
+	}
+
 }
 
 bool player::checkShotIsAvaiable(float currentTime) {
@@ -183,7 +202,7 @@ bool player::checkShotIsAvaiable(float currentTime) {
 			return true;
 		}
 	}
-	//se i colpi disponibili sono minori di 0 non posso sparare
+	//se i colpi disponibili sono minori di 0 non posso sparare oppure il tempo passato dal lastshot è inferiore a tot
 	if (numShotsAvailable == 0) {
 		return false;
 	}
@@ -194,7 +213,6 @@ bool player::checkShotIsAvaiable(float currentTime) {
 }
 
 void player::updateAngleShot(float tempDegree, float anglePlayer) {
-
 
 	for (float ang = 0.0f; ang < 180.0f; ang = ang + 15.0f) {
 		float tempAng = ang + 15.0f;
@@ -257,9 +275,11 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 	//controllo la lista dei colpi e ne setto gli angoli 
 	float currentTime = glfwGetTime();
 	bool shotIsAvaiable = checkShotIsAvaiable(currentTime);
-	
+	bulletEjected = checkEjectionBullet(currentTime);
+
 	if (startPlayerShot) {
-		if (shotIsAvaiable) {
+		if (shotIsAvaiable && checkEjectionBullet(currentTime)) {
+			ejectBulletTime = currentTime;
 			listShot[numShotsAvailable - 1]->startX = x; //posizione x del player
 			listShot[numShotsAvailable - 1]->startZ = z; //posizione z del player
 			listShot[numShotsAvailable - 1]->angle = angleWeapon;
@@ -279,7 +299,7 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 	//DRAW SHOT
 	for (int i = 0; i < numShot; i++) {
 		if (listShot[i]->isShot) {
-			if (wea->lengthBase == LENGTH_BASE_WEAPON2) {
+			if (wea->lengthBase == LENGTH_BASE_SHOTGUN) {
 				listShot[i]->drawPlayerShot(simpleShader, texture1, SHOT_DIM2);
 			}
 			else {

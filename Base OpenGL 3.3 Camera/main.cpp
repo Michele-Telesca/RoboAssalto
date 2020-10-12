@@ -233,7 +233,7 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 		update_game->hitPowerUp(player, gameuno->power_up);
 
 		// ------- SHOT ------- //
-		update_game->updateShot(player->listShot, botList, player->wea);
+		update_game->updateShot(player->listShot, botList, player->wea, player);
 		update_game->shotHitTree(player->listShot);
 
 
@@ -241,7 +241,6 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 		update_animation->updateAllAnimations(player, botList, gameuno->power_up);
 		
 		// ------- SOUND ------- //
-
 		previousTime = currentTime;
 	}
 

@@ -313,16 +313,16 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 	//Setto le proprietà view, projection degli shaders
 	setShadersProperties(simpleShader, lightShader, animShader, view); 
 
+	//DRAW PLAYER
+	p->drawPlayer(simpleShader, animShader, getMousePoint());
+
 	//DRAW BOTS
 	if (spawnedBotList.size() >= 1) {
 		for (int i = 0; i < spawnedBotList.size(); i++) {
 			spawnedBotList[i]->drawVillain(animShader);
 		}
 	}
-
-	//DRAW PLAYER
-	p->drawPlayer(simpleShader, animShader, getMousePoint());
-
+	
 	//DRAW MAP
 	mappa->drawMap(lightShader, view);
 

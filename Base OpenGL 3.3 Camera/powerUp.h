@@ -19,6 +19,7 @@ class powerUp
 		float z;
 
 		bool spawned; //true se il power up è spawnato
+		bool hit; //true se è stato hittato dal player
 
 		Model* bullet_powerUp;
 		Model* sight_powerUp;
@@ -38,6 +39,7 @@ class powerUp
 void powerUp::initPowerUp() {
 
 	spawned = false; //non ancora spawnato
+	hit = false; //non ancora hittato dal player
 
 	//powerUp_type = 0;
 

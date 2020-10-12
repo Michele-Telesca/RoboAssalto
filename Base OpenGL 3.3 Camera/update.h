@@ -39,7 +39,7 @@ public:
 	void botAttacking(villain* bot, player* p);
 
 	// ---- Movimento e collisioni degli SHOT ---- //
-	void updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea);
+	void updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea, player* p);
 	void shotHitBot(vector <playerShot*> listShot, villain* bot);
 	void shotHitTree(vector <playerShot*> listShot);
 
@@ -448,17 +448,18 @@ void update::calculateAnglePlayer(player* p) {
 
 void update::hitPowerUp(player* p, powerUp* power_up) {
 	if (power_up->spawned == true) {
-		if ((p->x >= power_up->x - TILE_DIM / 2 && p->x <= power_up->x + TILE_DIM / 2) && (p->z >= power_up->z - TILE_DIM / 2 && p->z <= power_up->z + TILE_DIM / 2)) {
-			if (power_up->powerUp_type == 1) {
-				p->wea = new weapon(LENGTH_RANGE_WEAPON2, ANGLE_RANGE_WEAPON2, LENGTH_BASE_WEAPON2);
+		if ((p->x >= power_up->x - TILE_DIM / 2 && p->x <= power_up->x + TILE_DIM / 2) && (p->z >= power_up->z - TILE_DIM / 2 && p->z <= power_up->z + TILE_DIM / 2)) {	
+			power_up->hit = true;
+			if (power_up->powerUp_type == POWERUP_BULLET) {
+				p->wea = new weapon(WEAPON_SHOTGUN);
 				for (int i = 0; i < numShot; i++) {
-					p->listShot[i]->damage = 100.0f;
+					p->listShot[i]->damage = SHOTGUN_DAMAGE;
 				}
 			}
-			if (power_up->powerUp_type == 2) {
-				p->wea = new weapon(LENGTH_RANGE_WEAPON3, ANGLE_RANGE_WEAPON3, LENGTH_BASE_WEAPON3);
+			if (power_up->powerUp_type == POWERUP_SIGHT) {
+				p->wea = new weapon(WEAPON_SNIPER);
 				for (int i = 0; i < numShot; i++) {
-					p->listShot[i]->damage = 50.0f;
+					p->listShot[i]->damage = SNIPER_DAMAGE;
 				}
 			}
 			cout << "--------> POWERUP HIT " << endl;
@@ -468,7 +469,7 @@ void update::hitPowerUp(player* p, powerUp* power_up) {
 }
 
 //update shot
-void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea) {
+void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea, player* p) {
 	for (int i = 0; i < numShot; i++) {
 		if (listShot[i]->isShot) {
 			listShot[i]->direction = listShot[i]->direction + 0.1f;

@@ -34,6 +34,8 @@ public:
 	//costruttore no-arg
 	updateAnimation(){
 		SoundEngine = irrklang::createIrrKlangDevice(); //inizializzo il soundEngine
+		SoundEngine->setSoundVolume(0);
+		SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
 	}
 
 	// ---- prototipi ---- //
@@ -42,33 +44,39 @@ public:
 	void updateAllAnimations(player* player, vector<villain*> botList, powerUp* powerUp);
 
 	//bot animation time
-	void increaseBotTime(vector<villain*> botList);
+	void botAnimation(vector<villain*> botList);
 	void increaseBot_Walk_Attack(vector<villain*> botList);
 	void increaseBot_Hit(vector<villain*> botList);
 	void increaseBot_Dead(vector<villain*> botList);
+	void bot_soundAattack(villain* bot);
+
 
 	//player animation time
-	void increasePlayerTime(player* player);
-	void increasePlayerStand_Run(player* player);
+	void playerAnimation(player* player);
+	void increasePlayer_Run(player* player);
+	void increasePlayer_Stand(player* player);
+	void playerShot_sound(player* player);
 
 	//power up animation time
-	void increasePowerUpTime(powerUp* powerUp);
+	void powerUpAnimation(powerUp* powerUp);
+	void powerUp_sound(powerUp* powerUp);
 
 };
 
 void updateAnimation::updateAllAnimations(player* player, vector<villain*> botList, powerUp* powerUp) {
 	
-	increasePlayerTime(player); 
+	playerAnimation(player);
 	
 	if (!botList.empty()) { 
-		increaseBotTime(botList); //incrementa le animazioni dei bot solo se la lista dei bot NON è vuota
+		botAnimation(botList); //incrementa le animazioni dei bot solo se la lista dei bot NON è vuota
 	}
 
-	increasePowerUpTime(powerUp);
+	powerUpAnimation(powerUp);
+	powerUp_sound(powerUp);
 
 }
 
-void updateAnimation::increasePowerUpTime(powerUp* powerUp) {
+void updateAnimation::powerUpAnimation(powerUp* powerUp) {
 	float rotation_speed = 4.0f;
 	float translate_speed = 0.015f;
 	float z_upLimit = 0.6f;
@@ -92,14 +100,38 @@ void updateAnimation::increasePowerUpTime(powerUp* powerUp) {
 	}
 }
 
-void updateAnimation::increaseBotTime(vector<villain*> botList) {
+void updateAnimation::botAnimation(vector<villain*> botList) {
 	increaseBot_Walk_Attack(botList);
 	increaseBot_Hit(botList);
 	increaseBot_Dead(botList);
 }
 
-void updateAnimation::increasePlayerTime(player* player) {
-	increasePlayerStand_Run(player);
+void updateAnimation::playerAnimation(player* player) {
+	increasePlayer_Run(player);
+	increasePlayer_Stand(player);
+	playerShot_sound(player);
+}
+
+void updateAnimation::bot_soundAattack(villain* bot) {
+	if (bot->animationTime_botAttacking >= 1.49f && bot->animationTime_botAttacking <= 1.51f) {
+		int sound_attack_index = randMtoN(1, 5);
+		SoundEngine->setSoundVolume(0.5);
+		if (sound_attack_index == 1) {
+			SoundEngine->play2D("audio/zombie_attack1.wav", false); //zombie attack sound
+		}
+		else if (sound_attack_index == 2) {
+			SoundEngine->play2D("audio/zombie_attack2.wav", false); //zombie attack sound
+		}
+		else if (sound_attack_index == 3) {
+			SoundEngine->play2D("audio/zombie_attack3.wav", false); //zombie attack sound
+		}
+		else if (sound_attack_index == 4) {
+			SoundEngine->play2D("audio/zombie_attack4.wav", false); //zombie attack sound
+		}
+		else if (sound_attack_index == 5) {
+			SoundEngine->play2D("audio/zombie_attack5.wav", false); //zombie attack sound
+		}
+	}
 }
 
 void updateAnimation::increaseBot_Walk_Attack(vector<villain*> botList) {
@@ -109,12 +141,11 @@ void updateAnimation::increaseBot_Walk_Attack(vector<villain*> botList) {
 		}
 		if (botList[i]->animation_botAttacking == true) {
 			botList[i]->animationTime_botAttacking = botList[i]->animationTime_botAttacking + 0.05f; //incremento l'animazione
+			bot_soundAattack(botList[i]); 
 		}
-
 		if (botList[i]->animationTime_botWalking >= 10.0f) {    //quando l'animazione supera la soglia
 			botList[i]->animationTime_botWalking = 0.0f;       //reimposto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
 		}
-
 		if (botList[i]->animationTime_botAttacking >= 3.6f || botList[i]->animation_botAttacking == false) {   //quando l'animazione supera la soglia oppure torna ad essere false
 			botList[i]->animationTime_botAttacking = 0.0f;      //resetto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
 		}
@@ -125,6 +156,16 @@ void updateAnimation::increaseBot_Hit(vector<villain*> botList) {
 	for (int i = 0; i < botList.size(); i++) {
 		if (botList[i]->animation_botHit == true) {
 			botList[i]->animationTime_botHit = botList[i]->animationTime_botHit + 0.04f; //incremento l'animazione
+		}
+		if (botList[i]->animationTime_botHit == 0.12f ) {
+			int sound_hit_index = randMtoN(1,2);
+			SoundEngine->setSoundVolume(0.5);
+			if (sound_hit_index == 1) {
+				SoundEngine->play2D("audio/zombie_hit1.wav", false); //zombie hit sound
+			}
+			else if (sound_hit_index == 2) {
+				SoundEngine->play2D("audio/zombie_hit2.wav", false); //zombie hit sound
+			}
 		}
 		if (botList[i]->animationTime_botHit >= 2.0f) {   //quando l'animazione è finita
 			botList[i]->animationTime_botHit = 0.08f;     //resetto il tempo di animazione all'inizio
@@ -147,21 +188,62 @@ void updateAnimation::increaseBot_Dead(vector<villain*> botList) {
 }
 
 
-void updateAnimation::increasePlayerStand_Run(player* player) {
+void updateAnimation::increasePlayer_Stand(player* player) {
 	player->animationTime_playerStanding = player->animationTime_playerStanding + 0.06f;   //incremento l'animazione
 	if (player->animationTime_playerStanding > 10.0f) {  //quando l'animazione supera la soglia
 		player->animationTime_playerStanding = 0.0f;     //resetto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
 	}
+}
+
+void updateAnimation::increasePlayer_Run(player* player) {
 
 	if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se il player cammina
 		player->animationTime_playerRunning = player->animationTime_playerRunning + 0.05f;  //incremento l'animazione
-		if (player->animationTime_playerRunning >= 0.49f && player->animationTime_playerRunning <= 0.51f) { //quando il player fa primo passo
-			SoundEngine->play2D("audio/player footstep.wav", false); //sound step
+
+		if (player->animationTime_playerRunning == 0.05f) { //quando il player fa primo passo
+			SoundEngine->setSoundVolume(0.8);
+			SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
 		}
+		if (player->animationTime_playerRunning >= 0.49f && player->animationTime_playerRunning <= 0.51f) { //quando il player fa primo passo
+			SoundEngine->setSoundVolume(0.8);
+			SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
+		}
+
 		if (player->animationTime_playerRunning > 1.0f) {   //quando il player fa il secondo passo
-			SoundEngine->play2D("audio/player footstep.wav", false); //sound step
 			player->animationTime_playerRunning = 0.0f;     //resetto il tempo di animazione all'inizio -> ricomincia da 
 		}
 	}
 }
+
+void updateAnimation::playerShot_sound(player* player) {
+	if (player->startPlayerShot == true && player->numShotsAvailable > 0 && player->bulletEjected) {
+		if (player->wea->weapon_type == WEAPON_SHOTGUN) {
+			SoundEngine->setSoundVolume(0.5);
+			SoundEngine->play2D("audio/shotgun_fire.wav", false); //sound shot SHOTGUN
+		}
+		else if(player->wea->weapon_type == WEAPON_SNIPER){
+			SoundEngine->setSoundVolume(0.5);
+			SoundEngine->play2D("audio/sniper_fire.wav", false); //sound shot SNIPER
+		}
+	}
+	else if (player->startPlayerShot == true && player->numShotsAvailable <= 0) {
+		SoundEngine->setSoundVolume(0.5);
+		SoundEngine->play2D("audio/weapon_empty.flac", false); //sound no shot available
+	}
+}
+
+void updateAnimation::powerUp_sound(powerUp* powerUp) {
+	if (powerUp->hit == true) {
+		if (powerUp->powerUp_type == POWERUP_BULLET) {
+			SoundEngine->setSoundVolume(0.7);
+			SoundEngine->play2D("audio/bullet powerUp.wav", false); //sound no shot available
+		}
+		else if (powerUp->powerUp_type == POWERUP_SIGHT) {
+			SoundEngine->setSoundVolume(0.7);
+			SoundEngine->play2D("audio/sight powerUp.wav", false); //sound no shot available
+		}
+		powerUp->hit = false;
+	}
+}
+
 

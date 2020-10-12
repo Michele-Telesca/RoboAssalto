@@ -52,6 +52,7 @@ public:
 	float animationTime_botAttacking;
 	float animationTime_botHit;
 	float animationTime_botDead;
+	bool soundWalkingAttacking;
 	
 	//weapon* weapon; //per avere la gittata del villain
 	path* percorso;
@@ -156,6 +157,8 @@ void villain::initVillain(path* path) {
 	animationTime_botAttacking = 0.0f;
 	animationTime_botHit = 0.08f;
 	animationTime_botDead = 0.0f;
+
+	soundWalkingAttacking = false;
 }
 
 void villain::initModel_Zombie1() {
