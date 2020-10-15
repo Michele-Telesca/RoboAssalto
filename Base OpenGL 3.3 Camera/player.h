@@ -14,8 +14,6 @@ public:
 
 	player() {}
 
-	player(float x, float y, float z) : x(x), y(y), z(z) {}
-
 	//coordinate
 	float x;
 	float y;
@@ -26,10 +24,10 @@ public:
 	float lifeMax;
 
 	int numShotsAvailable; //colpi a disposizione
-	float chargingTime; //tempo di ricarica del colpo
-	float timeLastShot; //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
-	float ejectBulletTime;
-	bool bulletEjected;
+	float chargingTime;    //tempo di ricarica del colpo
+	float timeLastShot;    //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
+	float delayShotTime;
+	bool delayShotIsFinished;
 	float anglePlayer;
 
 	bool mouseSxIsSelected = false;
@@ -43,7 +41,6 @@ public:
 	float animationTime_playerStanding;
 	float animationTime_playerRunning;
 	
-
 	// target dell'arma
 	weapon* wea;  //arma posseduta al momento
 
@@ -58,12 +55,12 @@ public:
 	//prototipi
 	void drawPlayer(Shader animShader, Shader lightShader, glm::vec3 mousePoint); //disegna il player
 	void animatePlayer(Shader animShader);
-	void initPlayer(); //inizializza il player
+	void initPlayer(int selectedPlayer); //inizializza il player
 	void updateAngleShot(float tempDegree, float anglePlayer);
 	bool checkShotIsAvaiable(float currentTime);
 	void drawLifePlayer(Shader lightShader);
 	void drawShotAvaiable(int numShotsAvailable, float currentTime, Shader lightShader);
-	bool checkEjectionBullet(float currentTime);
+	bool checkShotDelay(float currentTime);
 
 	//get e set
 	bool getStartPlayerShot() {
@@ -123,7 +120,7 @@ public:
 
 };
 
-void player::initPlayer() {
+void player::initPlayer(int selectedPlayer) {
 
 	wea =  new weapon(WEAPON_SHOTGUN);
 
@@ -160,14 +157,24 @@ void player::initPlayer() {
 	}
 
 	//loading meshes with animation
-	meshRunning.loadMesh("animation/player_michelle/shotgun_running/shotgun_running.dae");
-	meshStanding.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
+	if (selectedPlayer == PLAYER_MICHELLE) {
+		//michelle
+		meshRunning.loadMesh("animation/player_michelle/shotgun_running/shotgun_running.dae");
+		meshStanding.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
+	}
+	else if (selectedPlayer == PLAYER_BRYCE) {
+		//bryce
+		meshRunning.loadMesh("animation/player_bryce/shotgun_running/shotgun_running.dae");
+		meshStanding.loadMesh("animation/player_bryce/shotgun_standing/shotgun_standing.dae");
+	}
 
 	// tempo per le animazioni
 	animationTime_playerStanding = 0.0f;
 	animationTime_playerRunning = 0.0f;
-	ejectBulletTime = 0.0f;
-	bulletEjected = false;
+	
+	delayShotTime = 0.0f; //delay tra uno sparo e un altro
+	delayShotIsFinished = true;
+
 }
 
 float angleBetween(const glm::vec3 a, const glm::vec3 b) {
@@ -176,15 +183,21 @@ float angleBetween(const glm::vec3 a, const glm::vec3 b) {
 	return angle;
 }
 
-bool player::checkEjectionBullet(float currentTime) { //tempo tra uno shot e un altro di file
+bool player::checkShotDelay(float currentTime) { //tempo tra uno shot e un altro di file
 	if (wea->weapon_type == WEAPON_SHOTGUN) {
-		if (ejectBulletTime == 0.0f || (currentTime - ejectBulletTime) > ejection_bullet_SHOTGUN_TIME) {
+		if (delayShotTime == 0.0f || (currentTime - delayShotTime) > DELAY_SHOTGUN) {
 			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	else {
-		if (ejectBulletTime == 0.0f || (currentTime - ejectBulletTime) > 2.0f) {
+		if (delayShotTime == 0.0f || (currentTime - delayShotTime) > DELAY_SNIPER) {
 			return true;
+		}
+		else {
+			return false;
 		}
 	}
 
@@ -262,9 +275,9 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 	animShader.setMat4("model", model);	
 
 	//material properties
-	animShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
-	animShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	animShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	animShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
+	animShader.setVec3("material.diffuse", 0.8f, 0.8f, 0.8f);
+	animShader.setVec3("material.specular", 0.1f, 0.1f, 0.1f);
 	animShader.setFloat("material.shininess", 76.8f);
 
 	animatePlayer(animShader); //animazione player
@@ -275,11 +288,11 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 	//controllo la lista dei colpi e ne setto gli angoli 
 	float currentTime = glfwGetTime();
 	bool shotIsAvaiable = checkShotIsAvaiable(currentTime);
-	bulletEjected = checkEjectionBullet(currentTime);
+	delayShotIsFinished = checkShotDelay(currentTime);
 
 	if (startPlayerShot) {
-		if (shotIsAvaiable && checkEjectionBullet(currentTime)) {
-			ejectBulletTime = currentTime;
+		if (shotIsAvaiable && delayShotIsFinished) {
+			delayShotTime = currentTime;
 			listShot[numShotsAvailable - 1]->startX = x; //posizione x del player
 			listShot[numShotsAvailable - 1]->startZ = z; //posizione z del player
 			listShot[numShotsAvailable - 1]->angle = angleWeapon;

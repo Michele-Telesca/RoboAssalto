@@ -39,7 +39,6 @@ public:
 	void init(); //inizializza il game game
 	void initPathList(); //inizializza tutti i path dei bot
 	void initModelBotList(); //inizializza la modelBotList (caricamento di tutti i bot spawnabili nel gioco)
-	void add_BOT(int i); //aggiunge un bot alla modelBotList 
 	void setShadersProperties(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view); //setta le proprietà degli shader
 	void draw(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view);
 
@@ -81,19 +80,19 @@ public:
 };
 
 void game::initModelBotList() {
-	//inizializzo 12 modelli di bot -> 4 per tipo
-	add_BOT(ZOMBIE_PRISONER);		 //bot di tipo 1
-	add_BOT(ZOMBIE_PRISONER);		 //bot di tipo 1
-	add_BOT(ZOMBIE_PRISONER);        //bot di tipo 1
-	add_BOT(ZOMBIE_PRISONER);		 //bot di tipo 1
-	add_BOT(ZOMBIE_PRISONER);		 //bot di tipo 1
-	add_BOT(ZOMBIE_DERRICK);		 //bot di tipo 2
-	add_BOT(ZOMBIE_DERRICK);		 //bot di tipo 2
-	add_BOT(ZOMBIE_DERRICK);		 //bot di tipo 2
-	add_BOT(ZOMBIE_DERRICK);		 //bot di tipo 2
-	add_BOT(ZOMBIE_COP);			 //bot di tipo 3
-	add_BOT(ZOMBIE_COP);			 //bot di tipo 3
-	add_BOT(ZOMBIE_COP);			 //bot di tipo 3
+
+	//inizializzo i di bot
+	villain* zombie1 = new villain();
+	zombie1->initModel_Zombie1();
+	modelBotList.push_back(zombie1);
+
+	villain* zombie2 = new villain();
+	zombie2->initModel_Zombie2();
+	modelBotList.push_back(zombie2);
+
+	villain* zombie3 = new villain();
+	zombie3->initModel_Zombie3();
+	modelBotList.push_back(zombie3);
 }
 
 void game::initPathList() {
@@ -148,19 +147,6 @@ void game::kill_BOT() {
 	
 }
 
-void game::add_BOT(int i) {
-	villain* bot = new villain();
-	if (i == ZOMBIE_PRISONER) {     //zombie difficoltà: 1
-		bot->initModel_Zombie1();
-	}
-	else if (i == ZOMBIE_DERRICK) { //zombie difficoltà: 2
-		bot->initModel_Zombie2();
-	}
-	else if (i == ZOMBIE_COP) {     //zombie difficoltà: 3
-		bot->initModel_Zombie3();
-	}
-	modelBotList.push_back(bot);
-}
 
 void game::BOT_spawner() { //N = numero di bot da spawnare
 	if (spawnedBotList.empty()) { //se la lista di bot NON è vuota
@@ -170,16 +156,12 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 		}
 		int N = difficolta;
 		
-		//inserisco N indici diversi (random) all'interno di una lista
-		//ogni indice  sarà associato ad un bot della modelBotList
+		//inserisco N indici random all'interno di una lista
+		//ogni indice sarà associato ad un tipo di bot della modelBotList
 		vector <int> bot_index;
-		int j = 0;
-		while (j <= N) {
-			int index = randMtoN(0, modelBotList.size()-1);
-			if(!numeroGiaPresente(index, bot_index)){
-				bot_index.push_back(index);
-				j++;
-			}
+		for (int i = 0; i < difficolta; i++) {
+			int index = randMtoN(0, modelBotList.size() - 1);
+			bot_index.push_back(index);
 		}
 
 		//inserisco N indici diversi (random) all'interno di una lista
@@ -194,7 +176,6 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 			}
 		}	
 
-
 		//spawn dei bot (associando il modello di bot della prima lista ad un path della seconda lista)
 		for (int i = 0; i < N; i++) {
 			spawn_BOT(pathList[matrix_index[i]], bot_index[i]);
@@ -206,9 +187,16 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 }
 
 void game::spawn_BOT(path* path, int index) {
-	villain* new_bot = modelBotList[index];	    //se 0 1 2 3 4 ...
-	new_bot->initVillain(path);					//inizializzo il bot
-	spawnedBotList.push_back(new_bot);					//lo inserisco nella lista dei bot 
+
+	villain* new_zombie = new villain();
+	new_zombie->botType = modelBotList[index]->botType;
+	new_zombie->meshAttacking = modelBotList[index]->meshAttacking;
+	new_zombie->meshHit = modelBotList[index]->meshHit;
+	new_zombie->meshDead = modelBotList[index]->meshDead;
+	new_zombie->meshWalking = modelBotList[index]->meshWalking;
+	new_zombie->initVillain(path);
+	spawnedBotList.push_back(new_zombie); //lo inserisco nella lista dei bot 
+
 }
 
 void game::powerUp_spawner() {
@@ -221,12 +209,13 @@ void game::powerUp_spawner() {
 		power_up->y = powerUp_coord.y;
 		power_up->z = powerUp_coord.z;
 
-		int powerUp_index = randMtoN(1, 2);
-		if (powerUp_index == POWERUP_BULLET) {
-			power_up->powerUp_type = POWERUP_BULLET;
-		}
-		else if (powerUp_index == POWERUP_SIGHT) {
+		//Se il player possiede lo shotgun -> il powerUp che spawnerà sarà lo sniper
+		if (p->wea->weapon_type == WEAPON_SHOTGUN) {
 			power_up->powerUp_type = POWERUP_SIGHT;
+		}
+		//Se il player possiede lo sniper -> il powerUp che spawnerà sarà lo shotgun
+		else if (power_up->powerUp_type == WEAPON_SNIPER) {
+			power_up->powerUp_type = POWERUP_BULLET;
 		}
 	}
 }
@@ -234,14 +223,15 @@ void game::powerUp_spawner() {
 void game::init() {
 
 	//inizializza player
-	p->initPlayer();
+	//p->initPlayer(PLAYER_BRYCE);
+	p->initPlayer(PLAYER_MICHELLE);
 	cout << "*** Player: Loaded -> Initialized" << endl;
 
 	//inizializza mappa
 	mappa->initMap();
 	cout << "*** Map: Loaded -> Initialized" << endl;
 
-	//inizializzo tutti i modelli bot
+	////inizializzo tutti i modelli bot
 	initModelBotList();
 	cout << "*** Bot Models: Loaded" << endl;
 

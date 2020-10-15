@@ -36,6 +36,7 @@
 game* gameuno = new game();
 update* update_game = new update();
 updateAnimation* update_animation = new updateAnimation();
+bool spawned = false;
 
 glm::vec3 pos_camera_mobile_global(1.0f);
 glm::mat4 view_global(1.0f);

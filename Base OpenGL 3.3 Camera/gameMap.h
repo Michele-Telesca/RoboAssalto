@@ -32,7 +32,7 @@ int mapMatrix[DIM][DIM] = { {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,
 							{0,0,0,0,0,0,0,0,0,11,0,0,0,12,4,1,0,0,0,0,0,0,0,2,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // 17
 							{0,0,0,0,0,0,0,0,0,1,2,1,4,1,2,2,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // 18
 							{0,10,0,0,0,12,0,0,0,0,0,0,0,10,4,3,0,0,0,0,0,0,0,1,3,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0}, // 19
-							{0,0,0,0,0,0,0,12,0,0,0,0,0,0,2,4,0,0,0,15,0,12,0,2,4,0,0,0,0,0,0,12,0,0,0,0,6,0,0,0}, // 20
+							{0,0,0,0,0,0,0,12,0,0,0,0,0,0,2,4,0,0,0,16,0,12,0,2,4,0,0,0,0,0,0,12,0,0,0,0,6,0,0,0}, // 20
 							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,1,0,0,0,0,0,0,0,4,2,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0}, // 21
 							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0}, // 22
 							{0,0,0,9,7,0,0,0,0,0,0,0,0,0,4,1,0,0,0,0,0,12,0,1,4,0,0,0,0,0,0,0,0,0,0,0,6,11,10,11}, // 23
@@ -70,15 +70,84 @@ public:
 	cube* floor;
 
 	//vector <cube*> tiles; //vettore contenente le mattonelle del pavimento
+	vector <mapObject*> objects;
+
 	vector <mapObject*> mapObjects; //lista di oggetti all'interno della mappa (con cui il player può collidere)
 	vector <mapObject*> externalMapObject; //lista di oggetti esterni alla mappa
 
 	void initMap(); //inizializza e posiziona la mappa con i relativi oggetti 
+	void initObjectsList();
 	void drawMap(Shader lightShader, glm::mat4 view); //disegna gli oggetti della mappa
-	void setMapShaderProperties(Shader lightShader, glm::mat4 view); //setta projection, view e light dello shader
 };
 
+void gameMap::initObjectsList() {
+
+	mapObject* stone1_model = new mapObject();
+	stone1_model->initMapObject("models/stones/stone1/stone1.dae");
+	objects.push_back(stone1_model);
+	objects.push_back(stone1_model);
+
+	mapObject* stone2_model = new mapObject();
+	stone2_model->initMapObject("models/stones/stone2/stone2.dae");
+	objects.push_back(stone2_model);
+
+	mapObject* stone3_model = new mapObject();
+	stone3_model->initMapObject("models/stones/stone3/stone3.dae");
+	objects.push_back(stone3_model);
+
+	mapObject* stone4_model = new mapObject();
+	stone4_model->initMapObject("models/stones/stone4/stone4.dae");
+	objects.push_back(stone4_model);
+
+	mapObject* stone5_model = new mapObject();
+	stone5_model->initMapObject("models/stones/stone5/stone5.dae");
+	objects.push_back(stone5_model);
+
+	mapObject* stone6_model = new mapObject();
+	stone6_model->initMapObject("models/stones/stone6/stone6.dae");
+	objects.push_back(stone6_model);
+
+	mapObject* stone7_model = new mapObject();
+	stone7_model->initMapObject("models/stones/stone7/stone7.dae");
+	objects.push_back(stone7_model);
+
+	mapObject* tree1_model = new mapObject();
+	tree1_model->initMapObject("models/trees/tree1/tree1.dae");
+	objects.push_back(tree1_model);
+
+	mapObject* tree2_model = new mapObject();
+	tree2_model->initMapObject("models/trees/tree2/tree2.dae");
+	objects.push_back(tree2_model);
+
+	mapObject* tree3_model = new mapObject();
+	tree3_model->initMapObject("models/trees/tree3/tree3.dae");
+	objects.push_back(tree3_model);
+
+	mapObject* tree4_model = new mapObject();
+	tree4_model->initMapObject("models/trees/tree4/tree4.dae");
+	objects.push_back(tree4_model);
+
+	mapObject* grass_model = new mapObject();
+	grass_model->initMapObject("models/grass/grass1.dae");
+	objects.push_back(grass_model);
+
+	mapObject* bush1_model = new mapObject();
+	bush1_model->initMapObject("models/bushes/bush1/bush1.dae");
+	objects.push_back(bush1_model);
+
+	mapObject* bush2_model = new mapObject();
+	bush2_model->initMapObject("models/bushes/bush2/bush2.dae");
+	objects.push_back(bush2_model);
+
+	mapObject* fence_model = new mapObject();
+	fence_model->initMapObject("models/fence_chain/chain.dae");
+	objects.push_back(fence_model);
+	cout << "objects inizializzata" << endl;
+}
+
 void gameMap::initMap() {
+
+	initObjectsList();
 
 	// ---- FLOOR ---- //
 	floor = new cube(DIM+12, 0.0f, 1.0f, 0.0f, 0.0f, -0.5f, ((DIM+12)/2) + 0.5f, 0.5f);
@@ -102,49 +171,49 @@ void gameMap::initMap() {
 
 				if (mapMatrix[i][j] == STONE1) {
 					mapObject* stone1 = new mapObject(x, 0.7f, z, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-					stone1->initMapObject("models/stones/stone1/stone1.dae");
+					stone1->objectModel = objects[STONE1]->objectModel;
 					mapObjects.push_back(stone1);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == STONE2) {
 					mapObject* stone2 = new mapObject(x, 0.7f, z, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f);
-					stone2->initMapObject("models/stones/stone2/stone2.dae");
+					stone2->objectModel = objects[STONE2]->objectModel;
 					mapObjects.push_back(stone2);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == STONE3) {
 					mapObject* stone3 = new mapObject(x, 0.7f, z, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f);
-					stone3->initMapObject("models/stones/stone3/stone3.dae");
+					stone3->objectModel = objects[STONE3]->objectModel;
 					mapObjects.push_back(stone3);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == STONE4) {
 					mapObject* stone4 = new mapObject(x, 0.7f, z, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f);
-					stone4->initMapObject("models/stones/stone4/stone4.dae");
+					stone4->objectModel = objects[STONE4]->objectModel;
 					mapObjects.push_back(stone4);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == STONE5) {
 					mapObject* stone5 = new mapObject(x, 1.8f, z, 0.28f, 0.0f, 1.0f, 0.0f, 0.0f);
-					stone5->initMapObject("models/Stones/stone5/stone5.dae");
+					stone5->objectModel = objects[STONE5]->objectModel;
 					mapObjects.push_back(stone5);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == STONE6) {
 					mapObject* stone6 = new mapObject(x, 1.8f, z, 0.28f, 0.0f, 1.0f, 0.0f, 0.0f);
-					stone6->initMapObject("models/Stones/stone6/stone6.dae");
+					stone6->objectModel = objects[STONE6]->objectModel;
 					mapObjects.push_back(stone6);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == STONE7) {
 					mapObject* stone7 = new mapObject(x, 1.8f, z, 0.28f, 0.0f, 1.0f, 0.0f, 0.0f);
-					stone7->initMapObject("models/Stones/stone7/stone7.dae");
+					stone7->objectModel = objects[STONE7]->objectModel;
 					mapObjects.push_back(stone7);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == TREE1) {
 					mapObject* tree1 = new mapObject(x, 1.8f, z, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
-					tree1->initMapObject("models/trees/tree1/tree1.dae");
+					tree1->objectModel = objects[TREE1]->objectModel;
 					tree1->specular = NONE;
 					mapObjects.push_back(tree1);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
@@ -153,7 +222,7 @@ void gameMap::initMap() {
 				}
 				else if (mapMatrix[i][j] == TREE2) {
 					mapObject* tree2 = new mapObject(x, 1.8f, z, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
-					tree2->initMapObject("models/trees/tree2/tree2.dae");
+					tree2->objectModel = objects[TREE2]->objectModel;
 					tree2->specular = NONE;
 					mapObjects.push_back(tree2);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
@@ -162,7 +231,7 @@ void gameMap::initMap() {
 				}
 				else if (mapMatrix[i][j] == TREE3) {
 					mapObject* tree3 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
-					tree3->initMapObject("models/trees/tree3/tree3.dae");
+					tree3->objectModel = objects[TREE3]->objectModel;
 					tree3->specular = NONE;
 					mapObjects.push_back(tree3);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
@@ -171,7 +240,7 @@ void gameMap::initMap() {
 				}
 				else if (mapMatrix[i][j] == TREE4) {
 					mapObject* tree4 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
-					tree4->initMapObject("models/trees/tree4/tree4.dae");
+					tree4->objectModel = objects[TREE4]->objectModel;
 					tree4->specular = NONE;
 					mapObjects.push_back(tree4);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
@@ -180,14 +249,14 @@ void gameMap::initMap() {
 				}
 				else if (mapMatrix[i][j] == BUSH1) {
 					mapObject* bush1 = new mapObject(x, 0.6f, z, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f);
-					bush1->initMapObject("models/bushes/bush1/bush1.dae");
+					bush1->objectModel = objects[BUSH1]->objectModel;
 					bush1->specular = NONE;
 					mapObjects.push_back(bush1);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 				}
 				else if (mapMatrix[i][j] == BUSH2) {
 					mapObject* bush2 = new mapObject(x, 0.6f, z, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f);
-					bush2->initMapObject("models/bushes/bush2/bush2.dae");
+					bush2->objectModel = objects[BUSH2]->objectModel;
 					bush2->specular = NONE;
 					mapObjects.push_back(bush2);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
@@ -196,7 +265,7 @@ void gameMap::initMap() {
 					float x_rand = frandMToN(x - 0.5f, x + 0.5f);
 					float z_rand = frandMToN(z - 0.5f, z + 0.5f);
 					mapObject* grass = new mapObject(x_rand, 0.6f, z_rand, 1.0f, 0.0f, 1.0f, 0.5f, 0.0f);
-					grass->initMapObject("models/grass/grass1.dae");
+					grass->objectModel = objects[GRASS]->objectModel;
 					mapObjects.push_back(grass);
 				}
 				else if (mapMatrix[i][j] == CHEST) {
@@ -236,43 +305,43 @@ void gameMap::initMap() {
 
 	// ---- FENCE ---- //
 	mapObject* fence1 = new mapObject(17.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence1->initMapObject("models/fence_chain/chain.dae");
+	fence1->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence1);
 
 	mapObject* fence2 = new mapObject(13.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence2->initMapObject("models/fence_chain/chain.dae");
+	fence2->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence2);
 	
 	mapObject* fence3 = new mapObject(9.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence3->initMapObject("models/fence_chain/chain.dae");
+	fence3->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence3);
 
 	mapObject* fence4 = new mapObject(5.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence4->initMapObject("models/fence_chain/chain.dae");
+	fence4->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence4);
 
 	mapObject* fence5 = new mapObject(1.4f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence5->initMapObject("models/fence_chain/chain.dae");
+	fence5->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence5);
 
 	mapObject* fence6 = new mapObject(-2.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence6->initMapObject("models/fence_chain/chain.dae");
+	fence6->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence6);
 
 	mapObject* fence7 = new mapObject(-6.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence7->initMapObject("models/fence_chain/chain.dae");
+	fence7->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence7);
 
 	mapObject* fence8 = new mapObject(-10.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence8->initMapObject("models/fence_chain/chain.dae");
+	fence8->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence8);
 
 	mapObject* fence9 = new mapObject(-14.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence9->initMapObject("models/fence_chain/chain.dae");
+	fence9->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence9);
 
 	mapObject* fence10 = new mapObject(-18.6f, 1.0f, 21.5f, 0.27f, -90.0f, 1.0f, 0.0f, 0.0f);
-	fence10->initMapObject("models/fence_chain/chain.dae");
+	fence10->objectModel = objects[FENCE]->objectModel;
 	externalMapObject.push_back(fence10);
 
 	// ---- OTHERS ---- //
@@ -285,22 +354,22 @@ void gameMap::initMap() {
 	externalMapObject.push_back(log_pile);
 
 	mapObject* tree_external1 = new mapObject(8.0f, 1.8f, 25.6f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
-	tree_external1->initMapObject("models/trees/tree2/tree2.dae");
+	tree_external1->objectModel = objects[TREE2]->objectModel;
 	tree_external1->specular = NONE;
 	mapObjects.push_back(tree_external1);
 
 	mapObject* tree_external2 = new mapObject(8.9f, 1.8f, 25.0f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
-	tree_external2->initMapObject("models/trees/tree2/tree2.dae");
+	tree_external2->objectModel = objects[TREE2]->objectModel;
 	tree_external2->specular = NONE;
 	mapObjects.push_back(tree_external2);
 
 	mapObject* tree_external3 = new mapObject(9.8f, 1.8f, 24.2f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
-	tree_external3->initMapObject("models/trees/tree2/tree2.dae");
+	tree_external3->objectModel = objects[TREE2]->objectModel;
 	tree_external3->specular = NONE;
 	mapObjects.push_back(tree_external3);
 
 	mapObject* tree_external4 = new mapObject(-3.0f, 1.8f, 25.5f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
-	tree_external4->initMapObject("models/trees/tree2/tree2.dae");
+	tree_external4->objectModel = objects[TREE2]->objectModel;
 	tree_external4->specular = NONE;
 	mapObjects.push_back(tree_external4);
 

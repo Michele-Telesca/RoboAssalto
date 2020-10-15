@@ -186,7 +186,6 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="texture.h" />
     <ClInclude Include="update.h" />
     <ClInclude Include="updateAnimation.h" />
-    <ClInclude Include="updateSound.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="villainShot.h" />
     <ClInclude Include="weapon.h" />

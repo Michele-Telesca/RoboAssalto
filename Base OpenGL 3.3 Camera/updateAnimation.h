@@ -216,13 +216,13 @@ void updateAnimation::increasePlayer_Run(player* player) {
 }
 
 void updateAnimation::playerShot_sound(player* player) {
-	if (player->startPlayerShot == true && player->numShotsAvailable > 0 && player->bulletEjected) {
+	if (player->startPlayerShot == true && player->numShotsAvailable > 0 && player->delayShotIsFinished) {
 		if (player->wea->weapon_type == WEAPON_SHOTGUN) {
-			SoundEngine->setSoundVolume(0.5);
+			SoundEngine->setSoundVolume(0.4);
 			SoundEngine->play2D("audio/shotgun_fire.wav", false); //sound shot SHOTGUN
 		}
 		else if(player->wea->weapon_type == WEAPON_SNIPER){
-			SoundEngine->setSoundVolume(0.5);
+			SoundEngine->setSoundVolume(0.3);
 			SoundEngine->play2D("audio/sniper_fire.wav", false); //sound shot SNIPER
 		}
 	}

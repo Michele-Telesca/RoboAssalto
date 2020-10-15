@@ -16,7 +16,7 @@ public:
 	float rotate_y;
 	float rotate_z;
 
-	Model* mapObject_i;
+	Model* objectModel;
 
 	int specular; //HIGH - MODERATE - NONE
 	
@@ -51,8 +51,8 @@ public:
 void mapObject::initMapObject(string path) {
 
 	//caricamento modello
-	mapObject_i = new Model();
-	mapObject_i->loadModel(path);
+	objectModel = new Model();
+	objectModel->loadModel(path);
 	specular = HIGH;
 
 }
@@ -84,7 +84,7 @@ void mapObject::drawMapObject(Shader lightShader) {
 	model = glm::scale(model, glm::vec3(scale, scale, scale));
 	lightShader.setMat4("model", model);
 
-	mapObject_i->Draw(lightShader);
+	objectModel->Draw(lightShader);
 	
 }
 
