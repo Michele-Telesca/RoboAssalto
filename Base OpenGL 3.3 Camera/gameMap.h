@@ -379,9 +379,9 @@ void gameMap::drawMap(Shader lightShader, glm::mat4 view) {
 
 	// ---- Floor ---- //
 	floor->drawCube(lightShader, texturePrato);
-	//for (int i = 0; i < tiles.size(); i++) {
-	//	tiles[i]->drawCube(lightShader, texturePrato);
-	//}
+	/*for (int i = 0; i < tiles.size(); i++) {
+		tiles[i]->drawCube(lightShader, texturePrato);
+	}*/
 
 	// ---- Objects ---- //
 	for (int i = 0; i < mapObjects.size(); i++) {

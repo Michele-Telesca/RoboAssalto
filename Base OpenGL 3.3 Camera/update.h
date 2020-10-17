@@ -98,7 +98,13 @@ void update::moveRight(player* p, vector <villain*> botList) {
 			p->setX(p->getX()); //Il player non avanza
 		}
 		else {
-			p->setX(p->getX() + MOVE_STEP); //Il player avanza
+			if (muoviSu || muoviGiu) {
+				p->setX(p->getX() + (MOVE_STEP * 0.5));
+			}
+			else {
+				p->setX(p->getX() + MOVE_STEP); //Il player avanza
+			}
+			
 		}
 	}
 }
@@ -126,7 +132,12 @@ void update::moveLeft(player* p, vector <villain*> botList) {
 			p->setX(p->getX());
 		}
 		else {
-			p->setX(p->getX() - MOVE_STEP);
+			if (muoviSu || muoviGiu) {
+				p->setX(p->getX() - MOVE_STEP * 0.5);
+			}
+			else {
+				p->setX(p->getX() - MOVE_STEP);
+			}
 		}
 
 	}
@@ -181,7 +192,8 @@ void update::moveDown(player* p, vector <villain*> botList) {
 			p->setZ(p->getZ()); 
 		}
 		else {
-			p->setZ(p->getZ() + MOVE_STEP); 
+			p->setZ(p->getZ() + MOVE_STEP);
+
 		}
 	}
 }
@@ -201,10 +213,7 @@ void update::botAttacking(villain* bot, player* p) {
 			}
 		}
 	}
-
 }
-
-
 
 void update::updateBot(vector <villain*> botList, player* p, game* game) {
 	if (botList.size() >= 1) { //se la lista di bot NON è VUOTA
@@ -450,17 +459,21 @@ void update::hitPowerUp(player* p, powerUp* power_up) {
 	if (power_up->spawned == true) {
 		if ((p->x >= power_up->x - TILE_DIM / 2 && p->x <= power_up->x + TILE_DIM / 2) && (p->z >= power_up->z - TILE_DIM / 2 && p->z <= power_up->z + TILE_DIM / 2)) {	
 			power_up->hit = true;
-			if (power_up->powerUp_type == POWERUP_BULLET) {
+			if (power_up->powerUp_type == WEAPON_SHOTGUN) {
 				p->wea = new weapon(WEAPON_SHOTGUN);
 				for (int i = 0; i < numShot; i++) {
 					p->listShot[i]->damage = SHOTGUN_DAMAGE;
 				}
 			}
-			if (power_up->powerUp_type == POWERUP_SIGHT) {
+			if (power_up->powerUp_type == WEAPON_SNIPER) {
 				p->wea = new weapon(WEAPON_SNIPER);
 				for (int i = 0; i < numShot; i++) {
 					p->listShot[i]->damage = SNIPER_DAMAGE;
 				}
+			}
+			if (power_up->powerUp_type == MEDIKIT) {
+				p->life = p->life + MEDIKIT_HEAL;
+				p->chest_life = p->chest_life  + MEDIKIT_HEAL;
 			}
 			cout << "--------> POWERUP HIT " << endl;
 			power_up->spawned = false;
@@ -520,5 +533,4 @@ void update::shotHitTree(vector <playerShot*> listShot) {
 			}
 		}
 	}
-
 }

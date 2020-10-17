@@ -262,7 +262,7 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
 	////dall alto
-	//glm::vec3 pos_camera_mobile(x, 60.0f, z);
+	//glm::vec3 pos_camera_mobile(x,20.0f, z);
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
 
 	////prima persona
@@ -354,6 +354,7 @@ int main()
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
+	//gameuno->getGameMap()->texturePrato = loadtexture("texture/unibas.jpg");
 	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png");
 	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png");
 	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png");

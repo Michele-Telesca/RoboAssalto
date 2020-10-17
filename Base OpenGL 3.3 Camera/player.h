@@ -34,8 +34,10 @@ public:
 	bool startPlayerShot = false;
 
 	// modelli 3D con scheletro e animazione
-	SkinnedMesh meshRunning;
-	SkinnedMesh meshStanding;
+	SkinnedMesh meshRunning_shotgun;
+	SkinnedMesh meshStanding_shotgun;
+	SkinnedMesh meshRunning_sniper;
+	SkinnedMesh meshStanding_sniper;
 
 	// tempo per le animazioni
 	float animationTime_playerStanding;
@@ -122,9 +124,7 @@ public:
 
 void player::initPlayer(int selectedPlayer) {
 
-	wea =  new weapon(WEAPON_SHOTGUN);
-
-	//SoundEngine = irrklang::createIrrKlangDevice();
+	wea =  new weapon(WEAPON_SNIPER);
 
 	//punto in cui nasce
 	x = 0.0f;
@@ -135,8 +135,8 @@ void player::initPlayer(int selectedPlayer) {
 
 	//vita iniziale
 
-	life = 100.0;
-	chest_life = 200;
+	life = PLAYER_LIFE;
+	chest_life = CHEST_LIFE;
 
 	lifeMax = life;
 
@@ -159,13 +159,18 @@ void player::initPlayer(int selectedPlayer) {
 	//loading meshes with animation
 	if (selectedPlayer == PLAYER_MICHELLE) {
 		//michelle
-		meshRunning.loadMesh("animation/player_michelle/shotgun_running/shotgun_running.dae");
-		meshStanding.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
+		meshRunning_shotgun.loadMesh("animation/player_michelle/shotgun_running/shotgun_running.dae");
+		meshStanding_shotgun.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
+		meshRunning_sniper.loadMesh("animation/player_michelle/sniper_running/sniper_running.dae");
+		meshStanding_sniper.loadMesh("animation/player_michelle/sniper_standing/sniper_standing.dae");
+		
 	}
 	else if (selectedPlayer == PLAYER_BRYCE) {
 		//bryce
-		meshRunning.loadMesh("animation/player_bryce/shotgun_running/shotgun_running.dae");
-		meshStanding.loadMesh("animation/player_bryce/shotgun_standing/shotgun_standing.dae");
+		meshRunning_shotgun.loadMesh("animation/player_bryce/shotgun_running/shotgun_running.dae");
+		meshStanding_shotgun.loadMesh("animation/player_bryce/shotgun_standing/shotgun_standing.dae");
+		meshRunning_sniper.loadMesh("animation/player_bryce/sniper_running/sniper_running.dae");
+		meshStanding_sniper.loadMesh("animation/player_bryce/sniper_standing/sniper_standing.dae");
 	}
 
 	// tempo per le animazioni
@@ -334,20 +339,41 @@ void player::animatePlayer(Shader animShader) {
 	vector <glm::mat4> transforms;
 
 	if (muoviDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) { //se non mi muovo -> meshStanding
-		meshStanding.boneTransform(animationTime_playerStanding, transforms);
-		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
-			transforms.size(),
-			GL_FALSE,
-			glm::value_ptr(transforms[0]));
-		meshStanding.render();
+		if (wea->weapon_type == WEAPON_SHOTGUN) {
+			meshStanding_shotgun.boneTransform(animationTime_playerStanding, transforms);
+			glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+				transforms.size(),
+				GL_FALSE,
+				glm::value_ptr(transforms[0]));
+			meshStanding_shotgun.render();
+		}
+		else if (wea->weapon_type == WEAPON_SNIPER) {
+			meshStanding_sniper.boneTransform(animationTime_playerStanding, transforms);
+			glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+				transforms.size(),
+				GL_FALSE,
+				glm::value_ptr(transforms[0]));
+			meshStanding_sniper.render();
+		}
+		
 	}
 	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning		
-		meshRunning.boneTransform(animationTime_playerRunning, transforms);
-		glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
-			transforms.size(),
-			GL_FALSE,
-			glm::value_ptr(transforms[0]));
-		meshRunning.render();
+		if (wea->weapon_type == WEAPON_SHOTGUN) {
+			meshRunning_shotgun.boneTransform(animationTime_playerRunning, transforms);
+			glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+				transforms.size(),
+				GL_FALSE,
+				glm::value_ptr(transforms[0]));
+			meshRunning_shotgun.render();
+		}
+		else if (wea->weapon_type == WEAPON_SNIPER) {
+			meshRunning_sniper.boneTransform(animationTime_playerRunning, transforms);
+			glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+				transforms.size(),
+				GL_FALSE,
+				glm::value_ptr(transforms[0]));
+			meshRunning_sniper.render();
+		}
 	}
 }
 

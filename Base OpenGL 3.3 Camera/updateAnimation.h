@@ -190,7 +190,7 @@ void updateAnimation::increaseBot_Dead(vector<villain*> botList) {
 
 void updateAnimation::increasePlayer_Stand(player* player) {
 	player->animationTime_playerStanding = player->animationTime_playerStanding + 0.06f;   //incremento l'animazione
-	if (player->animationTime_playerStanding > 10.0f) {  //quando l'animazione supera la soglia
+	if (player->animationTime_playerStanding > 20.0f) {  //quando l'animazione supera la soglia
 		player->animationTime_playerStanding = 0.0f;     //resetto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
 	}
 }
@@ -204,12 +204,20 @@ void updateAnimation::increasePlayer_Run(player* player) {
 			SoundEngine->setSoundVolume(0.8);
 			SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
 		}
-		if (player->animationTime_playerRunning >= 0.49f && player->animationTime_playerRunning <= 0.51f) { //quando il player fa primo passo
+		if (player->animationTime_playerRunning >= 0.49f && player->animationTime_playerRunning <= 0.51f && player->wea->weapon_type == WEAPON_SHOTGUN) { //quando il player fa primo passo
+			SoundEngine->setSoundVolume(0.8);
+			SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
+		}
+		if (player->animationTime_playerRunning >= 0.69f && player->animationTime_playerRunning <= 0.71f && player->wea->weapon_type == WEAPON_SNIPER) {
 			SoundEngine->setSoundVolume(0.8);
 			SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
 		}
 
-		if (player->animationTime_playerRunning > 1.0f) {   //quando il player fa il secondo passo
+		if (player->animationTime_playerRunning > 1.0f && player->wea->weapon_type == WEAPON_SHOTGUN) {   //quando il player fa il secondo passo
+			player->animationTime_playerRunning = 0.0f;     //resetto il tempo di animazione all'inizio -> ricomincia da 
+		}
+
+		if (player->animationTime_playerRunning > 1.4f && player->wea->weapon_type == WEAPON_SNIPER) {   //quando il player fa il secondo passo
 			player->animationTime_playerRunning = 0.0f;     //resetto il tempo di animazione all'inizio -> ricomincia da 
 		}
 	}
@@ -234,11 +242,11 @@ void updateAnimation::playerShot_sound(player* player) {
 
 void updateAnimation::powerUp_sound(powerUp* powerUp) {
 	if (powerUp->hit == true) {
-		if (powerUp->powerUp_type == POWERUP_BULLET) {
+		if (powerUp->powerUp_type == WEAPON_SHOTGUN) {
 			SoundEngine->setSoundVolume(0.7);
 			SoundEngine->play2D("audio/bullet powerUp.wav", false); //sound no shot available
 		}
-		else if (powerUp->powerUp_type == POWERUP_SIGHT) {
+		else if (powerUp->powerUp_type == WEAPON_SNIPER) {
 			SoundEngine->setSoundVolume(0.7);
 			SoundEngine->play2D("audio/sight powerUp.wav", false); //sound no shot available
 		}

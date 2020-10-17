@@ -21,10 +21,12 @@ class powerUp
 		bool spawned; //true se il power up è spawnato
 		bool hit; //true se è stato hittato dal player
 
-		Model* bullet_powerUp;
-		Model* sight_powerUp;
 
-		int powerUp_type;	//1: POWERUP_BULLET //2: POWERUP_SIGHT
+		Model* shotgun;
+		Model* sniper;
+		Model* medikit;
+
+		int powerUp_type;	//1: WEAPON_SHOTGUN //2: WEAPON_SNIPER
 
 		vector<glm::vec3> spawnCoordsList; //lista di coordinate in cui può spawnare il powerUp
 
@@ -41,16 +43,17 @@ void powerUp::initPowerUp() {
 	spawned = false; //non ancora spawnato
 	hit = false; //non ancora hittato dal player
 
-	//powerUp_type = 0;
-
 	animationTime_translate_y = 0.0f;
 	animationTime_rotate_y = 0.0f;
 
 	//inizializzo i modelli dei powerUp
-	bullet_powerUp = new Model();
-	bullet_powerUp->loadModel("models/power_up/bullet_powerUp.dae");
-	sight_powerUp = new Model();
-	sight_powerUp->loadModel("models/power_up/sight_powerUp.dae");
+	shotgun = new Model();
+	shotgun->loadModel("models/power_up/shotgun/shotgun.dae");
+	sniper = new Model();
+	sniper->loadModel("models/power_up/sniper/l96.dae");
+
+	medikit = new Model();
+	medikit->loadModel("models/power_up/medikit/medikit.dae");
 
 	//inizilizzo la lista di coordinate di spawn dei powerUp
 	spawnCoordsList.push_back(glm::vec3(0.0f, 1.0f, 15.0f));    // indice: 0
@@ -75,22 +78,31 @@ void powerUp::drawPowerUp(Shader lightShader) {
 	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
 	lightShader.setFloat("material.shininess", 76.8f);
 
-	if (powerUp_type == 1) {
+	if (powerUp_type == WEAPON_SHOTGUN) {
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y + animationTime_translate_y, z));
 		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.07f, 0.07f, 0.07f)); //bullet scale
+		model = glm::scale(model, glm::vec3(0.025f, 0.025f, 0.025f)); //bullet scale
 		lightShader.setMat4("model", model);
-		bullet_powerUp->Draw(lightShader); //bullet draw
+		shotgun->Draw(lightShader); //bullet draw
 	} 
 
-	else if (powerUp_type == 2) {
+	else if (powerUp_type == WEAPON_SNIPER) {
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y + animationTime_translate_y, z));
 		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(8.0f, 8.0f, 8.0f)); //sight scale
+		model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.06f)); //bullet scale
 		lightShader.setMat4("model", model);
-		sight_powerUp->Draw(lightShader); //sight draw
+		sniper->Draw(lightShader); //bullet draw
+	}
+
+	else if (powerUp_type == MEDIKIT) {
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(x, y + animationTime_translate_y, z));
+		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f)); //bullet scale
+		lightShader.setMat4("model", model);
+		medikit->Draw(lightShader); //bullet draw
 	}
 	
 }

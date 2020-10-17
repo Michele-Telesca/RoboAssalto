@@ -36,6 +36,8 @@ const float LENGTH_BASE_SNIPER = 1.0f;
 const float ANGLE_RANGE_SNIPER = 90.0f;
 const float SNIPER_DAMAGE = 50.0f;
 
+const int MEDIKIT = 3;
+
 // ---- //
 const int STONE1 = 1;
 const int STONE2 = 2;
@@ -64,9 +66,6 @@ const int ZOMBIE_PRISONER = 1;
 const int ZOMBIE_DERRICK = 2;
 const int ZOMBIE_COP = 3;
 
-const int POWERUP_BULLET = 1;
-const int POWERUP_SIGHT = 2;
-
 //specular
 const int HIGH = 2;
 const int MODERATE = 1;
@@ -89,3 +88,8 @@ bool muoviGiu = false;
 bool mouseSx = false;
 
 bool startPlayerShot = false;
+
+//LIFE
+const float PLAYER_LIFE = 100.0f;
+const float CHEST_LIFE = 200.0f;
+const float MEDIKIT_HEAL = 50.0f;

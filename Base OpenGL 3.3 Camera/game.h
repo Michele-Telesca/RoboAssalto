@@ -201,6 +201,7 @@ void game::spawn_BOT(path* path, int index) {
 
 void game::powerUp_spawner() {
 	if (power_up->spawned == false) {
+		cout << "1 spawner: " << endl;
 		power_up->spawned = true;
 
 		int list_powerUp_index = randMtoN(0, power_up->spawnCoordsList.size()-1);
@@ -209,14 +210,23 @@ void game::powerUp_spawner() {
 		power_up->y = powerUp_coord.y;
 		power_up->z = powerUp_coord.z;
 
-		//Se il player possiede lo shotgun -> il powerUp che spawnerà sarà lo sniper
-		if (p->wea->weapon_type == WEAPON_SHOTGUN) {
-			power_up->powerUp_type = POWERUP_SIGHT;
+		int i = randMtoN(1, 2);
+		if (p->life <= PLAYER_LIFE/4 || p->chest_life <= CHEST_LIFE/4) {
+			power_up->powerUp_type = MEDIKIT;
 		}
-		//Se il player possiede lo sniper -> il powerUp che spawnerà sarà lo shotgun
-		else if (power_up->powerUp_type == WEAPON_SNIPER) {
-			power_up->powerUp_type = POWERUP_BULLET;
+		else {
+			//Se il player possiede lo shotgun -> il powerUp che spawnerà sarà lo sniper
+			if (p->wea->weapon_type == WEAPON_SHOTGUN) {
+				power_up->powerUp_type = WEAPON_SNIPER;
+			}
+			//Se il player possiede lo sniper -> il powerUp che spawnerà sarà lo shotgun
+			else if (p->wea->weapon_type == WEAPON_SNIPER) {
+				cout << "2 setto il powerup type " << endl;
+				power_up->powerUp_type = WEAPON_SHOTGUN;
+			}
 		}
+
+		
 	}
 }
 
@@ -224,7 +234,7 @@ void game::init() {
 
 	//inizializza player
 	//p->initPlayer(PLAYER_BRYCE);
-	p->initPlayer(PLAYER_MICHELLE);
+	p->initPlayer(PLAYER_BRYCE);
 	cout << "*** Player: Loaded -> Initialized" << endl;
 
 	//inizializza mappa
