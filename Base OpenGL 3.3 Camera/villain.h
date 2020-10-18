@@ -116,16 +116,16 @@ public:
 void villain::initVillain(path* path) {
 	
 	if (botType == ZOMBIE_PRISONER) {
-		life = 100;
-		damage = 25.0;
+		life = ZOMBIE_PRISONER_LIFE;
+		damage = ZOMBIE_PRISONER_DAMAGE;
 	}
 	else if (botType == ZOMBIE_DERRICK) {
-		life = 200;
-		damage = 50.0;
+		life = ZOMBIE_DERRICK_LIFE;
+		damage = ZOMBIE_DERRICK_DAMAGE;
 	}
 	else if (botType == ZOMBIE_COP) {
-		life = 300;
-		damage = 75.0;
+		life = ZOMBIE_COP_LIFE;
+		damage = ZOMBIE_COP_DAMAGE;
 	}
 
 	//assegno il path al bot

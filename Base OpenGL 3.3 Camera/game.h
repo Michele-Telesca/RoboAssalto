@@ -195,8 +195,7 @@ void game::spawn_BOT(path* path, int index) {
 	new_zombie->meshDead = modelBotList[index]->meshDead;
 	new_zombie->meshWalking = modelBotList[index]->meshWalking;
 	new_zombie->initVillain(path);
-	spawnedBotList.push_back(new_zombie); //lo inserisco nella lista dei bot 
-
+	spawnedBotList.push_back(new_zombie); //lo inserisco nella lista dei bot
 }
 
 void game::powerUp_spawner() {

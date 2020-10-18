@@ -229,13 +229,16 @@ void update::updateBot(vector <villain*> botList, player* p, game* game) {
 
 void update::botCollideVSPlayer(villain* bot, player* p) {
 	if ((bot->getX() >= p->getX() - TILE_DIM && bot->getX() <= p->getX() + TILE_DIM) && (bot->getZ() >= p->getZ() - TILE_DIM && bot->getZ() <= p->getZ() + TILE_DIM)) {
-		//se il bot collide con il player NON AVANZA ma si gira verso il player e lo attacca
-		bot->animation_botWalking = false; //setto il bool per l'animazione walk a false
-		bot->animation_botAttacking = true; //setto il bool per l'animazione attack a true
-		float new_rotationAngle = p->getAnglePlayer() - 180.0f;
-		bot->setRotationAngle(new_rotationAngle);
-		bot->isOnPath = false; //segnalo che il bot non è più ruotato correttamente secondo la sequenza del path
-		bot->isColliding_vsPlayer = true; //segnalo che il bot è in collisione con il player
+		if (bot->animation_botDead == false) { // se non è durante l'animazione di death
+			
+			//se il bot collide con il player NON AVANZA ma si gira verso il player e lo attacca
+			bot->animation_botWalking = false; //setto il bool per l'animazione walk a false
+			bot->animation_botAttacking = true; //setto il bool per l'animazione attack a true
+			float new_rotationAngle = p->getAnglePlayer() - 180.0f;
+			bot->setRotationAngle(new_rotationAngle);
+			bot->isOnPath = false; //segnalo che il bot non è più ruotato correttamente secondo la sequenza del path
+			bot->isColliding_vsPlayer = true; //segnalo che il bot è in collisione con il player
+		}	
 	}
 	else {
 		
@@ -474,6 +477,12 @@ void update::hitPowerUp(player* p, powerUp* power_up) {
 			if (power_up->powerUp_type == MEDIKIT) {
 				p->life = p->life + MEDIKIT_HEAL;
 				p->chest_life = p->chest_life  + MEDIKIT_HEAL;
+				if (p->life >= PLAYER_LIFE) {
+					p->life = PLAYER_LIFE;
+				}
+				if (p->chest_life >= CHEST_LIFE) {
+					p->chest_life = CHEST_LIFE;
+				}
 			}
 			cout << "--------> POWERUP HIT " << endl;
 			power_up->spawned = false;
@@ -495,7 +504,6 @@ void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList
 			}
 		}	
 	}
-
 }
 
 void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {

@@ -434,7 +434,7 @@ int PATH3_ENDPATH = 37;						 //spawn basso a sx 1)
 int START_DIRECTION_PATH3 = DIRECTION_UP;
 float START_ROTATION_PATH3 = 180.0f;
 
-int PATH4_ENDPATH = 38;						 //spawn basso a sx 2)
+int PATH4_ENDPATH = 36;						 //spawn basso a sx 2)
 int START_DIRECTION_PATH4 = DIRECTION_RIGHT;
 float START_ROTATION_PATH4 = 90.0f;
 

@@ -47,15 +47,14 @@ void powerUp::initPowerUp() {
 	animationTime_rotate_y = 0.0f;
 
 	//inizializzo i modelli dei powerUp
-	shotgun = new Model();
+	shotgun = new Model(); 
 	shotgun->loadModel("models/power_up/shotgun/shotgun.dae");
 	sniper = new Model();
 	sniper->loadModel("models/power_up/sniper/l96.dae");
-
 	medikit = new Model();
 	medikit->loadModel("models/power_up/medikit/medikit.dae");
 
-	//inizilizzo la lista di coordinate di spawn dei powerUp
+	//inizilizzo la lista di coordinate di spawn dei powerUp e le inserisco in una lista
 	spawnCoordsList.push_back(glm::vec3(0.0f, 1.0f, 15.0f));    // indice: 0
 	spawnCoordsList.push_back(glm::vec3(-5.0f, 1.0f, 17.5f));   // indice: 1
 	spawnCoordsList.push_back(glm::vec3(-7.5f, 1.0f, 6.0f));    // indice: 2
