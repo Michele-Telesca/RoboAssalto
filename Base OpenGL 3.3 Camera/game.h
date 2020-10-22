@@ -28,6 +28,8 @@ public:
 	
 	glm::vec3 mousePoint;				 //Coordinate del mouse
 
+	unsigned int textureLifeBar;
+
 	//Costruttore
 	game() {
 		mappa = new gameMap();
@@ -195,6 +197,7 @@ void game::spawn_BOT(path* path, int index) {
 	new_zombie->meshDead = modelBotList[index]->meshDead;
 	new_zombie->meshWalking = modelBotList[index]->meshWalking;
 	new_zombie->initVillain(path);
+	new_zombie->textureLifeVillain = textureLifeBar;
 	spawnedBotList.push_back(new_zombie); //lo inserisco nella lista dei bot
 }
 
@@ -318,7 +321,10 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 	//DRAW BOTS
 	if (spawnedBotList.size() >= 1) {
 		for (int i = 0; i < spawnedBotList.size(); i++) {
-			spawnedBotList[i]->drawVillain(animShader);
+
+			
+			spawnedBotList[i]->drawVillain(animShader,simpleShader);
+			
 		}
 	}
 	

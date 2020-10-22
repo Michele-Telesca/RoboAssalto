@@ -442,6 +442,10 @@ void player::drawLifePlayer(Shader simpleShader) {
 
 	float lifeLenght = life / lifeMax;
 
+	if (life < 0.0f) {
+		lifeLenght = 0.0f;
+	}
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureLife);
 	glBindVertexArray(cubeVAO);

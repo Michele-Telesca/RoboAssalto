@@ -20,6 +20,7 @@ public:
 
 	int botType;
 
+
 	float rotationAngle; //angolo di rotazione corrente 
 
 	// ---- variabili per gestire le rotazioni
@@ -53,13 +54,18 @@ public:
 	float animationTime_botHit;
 	float animationTime_botDead;
 	bool soundWalkingAttacking;
+
+	//Texture barra vita
+	 unsigned int textureLifeVillain;
+
 	
 	//weapon* weapon; //per avere la gittata del villain
 	path* percorso;
 	player* p;
 
 	//Prototipi
-	void drawVillain(Shader animShader);			 //disegna il player
+	void drawVillain(Shader animShader , Shader simpleShader);
+	void drawLifeVillain(Shader simpleShader);//disegna il player
 	void animate(Shader animShader);
 	void initModel_Zombie1();
 	void initModel_Zombie2();
@@ -192,7 +198,7 @@ void villain::initModel_Zombie3() {
 }
 
 
-void villain::drawVillain(Shader animShader){
+void villain::drawVillain(Shader animShader, Shader simpleShader){
 
 	animShader.use();
 
@@ -210,6 +216,52 @@ void villain::drawVillain(Shader animShader){
 	animShader.setFloat("material.shininess", 76.8f);
 
 	animate(animShader); //animazione
+	drawLifeVillain(simpleShader);
+}
+
+void villain::drawLifeVillain(Shader simpleShader) {
+	
+	simpleShader.use();
+	float lifeMax;
+
+	if (botType == ZOMBIE_PRISONER) {
+		lifeMax = ZOMBIE_PRISONER_LIFE;
+	}
+	else if (botType == ZOMBIE_DERRICK) {
+		lifeMax = ZOMBIE_DERRICK_LIFE;
+	}
+	else if (botType == ZOMBIE_COP) {
+		lifeMax = ZOMBIE_COP_LIFE;
+	}
+
+	float offSet = 0.0f;
+
+	if (life != lifeMax) {
+		offSet = ((lifeMax - life) / 2) / lifeMax;
+	}
+
+	float lifeLenght = life / lifeMax;
+
+
+	if (life < 0.0f) {
+		lifeLenght = 0.0f;
+	}
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureLifeVillain);
+	glBindVertexArray(cubeVAO);
+
+	//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	glm::mat4 modelLife = glm::mat4(1.0f);
+
+	modelLife = glm::translate(modelLife, glm::vec3(x - offSet*2, y + 2.5f, z));
+	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
+	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght*2, 0.01f, 0.25f));
+
+	simpleShader.setMat4("model", modelLife);
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 void villain::animate(Shader animShader) {

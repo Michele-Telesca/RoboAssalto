@@ -358,7 +358,7 @@ int main()
 	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png");
 	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png");
 	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png");
-
+	gameuno->textureLifeBar = loadtexture("texture/lifeBar.png");
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);
