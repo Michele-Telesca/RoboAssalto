@@ -61,6 +61,7 @@ public:
 	void updateAngleShot(float tempDegree, float anglePlayer);
 	bool checkShotIsAvaiable(float currentTime);
 	void drawLifePlayer(Shader lightShader);
+	void drawChestLife(Shader lightShader);
 	void drawShotAvaiable(int numShotsAvailable, float currentTime, Shader lightShader);
 	bool checkShotDelay(float currentTime);
 
@@ -327,9 +328,9 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 	}
 
 	//DRAW LIFE_INTERFACE
-	if (life > 0.0f) {
-		drawLifePlayer(simpleShader);
-	}
+
+	drawLifePlayer(simpleShader);
+	drawChestLife(simpleShader);
 
 	//DRAW SHOT_INTERFACE
 	drawShotAvaiable(numShotsAvailable, currentTime, simpleShader);
@@ -379,13 +380,15 @@ void player::animatePlayer(Shader animShader) {
 
 void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader simpleShader) {
 	
-	simpleShader.use();
 
 	float shotBarLenght = (lifeMax / 3.0f) / lifeMax;
 	float shotHalfBar = (shotBarLenght / 2.0);
 	float center = x - shotBarLenght;
 
 	for (int i = 0; i < numShotsAvailable; i++) {
+
+		simpleShader.use();
+
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureShotBar);
@@ -397,7 +400,7 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 		modelLife = glm::translate(modelLife, glm::vec3(center + (shotBarLenght*i), y + 2.22f, z));
 		modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
-		modelLife = glm::scale(modelLife, glm::vec3(shotBarLenght - 0.03f, 0.01f, 0.15f));
+		modelLife = glm::scale(modelLife, glm::vec3(shotBarLenght - 0.03f, 0.01f, 0.10f));
 
 		simpleShader.setMat4("model", modelLife);
 
@@ -405,6 +408,8 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 	}
 
 	if (numShotsAvailable < 3) {
+
+		simpleShader.use();
 
 		float lenghtCalcShot = ((currentTime - timeLastShot) * shotBarLenght)/chargingTime;
 
@@ -422,7 +427,7 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 		modelLife = glm::translate(modelLife, glm::vec3(centerCalc, y + 2.22f, z));
 		modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
-		modelLife = glm::scale(modelLife, glm::vec3(lenghtCalcShot -0.02f, 0.01f, 0.15f));
+		modelLife = glm::scale(modelLife, glm::vec3(lenghtCalcShot -0.02f, 0.01f, 0.10f));
 
 		simpleShader.setMat4("model", modelLife);
 
@@ -456,7 +461,42 @@ void player::drawLifePlayer(Shader simpleShader) {
 	modelLife = glm::translate(modelLife, glm::vec3(x - offSet, y + 2.5f, z));
 	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.25f));
+	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.15f));
+
+	simpleShader.setMat4("model", modelLife);
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+}
+
+
+void player::drawChestLife(Shader simpleShader) {
+
+	simpleShader.use();
+
+	float offSet = 0.0f;
+
+	if (chest_life != 200.0f) {
+		offSet = ((200.0f - chest_life) / 2) / 200.0f;
+	}
+
+	float lifeLenght = chest_life / 200.0f;
+
+	if (chest_life < 0.0f) {
+		lifeLenght = 0.0f;
+	}
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureLife);
+	glBindVertexArray(cubeVAO);
+
+	//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	glm::mat4 modelLife = glm::mat4(1.0f);
+
+	modelLife = glm::translate(modelLife, glm::vec3(-1.0f - offSet, y + 1.5f, 0.0f));
+	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
+	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.15f));
 
 	simpleShader.setMat4("model", modelLife);
 

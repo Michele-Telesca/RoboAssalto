@@ -254,10 +254,10 @@ void villain::drawLifeVillain(Shader simpleShader) {
 	//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 	glm::mat4 modelLife = glm::mat4(1.0f);
 
-	modelLife = glm::translate(modelLife, glm::vec3(x - offSet*2, y + 2.5f, z));
+	modelLife = glm::translate(modelLife, glm::vec3(x - offSet, y + 2.5f, z));
 	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght*2, 0.01f, 0.25f));
+	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.15f));
 
 	simpleShader.setMat4("model", modelLife);
 

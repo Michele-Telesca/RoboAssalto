@@ -52,7 +52,7 @@ void playerShot::inizializza() {
 	direction = 0.0f;
 	isShot = false;
 	angle = 0.0f;
-	damage = 75.0f;
+	damage = 50.0f;
 }
 
 //void playerShot::draw(Shader lightShader, int texturePlayer,float dim) {

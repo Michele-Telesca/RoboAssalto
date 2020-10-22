@@ -70,7 +70,7 @@ float DELAY_SNIPER = 2.0f; //secondi per l'ejectingBullet SNIPER
 
 const int WEAPON_SHOTGUN = 1;
 const float LENGTH_RANGE_SHOTGUN = 3.0f; //lunghezza di mira
-const float LENGTH_BASE_SHOTGUN = 4.0f;
+const float LENGTH_BASE_SHOTGUN = 2.5f;
 const float ANGLE_RANGE_SHOTGUN = 90.0f;
 
 const int WEAPON_SNIPER = 2;
@@ -92,7 +92,7 @@ const float PLAYER_LIFE = 100.0f;
 const float CHEST_LIFE = 200.0f;
 const float MEDIKIT_HEAL = 50.0f;
 
-const float SNIPER_DAMAGE = 75.0f;
+const float SNIPER_DAMAGE = 50.0f;
 const float SHOTGUN_DAMAGE = 100.0f;
 
 const float ZOMBIE_PRISONER_LIFE = 100.0f;
