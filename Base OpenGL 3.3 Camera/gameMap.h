@@ -150,7 +150,7 @@ void gameMap::initMap() {
 	initObjectsList();
 
 	// ---- FLOOR ---- //
-	floor = new cube(DIM+12, 0.0f, 1.0f, 0.0f, 0.0f, -0.5f, ((DIM+12)/2) + 0.5f, 0.5f);
+	floor = new cube(DIM+12, DIM+12, DIM+12, 0.0f, 1.0f, 0.0f, 0.0f, -0.5f, ((DIM+12)/2) + 0.5f, 0.5f);
 	//for (float i = -DIM/2; i < DIM/2; i = i + TILE_DIM) {
 	//	for (float j = DIM/2; j > -DIM/2; j = j - TILE_DIM) {
 	//		// creo la singola mattonella del floor e la inserisco nel vettore tiles

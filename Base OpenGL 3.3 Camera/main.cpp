@@ -29,24 +29,22 @@
 #include "playerShot.h"
 #include "globalData.h"
 #include "globalPathData.h"
+#include "mainMenu.h"
 
 #include <irrKlang/irrKlang.h>
 
 // dichiarazione oggetti
 game* gameuno = new game();
+mainMenu* main_menu = new mainMenu();
 update* update_game = new update();
 updateAnimation* update_animation = new updateAnimation();
-bool spawned = false;
 
-glm::vec3 pos_camera_mobile_global(1.0f);
-glm::mat4 view_global(1.0f);
+bool drawLoadingBar = false;
 
 //time
 float timebase = 0;
 double currentTime = 0.0f;
 double previousTime = glfwGetTime();
-
-bool spawnBot = true;
 
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
@@ -58,53 +56,71 @@ glm::vec3 up(0.0, 1.0, 0.0);
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow* window)
-{
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-		mouseSx = true;
-	}
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
-		if (mouseSx) {
-			startPlayerShot = true;
+{	
+	//CALLBACK MENU
+	if (!gameuno->gameInitialized && !gameuno->gamePause) {
+		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+			if (!mouseSx) {
+				mouseSx = true;
+			}
 		}
-		mouseSx = false;
-	}
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-		glfwSetWindowShouldClose(window, true);
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		if (muoviSx != true) {
-			muoviDx = true;
+		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+			if (mouseSx) {
+				main_menu->buttonClicked = true;
+			}
+			mouseSx = false;
 		}
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
-		muoviDx = false;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		if (muoviDx != true) {
-			muoviSx = true;
+	//CALLBACK GAME
+	if (gameuno->gameInitialized && !gameuno->gamePause) {
+		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+			mouseSx = true;
 		}
-	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE) {
-		muoviSx = false;
-	}
+		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+			if (mouseSx) {
+				startPlayerShot = true;
+			}
+			mouseSx = false;
+		}
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+			glfwSetWindowShouldClose(window, true);
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+			if (muoviSx != true) {
+				muoviDx = true;
+			}
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
+			muoviDx = false;
+		}
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		if (muoviGiu!= true) {
-			muoviSu = true;
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+			if (muoviDx != true) {
+				muoviSx = true;
+			}
 		}
-	}
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
-		muoviSu = false;
-	}
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE) {
+			muoviSx = false;
+		}
 
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		if (muoviSu != true) {
-			muoviGiu = true;
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+			if (muoviGiu != true) {
+				muoviSu = true;
+			}
 		}
-	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE) {
-		muoviGiu = false;
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
+			muoviSu = false;
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+			if (muoviSu != true) {
+				muoviGiu = true;
+			}
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE) {
+			muoviGiu = false;
+		}
 	}
 }
 
@@ -125,6 +141,7 @@ void ray_plane(glm::vec3 plane_normal_word, glm::vec3 plane_pos_word, glm::vec3 
 			//cout << "*** Mouse Position (X,Z): (" << p.x << ", " << p.z << ")" << endl;
 
 			gameuno->setMousePoint(p);
+			main_menu->setMousePoint(p);
 		}
 
 	}
@@ -172,11 +189,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-
-// viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
-void render(Shader simpleShader, Shader lightShader, Shader animShader)
-{
-
+void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -186,7 +199,6 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 
 		player* player = gameuno->getPlayer();
 		vector <villain*> botList = gameuno->getSpawnedBotList();
-		
 
 		// ------- PLAYER MOVES ------- //
 
@@ -227,7 +239,7 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 		// ------- BOT ------- //
 		gameuno->BOT_spawner();
 		gameuno->kill_BOT();
-		update_game->updateBot(botList, player, gameuno); 
+		update_game->updateBot(botList, player, gameuno);
 
 		// ------- POWERUP ------- //
 		gameuno->powerUp_spawner();
@@ -240,7 +252,7 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 
 		// ------- ANIMATION ------- //
 		update_animation->updateAllAnimations(player, botList, gameuno->power_up);
-		
+
 		// ------- SOUND ------- //
 		previousTime = currentTime;
 	}
@@ -254,20 +266,16 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 5.0f);
 
 	//corretta
-	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0);
-	glm::vec3 at_camera_mobile(x, 0.0f, z );
+	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0f);
+	glm::vec3 at_camera_mobile(x, 0.0f, z);
 
 	////terza persona
 	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);
 	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
 	////dall alto
-	//glm::vec3 pos_camera_mobile(x,20.0f, z);
+	//glm::vec3 pos_camera_mobile(x, 20.0f, z);
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
-
-	////prima persona
-	//glm::vec3 pos_camera_mobile(x, 0.8f, z);
-	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
 	//view
 	glm::mat4 view = glm::mat4(1.0f);
@@ -278,13 +286,78 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 
 	// ------- DRAW ------- //
 	gameuno->draw(simpleShader, lightShader, animShader, view);
+}
+
+void renderMainMenu(Shader simpleShader, Shader lightShader, Shader animShader) {
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	currentTime = glfwGetTime();
+	double timeInterval = currentTime - previousTime;
+	if (timeInterval >= RENDER_SPEED) {
+
+		// ------- MOUSE ------- //
+		mouse_position();
+		update_game->cursorMenu(main_menu);
+		update_animation->increase_menuPlayer_posing(main_menu);
+
+		if (main_menu->startNewGame) {
+			gameuno->loadingGame->init();
+			gameuno->loadingGame->isLoading = true;
+		}
+
+		previousTime = currentTime;
+	}
+
+	main_menu->draw(simpleShader, lightShader, animShader);
+
+}
+
+void renderLoading(Shader simpleShader) {
+
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	cout << "gameuno->loadingGame->statusLoading" << gameuno->loadingGame->statusLoading << endl;
+	gameuno->loadingGame->draw(simpleShader, gameuno->loadingGame->statusLoading/13.2f);
+
+	if (gameuno->loadingGame->statusLoading == 100.0f) {
+		gameuno->gamePause = false;				  //setto il game NON in pausa
+		gameuno->gameInitialized = true;		  //init game completato
+		gameuno->loadingGame->isLoading = false;  //loading completato
+	}
+
+}
+
+void renderPauseMenu();
+
+// viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
+void render(Shader simpleShader, Shader lightShader, Shader animShader)
+{
+
+	if (!gameuno->gameInitialized && !gameuno->loadingGame->isLoading) {
+		renderMainMenu(simpleShader, lightShader, animShader);
+	}
+	else if (!gameuno->gameInitialized && gameuno->loadingGame->isLoading && drawLoadingBar == false) {
+		renderLoading(simpleShader);
+		drawLoadingBar = true;
+	}
+	else if (!gameuno->gameInitialized && gameuno->loadingGame->isLoading && drawLoadingBar == true) {
+		renderLoading(simpleShader);
+		gameuno->init(main_menu->selected_player, main_menu->selected_weapon);
+		drawLoadingBar = false;
+		gameuno->loadingGame->statusLoading++;
+	}
+	else if (gameuno->gameInitialized && !gameuno->loadingGame->isLoading) {
+		renderGame(simpleShader, lightShader, animShader);
+	}
 
 }
 
 // viene richiamata prima dell'inizio del while e server per inizializzare il game (vengono creati gli oggetti)
 void init() {
 
-	gameuno->init();
+	main_menu->init();
 
 }
 
@@ -354,10 +427,15 @@ int main()
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
-	//gameuno->getGameMap()->texturePrato = loadtexture("texture/unibas.jpg");
 	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png");
 	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png");
 	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png");
+
+	gameuno->loadingGame->texture_statusbar = loadtexture("texture/loadingBar.png");
+	gameuno->loadingGame->texture_boundary = loadtexture("texture/texture_boundary.png");
+	gameuno->loadingGame->texture_background = loadtexture("texture/background_menu.jpg");
+
+	main_menu->texture_background = loadtexture("texture/background_menu.jpg");
 
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
@@ -409,6 +487,7 @@ int main()
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
 	}
 
 	// optional: de-allocate all resources once they've outlived their purpose:

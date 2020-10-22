@@ -169,10 +169,13 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <None Include="vertex_lights.vs" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="button.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameMap.h" />
     <ClInclude Include="globalData.h" />
     <ClInclude Include="globalPathData.h" />
+    <ClInclude Include="loading.h" />
+    <ClInclude Include="mainMenu.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="cube.h" />

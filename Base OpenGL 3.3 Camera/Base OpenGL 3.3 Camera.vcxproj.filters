@@ -25,6 +25,9 @@
     <Filter Include="Header Files\Tool">
       <UniqueIdentifier>{b8b64a2a-0fd5-4fa0-a6f7-51fae0743f8a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Menu">
+      <UniqueIdentifier>{b270d139-6e2f-4fc2-b3f8-f580e0a0df91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -133,6 +136,15 @@
     </ClInclude>
     <ClInclude Include="powerUp.h">
       <Filter>Header Files\Modello</Filter>
+    </ClInclude>
+    <ClInclude Include="mainMenu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="button.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="loading.h">
+      <Filter>Header Files\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

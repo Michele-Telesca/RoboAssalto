@@ -7,9 +7,11 @@
 #include "globalPathData.h"
 #include "path.h"
 #include "powerUp.h"
+#include "loading.h"
+
 #include <vector>
 
-/*classe game qui vengono gestiti tutte le azioni relatie
+/*classe game qui vengono gestiti tutte le azioni relative
 alla partita e inizializzati tutti gli oggetti*/
 class game {
 
@@ -21,11 +23,16 @@ public:
 	vector <villain*> spawnedBotList;	 //LISTA DEI BOT SPAWNATI
 	powerUp* power_up;					 //POWER UP
 
-	vector <villain*> modelBotList;      //Lista dei bot caricati nel gioco
+	vector <villain*> modelBotList;      //Lista dei modelli di bot
 	vector <path*> pathList;		     //Lista dei path
 
 	int difficolta;                      //Livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
-	
+
+	bool gameInitialized;
+	bool gamePause;
+
+	loading* loadingGame;
+
 	glm::vec3 mousePoint;				 //Coordinate del mouse
 
 	//Costruttore
@@ -33,10 +40,13 @@ public:
 		mappa = new gameMap();
 		p = new player();
 		power_up = new powerUp();
+		loadingGame = new loading();
+		/*loadingGame->statusLoading = 0;
+		loadingGame->isLoading = false;*/
 	};
 
 	// -- Prototipi -- //
-	void init(); //inizializza il game game
+	void init(int selectedPlayer, int weaponType); //inizializza il game game
 	void initPathList(); //inizializza tutti i path dei bot
 	void initModelBotList(); //inizializza la modelBotList (caricamento di tutti i bot spawnabili nel gioco)
 	void setShadersProperties(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view); //setta le proprietà degli shader
@@ -80,19 +90,25 @@ public:
 };
 
 void game::initModelBotList() {
-
 	//inizializzo i di bot
-	villain* zombie1 = new villain();
-	zombie1->initModel_Zombie1();
-	modelBotList.push_back(zombie1);
 
-	villain* zombie2 = new villain();
-	zombie2->initModel_Zombie2();
-	modelBotList.push_back(zombie2);
+	if (loadingGame->statusLoading == 50) {
+		villain* zombie1 = new villain();
+		zombie1->initModel_Zombie1();
+		modelBotList.push_back(zombie1);
+	}
 
-	villain* zombie3 = new villain();
-	zombie3->initModel_Zombie3();
-	modelBotList.push_back(zombie3);
+	if (loadingGame->statusLoading == 60) {
+		villain* zombie2 = new villain();
+		zombie2->initModel_Zombie2();
+		modelBotList.push_back(zombie2);
+	}
+
+	if (loadingGame->statusLoading == 80) {
+		villain* zombie3 = new villain();
+		zombie3->initModel_Zombie3();
+		modelBotList.push_back(zombie3);
+	}
 }
 
 void game::initPathList() {
@@ -225,37 +241,51 @@ void game::powerUp_spawner() {
 			}
 		}
 
-		
 	}
 }
 
-void game::init() {
+void game::init(int selectedPlayer, int weaponType) {
 
-	//inizializza player
-	//p->initPlayer(PLAYER_BRYCE);
-	p->initPlayer(PLAYER_BRYCE);
-	cout << "*** Player: Loaded -> Initialized" << endl;
+	if (loadingGame->statusLoading == 0.0f) {
+		//inizializza player
+		//p->initPlayer(PLAYER_MICHELLE);
+		if (selectedPlayer == PLAYER_BRYCE) {
+			p->initPlayer(PLAYER_BRYCE, weaponType);
+		}
+		else if (selectedPlayer == PLAYER_MICHELLE) {
+			p->initPlayer(PLAYER_MICHELLE, weaponType);
 
-	//inizializza mappa
-	mappa->initMap();
-	cout << "*** Map: Loaded -> Initialized" << endl;
+		}
+		cout << "*** Player: Loaded -> Initialized" << endl;
+	}
 
-	////inizializzo tutti i modelli bot
-	initModelBotList();
-	cout << "*** Bot Models: Loaded" << endl;
+	if (loadingGame->statusLoading == 25.0f) {
+		//inizializza mappa
+		mappa->initMap();
+		cout << "*** Map: Loaded -> Initialized" << endl;
+	}
 
-	//inizializzo tutti i path
-	initPathList();
-	cout << "*** Paths: Loaded" << endl;
+	if (loadingGame->statusLoading >= 50 && loadingGame->statusLoading < 90) {
+		//inizializzo i modelli di bot
+		initModelBotList();
+		cout << "*** Bot Models: Loaded" << endl;
+	}
 
-	//inizializzo i powerUp
-	power_up->initPowerUp();
-	cout << "*** PowerUp: Loaded" << endl;
+	if (loadingGame->statusLoading == 90.0f) {
+		//inizializzo tutti i path
+		initPathList();
+		cout << "*** Paths: Loaded" << endl;
 
-	//setto la difficolta a 0
-	difficolta = 0;
-	cout << "*** Difficolta: 0" << endl;
+		//inizializzo i powerUp
+		power_up->initPowerUp();
+		cout << "*** PowerUp: Loaded" << endl;
 
+		//setto la difficolta a 0
+		difficolta = 0;
+		cout << "*** Difficolta: 0" << endl;
+
+	}
+	
 }
 
 void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view) {

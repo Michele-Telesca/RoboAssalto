@@ -8,6 +8,7 @@
 #include "villain.h"
 #include "playerShot.h"
 #include "powerUp.h"
+#include "mainMenu.h"
 
 /* classe Update qui vengono gestiti tutti
 gli aggiornamenti relativi allo stato degli 
@@ -43,6 +44,8 @@ public:
 	void shotHitBot(vector <playerShot*> listShot, villain* bot);
 	void shotHitTree(vector <playerShot*> listShot);
 
+	// ---- Main Menu ---- //
+	void cursorMenu(mainMenu* main_menu);
 
 };
 
@@ -541,4 +544,70 @@ void update::shotHitTree(vector <playerShot*> listShot) {
 			}
 		}
 	}
+}
+
+void update::cursorMenu(mainMenu* main_menu) {
+
+	float mouseX = main_menu->getMousePoint().x;
+	float mouseZ = main_menu->getMousePoint().z;
+	
+	//cout << mouseX << ", " << mouseZ << endl;
+
+	if (mouseSx && (mouseX >= 2.96f && mouseX <= 5.68f && mouseZ >= 3.53f && mouseZ <= 4.97f)) {
+		main_menu->button_NewGame->isSelected = true;
+	}
+	if (main_menu->buttonClicked && (mouseX >= 2.96f && mouseX <= 5.68f && mouseZ >= 3.53f && mouseZ <= 4.97f)) {
+		cout << "START NEW GAME" << endl;
+		main_menu->buttonClicked = false;
+		main_menu->startNewGame = true;
+		main_menu->button_NewGame->isSelected = true;
+	}
+
+	if (mouseSx && (mouseX >= 3.68f && mouseX <= 4.43f && mouseZ >= -1.05f && mouseZ <= -0.043f)) {
+		main_menu->button_Right->isSelected = true;
+	}
+	if (main_menu->buttonClicked && (mouseX >= 3.68f && mouseX <= 4.43f &&  mouseZ >= -1.05f && mouseZ <= -0.043f)) {
+		cout << "BUTTON RIGHT" << endl;
+		main_menu->buttonClicked = false;
+		if (main_menu->selected_player == PLAYER_BRYCE) {
+			main_menu->selected_player = PLAYER_MICHELLE;
+			main_menu->animation_michellePosing = true;
+		}
+		else {
+			main_menu->selected_player = PLAYER_BRYCE;
+			main_menu->animation_brycePosing = true;
+		}
+		main_menu->button_Right->isSelected = false;
+	}
+
+	if (mouseSx && (mouseX >= -4.24f && mouseX <= -3.46f && mouseZ >= -1.075f && mouseZ <= -0.058f)) {
+		main_menu->button_Left->isSelected = true;
+	}
+	if (main_menu->buttonClicked && (mouseX >= -4.24f && mouseX <= -3.46f && mouseZ >= -1.075f && mouseZ <= -0.058f)) {
+		cout << "BUTTON LEFT" << endl;
+		main_menu->buttonClicked = false;
+		if (main_menu->selected_player == PLAYER_BRYCE) {
+			main_menu->selected_player = PLAYER_MICHELLE;
+			main_menu->animation_michellePosing = true;
+		}
+		else {
+			main_menu->selected_player = PLAYER_BRYCE;
+			main_menu->animation_brycePosing = true;
+		}
+		main_menu->button_Left->isSelected = false;
+	}
+
+	if (mouseSx && (mouseX >= -6.69f && mouseX <= -3.15f && mouseZ >= 3.63f && mouseZ <= 5.026f)) {
+		cout << "SHOTGUN SELECTED" << endl;
+		main_menu->selected_weapon = WEAPON_SHOTGUN;
+	}
+	if (mouseSx && (mouseX >= -2.9f && mouseX <= 0.69f && mouseZ >= 3.63f && mouseZ <= 5.026f)) {
+		cout << "SNIPER SELECTED" << endl;
+		main_menu->selected_weapon = WEAPON_SNIPER;
+	}
+
+	else {
+		main_menu->buttonClicked = false;
+	}
+
 }

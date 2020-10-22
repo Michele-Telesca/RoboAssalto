@@ -10,6 +10,7 @@
 #include "powerUp.h"
 #include "playerShot.h"
 #include <vector>
+#include "mainMenu.h"
 
 #include <irrKlang/irrKlang.h>
 
@@ -60,6 +61,9 @@ public:
 	//power up animation time
 	void powerUpAnimation(powerUp* powerUp);
 	void powerUp_sound(powerUp* powerUp);
+
+	//menu
+	void increase_menuPlayer_posing(mainMenu* main_menu);
 
 };
 
@@ -252,6 +256,23 @@ void updateAnimation::powerUp_sound(powerUp* powerUp) {
 		}
 		powerUp->hit = false;
 	}
+}
+
+void updateAnimation::increase_menuPlayer_posing(mainMenu* main_menu) {
+	
+	if (main_menu->animation_brycePosing == true) {
+		main_menu->animationTime_brycePosing = main_menu->animationTime_brycePosing + 0.06f;
+		if (main_menu->animationTime_brycePosing >= 9.2f) {
+			main_menu->animationTime_brycePosing = 1.0f;
+		}
+	}
+
+	if (main_menu->animation_michellePosing == true) {
+		main_menu->animationTime_michellePosing = main_menu->animationTime_michellePosing + 0.035f;
+	}
+
+
+
 }
 
 
