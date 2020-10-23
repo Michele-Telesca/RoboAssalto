@@ -60,7 +60,7 @@ C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.33\Base OpenGL 3.3 Ca
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.33\Base OpenGL 3.3 Camera\update.h(211,35): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.33\Base OpenGL 3.3 Camera\update.h(274,20): warning C4244: 'inizializzazione': conversione da 'float' a 'int'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.33\Base OpenGL 3.3 Camera\update.h(479,36): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.33\Base OpenGL 3.3 Camera\update.h(515,26): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.33\Base OpenGL 3.3 Camera\update.h(531,26): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.33\Base OpenGL 3.3 Camera\updateAnimation.h(204,35): warning C4305: 'argomento': troncamento da 'double' a 'irrklang::ik_f32'
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.33\Base OpenGL 3.3 Camera\updateAnimation.h(208,35): warning C4305: 'argomento': troncamento da 'double' a 'irrklang::ik_f32'
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.33\Base OpenGL 3.3 Camera\updateAnimation.h(212,35): warning C4305: 'argomento': troncamento da 'double' a 'irrklang::ik_f32'

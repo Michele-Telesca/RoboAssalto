@@ -235,7 +235,7 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 
 		// ------- SHOT ------- //
 		update_game->updateShot(player->listShot, botList, player->wea, player);
-		update_game->shotHitTree(player->listShot);
+		update_game->shotHitTree(player->listShot,player->wea);
 
 
 		// ------- ANIMATION ------- //

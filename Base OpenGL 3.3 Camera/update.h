@@ -40,8 +40,8 @@ public:
 
 	// ---- Movimento e collisioni degli SHOT ---- //
 	void updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea, player* p);
-	void shotHitBot(vector <playerShot*> listShot, villain* bot);
-	void shotHitTree(vector <playerShot*> listShot);
+	void shotHitBot(vector <playerShot*> listShot, villain* bot, weapon* w);
+	void shotHitTree(vector <playerShot*> listShot, weapon* w);
 
 
 };
@@ -282,7 +282,7 @@ void update::moveBot(villain* bot, player* p) {
 			float newCoord_z = bot->getPath()->getPath_map()[path_nextStep].y; //coordinata z
 
 			botCollideVSPlayer(bot, p); //setta il booleano della collisione con il player e dell' animazione attacco 
-			shotHitBot(p->listShot, bot); //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead
+			shotHitBot(p->listShot, bot, p->wea); //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead
 
 			//Se il bot NON collide col player, NON è hittato dal proiettile, NON è morto-> AVANZA
 			if (bot->animation_botWalking && !bot->animation_botAttacking && !bot->animation_botHit && !bot->animation_botDead) {
@@ -381,7 +381,7 @@ void update::moveBot(villain* bot, player* p) {
 		bot->animation_botWalking = false;
 		bot->animation_botAttacking = true;
 		bot->angleToReach = bot->rotationAngle; //evita il bug della rotazione infinita
-		shotHitBot(p->listShot, bot);           //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead	
+		shotHitBot(p->listShot, bot, p->wea);           //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead	
 	}
 
 }
@@ -499,22 +499,37 @@ void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList
 			float dy = (listShot[i]->direction)*cos(listShot[i]->angle); 
 			listShot[i]->x = listShot[i]->startX + dx * SHOT_SPEED; //startx + dx*speed
 			listShot[i]->z = listShot[i]->startZ + dy * SHOT_SPEED;
+			
 			if ((listShot[i]->direction*SHOT_SPEED) > wea->lengthRange) {
 				listShot[i]->inizializza();
+
+				if (wea->weapon_type == WEAPON_SHOTGUN) {
+					listShot[i]->damage = SHOTGUN_DAMAGE;
+				}
+				else {
+					listShot[i]->damage = SNIPER_DAMAGE;
+				}
 			}
 		}	
 	}
 }
 
-void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {
+void update::shotHitBot(vector <playerShot*> listShot, villain* bot,weapon* w) {
 	for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
 		//se uno shot ha colpito il bot
 		if ((listShot[s]->getX() >= bot->getX() - TILE_DIM / 2 && listShot[s]->getX() <= bot->getX() + TILE_DIM / 2) && (listShot[s]->getZ() >= bot->getZ() - TILE_DIM / 2 && listShot[s]->getZ() <= bot->getZ() + TILE_DIM / 2)) {
 			
 			listShot[s]->inizializza();
+
+			if (w->weapon_type == WEAPON_SHOTGUN) {
+				listShot[s]->damage = SHOTGUN_DAMAGE;
+			}
+			else {
+				listShot[s]->damage = SNIPER_DAMAGE;
+			}
+
 			bot->life = bot->life - listShot[s]->damage; //diminuisce la vita del bot
-			listShot[s]->startX = -1000.0f; //si ferma
-			listShot[s]->startZ = -1000.0f; //si ferma
+			
 			cout << "-------- > HIT - BOT life: " << bot->life << endl;
 
 			if (bot->life <= 0) { //se la vita scende a 0 
@@ -529,7 +544,7 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {
 }
 
 
-void update::shotHitTree(vector <playerShot*> listShot) {
+void update::shotHitTree(vector <playerShot*> listShot, weapon* w) {
 
 	for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
 		for (int i = 0; i < mapTree.size(); i++) {
@@ -537,6 +552,13 @@ void update::shotHitTree(vector <playerShot*> listShot) {
 			if ((listShot[s]->getX() >= mapTree[i].x - TILE_DIM / 2 && listShot[s]->getX() <= mapTree[i].x + TILE_DIM / 2) && (listShot[s]->getZ() >= mapTree[i].y - TILE_DIM / 2 && listShot[s]->getZ() <= mapTree[i].y + TILE_DIM / 2)) {
 
 				listShot[s]->inizializza();
+
+				if (w->weapon_type == WEAPON_SHOTGUN) {
+					listShot[s]->damage = SHOTGUN_DAMAGE;
+				}
+				else {
+					listShot[s]->damage = SNIPER_DAMAGE;
+				}
 
 			}
 		}
