@@ -1,6 +1,10 @@
 #pragma once
 //GAME SETTINGS
 
+//global camera
+glm::vec3 pos_camera_mobile_global(1.0f);
+glm::mat4 view_global(1.0f);
+
 // settings
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
@@ -10,10 +14,10 @@ float RENDER_SPEED = 0.03f; //Più è alto e più rallenta; più è basso e più veloc
 const int DIM = 40; //Dimensione floor 20x20
 float TILE_DIM = 1.0; //Dimensione singola mattonella
 
-float MOVE_STEP = TILE_DIM / 10; // = 0.1000f; //Incremento dello spostamento del player 
+float MOVE_STEP = TILE_DIM / 9; // = 0.1000f; //Incremento dello spostamento del player 
 float BOT_MOVE_STEP = TILE_DIM / 30; // = 0.05; //Incremento dello spostamento del BOT 
 
-float EPSILON_1 = TILE_DIM / 100; // epsilon di collisione tra player e gameObject
+float EPSILON_1 = MOVE_STEP/2; // epsilon di collisione tra player e gameObject
 float EPSILON_2 = BOT_MOVE_STEP / 100;
 float EPSILON_3 = 0.25f; // epsilon di collisione tra player e bot
 

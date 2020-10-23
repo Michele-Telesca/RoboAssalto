@@ -87,7 +87,9 @@ class cube {
 
 private:
 
-	float dimensione;
+	float dimensione_x;
+	float dimensione_y;
+	float dimensione_z;
 
 	float angle;
 	float rotation_x;
@@ -102,17 +104,19 @@ public:
 
 	//Costruttore con argomenti
 	// dimensione/angolo rotazione/cord rot x/cord rot y/cord rot z/ x / y / z /shader
-	cube(float d,
+	cube(float d_x, float d_y, float d_z,
 		float a, float r_x, float r_y, float r_z,
 		float p_x, float p_y, float p_z)
 	{
 
-		dimensione = d;
+		dimensione_x = d_x;
+		dimensione_y = d_y;
+		dimensione_z = d_z;
 
 		angle = a;
 		rotation_x = r_x;
-		rotation_y = r_x;
-		rotation_z = r_x;
+		rotation_y = r_y;
+		rotation_z = r_z;
 
 		posizione_x = p_x;
 		posizione_y = p_y;
@@ -137,11 +141,10 @@ public:
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glBindVertexArray(cubeVAO);
 
-
 		glm::mat4 model = glm::mat4(1.0f);	//identity matrix
 		model = glm::translate(model, glm::vec3(posizione_x, posizione_y, posizione_z));
 		model = glm::rotate(model, angle, glm::vec3(rotation_x, rotation_y, rotation_z));
-		model = glm::scale(model, glm::vec3(dimensione, dimensione, dimensione));
+		model = glm::scale(model, glm::vec3(dimensione_x, dimensione_y, dimensione_z));
 		lightShader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -149,9 +152,6 @@ public:
 	}
 
 
-	void setDimensione(float d) {
-		dimensione = d;
-	}
 
 	void setRotation_x(float x) {
 		rotation_x = x;
@@ -195,6 +195,10 @@ public:
 
 	void setAngle(float a) {
 		angle = a;
+	}
+
+	void setDimX(float d_x) {
+		dimensione_x = d_x;
 	}
 
 

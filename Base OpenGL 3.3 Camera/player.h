@@ -4,7 +4,6 @@
 #include "skinned_mesh.h"
 #include "globalData.h"
 #include "playerShot.h"
-//#include "villain.h"
 #include <irrKlang/irrKlang.h>
 
 
@@ -23,9 +22,9 @@ public:
 	int chest_life;
 	float lifeMax;
 
-	int numShotsAvailable; //colpi a disposizione
-	float chargingTime;    //tempo di ricarica del colpo
-	float timeLastShot;    //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
+	int numShotsAvailable;  //colpi a disposizione
+	float chargingTime;     //tempo di ricarica del colpo
+	float timeLastShot;     //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
 	float delayShotTime;
 	bool delayShotIsFinished;
 	float anglePlayer;
@@ -57,7 +56,7 @@ public:
 	//prototipi
 	void drawPlayer(Shader animShader, Shader lightShader, glm::vec3 mousePoint); //disegna il player
 	void animatePlayer(Shader animShader);
-	void initPlayer(int selectedPlayer); //inizializza il player
+	void initPlayer(int selectedPlayer, int weaponType); //inizializza il player
 	void updateAngleShot(float tempDegree, float anglePlayer);
 	bool checkShotIsAvaiable(float currentTime);
 	void drawLifePlayer(Shader lightShader);
@@ -123,9 +122,9 @@ public:
 
 };
 
-void player::initPlayer(int selectedPlayer) {
+void player::initPlayer(int selectedPlayer, int weaponType) {
 
-	wea =  new weapon(WEAPON_SNIPER);
+	wea =  new weapon(weaponType);
 
 	//punto in cui nasce
 	x = 0.0f;
