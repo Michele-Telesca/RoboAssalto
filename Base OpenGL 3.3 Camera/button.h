@@ -35,6 +35,7 @@ public:
 	Model* buttonSelection;
 
 	bool isSelected;
+	bool cursorIsAbove;
 
 	void init(string path_button);
 	void drawButton(Shader shader);
@@ -44,6 +45,7 @@ public:
 void button::init(string path_button) {
 
 	isSelected = false;
+	cursorIsAbove = false;
 	buttonSelection = new Model();
 	buttonSelection->loadModel(path_button);
 
@@ -59,25 +61,38 @@ void button::drawButton(Shader shader) {
 	shader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
 	shader.setFloat("material.shininess", 76.8f);
 
-	if (!isSelected) {	
+	if (!isSelected && !cursorIsAbove) {	
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
 		model = glm::scale(model, glm::vec3(dim, dim, dim));
 		shader.setMat4("model", model);
+		shader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
 
 		buttonSelection->Draw(shader);
 	}
 	else if (isSelected) {
+		cout << "render is selected" << endl;
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y - 0.1f, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
 		model = glm::scale(model, glm::vec3(dim, dim, dim));
 		shader.setMat4("model", model);
+		shader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
 
 		buttonSelection->Draw(shader);
 	}
+	else if (!isSelected && cursorIsAbove) {
+		cout << "render cursor above" << endl;
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(x, y, z));
+		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
+		model = glm::scale(model, glm::vec3(dim, dim, dim));
+		shader.setMat4("model", model);
+		shader.setVec3("colormodel", 0.85f, 0.85f, 0.85f);
 
+		buttonSelection->Draw(shader);
+	}
 
 
 }

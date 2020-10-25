@@ -58,7 +58,7 @@ class mainMenu
 void mainMenu::setShadersProperties(Shader simpleShader, Shader lightShader, Shader animShader) {
 	
 	//camera pos
-	glm::vec3 pos_camera(0.0f, 12.0f, 10.0f);
+	glm::vec3 pos_camera(0.0f, 12.0f, 1.0f);
 	glm::vec3 at_camera(0.0f, 0.0f, 0.0f);
 	pos_camera_mobile_global = pos_camera;
 	glm::vec3 up(0.0, 1.0, 0.0);
@@ -125,16 +125,16 @@ void mainMenu::init() {
 	selected_player = PLAYER_BRYCE;
 	selected_weapon = WEAPON_SHOTGUN;
 
-	button_NewGame = new button(5.0f, -1.0f, 3.0f, 0.4f, glm::radians(-50.0f), 1.0f, 0.0f, 0.0f);
+	button_NewGame = new button(3.5f, 1.0f, 2.58f, 0.3f, glm::radians(-85.1f), 1.0f, 0.0f, 0.0f);
 	button_NewGame->init("models/menu/button_play.dae");
 
-	button_Left = new button(-4.0f, 1.0f, -1.0f, 0.4f, glm::radians(-45.0f), 1.0f, 0.0f, 0.0f);
+	button_Left = new button(-2.5f, 1.0f, -1.2f, 0.3f, glm::radians(-85.1f), 1.0f, 0.0f, 0.0f);
 	button_Left->init("models/menu/button_left.dae");
 
-	button_Right = new button(4.0f, 1.0f, -1.0f, 0.4f, glm::radians(-45.0f), 1.0f, 0.0f, 0.0f);
+	button_Right = new button(2.5f, 1.0f, -1.2f, 0.3f, glm::radians(-85.1f), 1.0f, 0.0f, 0.0f);
 	button_Right->init("models/menu/button_right.dae");
 
-	background = new cube(23.0f, 0.0f, 23.0f, glm::radians(40.0f), 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	background = new cube(18.0f, 0.0f, 18.0f, glm::radians(4.9f), 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 	player_bryce.loadMesh("animation/player_bryce/menu_posing/Listening To Music.dae");
 	animationTime_brycePosing = 1.0f;
@@ -152,12 +152,10 @@ void mainMenu::init() {
 
 	boundary_sniper_unselected = new Model();
 	boundary_sniper_unselected->loadModel("models/menu/boundary_weapon_unselected.dae");
-
 	boundary_shotgun_unselected = boundary_sniper_unselected;
 
 	boundary_sniper_selected = new Model();
 	boundary_sniper_selected->loadModel("models/menu/boundary_weapon_selected.dae");
-
 	boundary_shotgun_selected = boundary_sniper_selected;
 
 }
@@ -173,31 +171,31 @@ void mainMenu::draw(Shader simpleShader, Shader lightShader, Shader animShader) 
 
 	if (selected_weapon == WEAPON_SNIPER) {
 		glm::mat4 model_boun_sniper = glm::mat4(1.0f);
-		model_boun_sniper = glm::translate(model_boun_sniper, glm::vec3(-1.15f, 1.0f, 4.65f));
-		model_boun_sniper = glm::rotate(model_boun_sniper, glm::radians(-50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model_boun_sniper = glm::scale(model_boun_sniper, glm::vec3(0.4f, 0.4f, 0.4f));
+		model_boun_sniper = glm::translate(model_boun_sniper, glm::vec3(0.0f, 1.0f, 3.0f));
+		model_boun_sniper = glm::rotate(model_boun_sniper, glm::radians(-86.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model_boun_sniper = glm::scale(model_boun_sniper, glm::vec3(0.38f, 0.38f, 0.38f));
 		simpleShader.setMat4("model", model_boun_sniper);
 		boundary_sniper_selected->Draw(simpleShader);
 
 		glm::mat4 model_boun_shotgun = glm::mat4(1.0f);
-		model_boun_shotgun = glm::translate(model_boun_shotgun, glm::vec3(-5.0f, 1.0f, 4.65f));
-		model_boun_shotgun = glm::rotate(model_boun_shotgun, glm::radians(-50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model_boun_shotgun = glm::scale(model_boun_shotgun, glm::vec3(0.4f, 0.4f, 0.4f));
+		model_boun_shotgun = glm::translate(model_boun_shotgun, glm::vec3(-4.0f, 1.0f, 3.0f));
+		model_boun_shotgun = glm::rotate(model_boun_shotgun, glm::radians(-85.25f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model_boun_shotgun = glm::scale(model_boun_shotgun, glm::vec3(0.38f, 0.38f, 0.38f));
 		simpleShader.setMat4("model", model_boun_shotgun);
 		boundary_shotgun_unselected->Draw(simpleShader);
 	}
 	else if(selected_weapon == WEAPON_SHOTGUN){
 		glm::mat4 model_boun_shotgun = glm::mat4(1.0f);
-		model_boun_shotgun = glm::translate(model_boun_shotgun, glm::vec3(-5.0f, 1.0f, 4.65f));
-		model_boun_shotgun = glm::rotate(model_boun_shotgun, glm::radians(-50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model_boun_shotgun = glm::scale(model_boun_shotgun, glm::vec3(0.4f, 0.4f, 0.4f));
+		model_boun_shotgun = glm::translate(model_boun_shotgun, glm::vec3(-4.0f, 1.0f, 3.0f));
+		model_boun_shotgun = glm::rotate(model_boun_shotgun, glm::radians(-85.25f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model_boun_shotgun = glm::scale(model_boun_shotgun, glm::vec3(0.38f, 0.38f, 0.38f));
 		simpleShader.setMat4("model", model_boun_shotgun);
 		boundary_shotgun_selected->Draw(simpleShader);
 
 		glm::mat4 model_boun_sniper = glm::mat4(1.0f);
-		model_boun_sniper = glm::translate(model_boun_sniper, glm::vec3(-1.15f, 1.0f, 4.65f));
-		model_boun_sniper = glm::rotate(model_boun_sniper, glm::radians(-50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model_boun_sniper = glm::scale(model_boun_sniper, glm::vec3(0.4f, 0.4f, 0.4f));
+		model_boun_sniper = glm::translate(model_boun_sniper, glm::vec3(0.0f, 1.0f, 3.0f));
+		model_boun_sniper = glm::rotate(model_boun_sniper, glm::radians(-86.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model_boun_sniper = glm::scale(model_boun_sniper, glm::vec3(0.38f, 0.38f, 0.38f));
 		simpleShader.setMat4("model", model_boun_sniper);
 		boundary_sniper_unselected->Draw(simpleShader);
 	}
@@ -207,28 +205,31 @@ void mainMenu::draw(Shader simpleShader, Shader lightShader, Shader animShader) 
 	lightShader.use();
 
 	glm::mat4 model_shotgun = glm::mat4(1.0f);
-	model_shotgun = glm::translate(model_shotgun, glm::vec3(-3.6f, 2.0f, 5.5f));
+	model_shotgun = glm::translate(model_shotgun, glm::vec3(-4.0f, 1.0f, 3.0f));
 	model_shotgun = glm::rotate(model_shotgun, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	model_shotgun = glm::scale(model_shotgun, glm::vec3(0.04f, 0.04f, 0.04f)); //bullet scale
 	lightShader.setMat4("model", model_shotgun);
-	shotgun->Draw(lightShader); //bullet draw
+	lightShader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
+	shotgun->Draw(lightShader);
 
 	glm::mat4 model_sniper = glm::mat4(1.0f);
-	model_sniper = glm::translate(model_sniper, glm::vec3(-1.5f, 2.0f, 4.7f));
-	model_sniper = glm::rotate(model_sniper, glm::radians(0.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+	model_sniper = glm::translate(model_sniper, glm::vec3(0.0f, 1.0f, 3.0f));
+	model_sniper = glm::rotate(model_sniper, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	model_sniper = glm::scale(model_sniper, glm::vec3(0.125f, 0.125f, 0.125f)); //bullet scale
 	lightShader.setMat4("model", model_sniper);
-	sniper->Draw(lightShader); //bullet draw
+	lightShader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
+	sniper->Draw(lightShader); 
+
 
 
 	animShader.use();
 
 	//model
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::rotate(model, 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //per metterlo in posizione verticale sul pavimento
-	model = glm::scale(model, glm::vec3(0.02f, 0.02f, 0.02f));
+	model = glm::rotate(model, glm::radians(-70.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //per metterlo in posizione verticale sul pavimento
+	model = glm::scale(model, glm::vec3(0.015f, 0.015f, 0.015f));
 	animShader.setMat4("model", model);
 
 	//material properties

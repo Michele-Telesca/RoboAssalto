@@ -146,5 +146,8 @@
     <ClInclude Include="loading.h">
       <Filter>Header Files\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="pauseMenu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

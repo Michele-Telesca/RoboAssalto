@@ -62,6 +62,8 @@ public:
 	void drawLifePlayer(Shader lightShader);
 	void drawShotAvaiable(int numShotsAvailable, float currentTime, Shader lightShader);
 	bool checkShotDelay(float currentTime);
+	void resetPlayer(int weaponType);
+	void loadMeshModel(int selectedPlayer);
 
 	//get e set
 	bool getStartPlayerShot() {
@@ -121,9 +123,9 @@ public:
 
 };
 
-void player::initPlayer(int selectedPlayer, int weaponType) {
+void  player::resetPlayer(int weaponType) {
 
-	wea =  new weapon(weaponType);
+	wea = new weapon(weaponType);
 
 	//punto in cui nasce
 	x = 0.0f;
@@ -155,6 +157,16 @@ void player::initPlayer(int selectedPlayer, int weaponType) {
 		listShot[i]->inizializza();
 	}
 
+	// tempo per le animazioni
+	animationTime_playerStanding = 0.0f;
+	animationTime_playerRunning = 0.0f;
+
+	delayShotTime = 0.0f; //delay tra uno sparo e un altro
+	delayShotIsFinished = true;
+}
+
+void player::loadMeshModel(int selectedPlayer) {
+
 	//loading meshes with animation
 	if (selectedPlayer == PLAYER_MICHELLE) {
 		//michelle
@@ -162,7 +174,7 @@ void player::initPlayer(int selectedPlayer, int weaponType) {
 		meshStanding_shotgun.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
 		meshRunning_sniper.loadMesh("animation/player_michelle/sniper_running/sniper_running.dae");
 		meshStanding_sniper.loadMesh("animation/player_michelle/sniper_standing/sniper_standing.dae");
-		
+
 	}
 	else if (selectedPlayer == PLAYER_BRYCE) {
 		//bryce
@@ -171,13 +183,12 @@ void player::initPlayer(int selectedPlayer, int weaponType) {
 		meshRunning_sniper.loadMesh("animation/player_bryce/sniper_running/sniper_running.dae");
 		meshStanding_sniper.loadMesh("animation/player_bryce/sniper_standing/sniper_standing.dae");
 	}
+}
 
-	// tempo per le animazioni
-	animationTime_playerStanding = 0.0f;
-	animationTime_playerRunning = 0.0f;
-	
-	delayShotTime = 0.0f; //delay tra uno sparo e un altro
-	delayShotIsFinished = true;
+void player::initPlayer(int selectedPlayer, int weaponType) {
+
+	resetPlayer(weaponType);
+	loadMeshModel(selectedPlayer);
 
 }
 

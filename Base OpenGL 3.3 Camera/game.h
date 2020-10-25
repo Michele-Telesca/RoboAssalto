@@ -29,6 +29,7 @@ public:
 	int difficolta;                      //Livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
 
 	bool gameInitialized;
+	bool inGame;
 	bool gamePause;
 
 	loading* loadingGame;
@@ -41,8 +42,6 @@ public:
 		p = new player();
 		power_up = new powerUp();
 		loadingGame = new loading();
-		/*loadingGame->statusLoading = 0;
-		loadingGame->isLoading = false;*/
 	};
 
 	// -- Prototipi -- //
@@ -245,47 +244,71 @@ void game::powerUp_spawner() {
 }
 
 void game::init(int selectedPlayer, int weaponType) {
-
-	if (loadingGame->statusLoading == 0.0f) {
-		//inizializza player
-		//p->initPlayer(PLAYER_MICHELLE);
-		if (selectedPlayer == PLAYER_BRYCE) {
-			p->initPlayer(PLAYER_BRYCE, weaponType);
-		}
-		else if (selectedPlayer == PLAYER_MICHELLE) {
-			p->initPlayer(PLAYER_MICHELLE, weaponType);
-
-		}
-		cout << "*** Player: Loaded -> Initialized" << endl;
-	}
-
-	if (loadingGame->statusLoading == 25.0f) {
-		//inizializza mappa
-		mappa->initMap();
-		cout << "*** Map: Loaded -> Initialized" << endl;
-	}
-
-	if (loadingGame->statusLoading >= 50 && loadingGame->statusLoading < 90) {
-		//inizializzo i modelli di bot
-		initModelBotList();
-		cout << "*** Bot Models: Loaded" << endl;
-	}
-
-	if (loadingGame->statusLoading == 90.0f) {
-		//inizializzo tutti i path
-		initPathList();
-		cout << "*** Paths: Loaded" << endl;
-
-		//inizializzo i powerUp
-		power_up->initPowerUp();
-		cout << "*** PowerUp: Loaded" << endl;
-
-		//setto la difficolta a 0
-		difficolta = 0;
-		cout << "*** Difficolta: 0" << endl;
-
-	}
 	
+	//Se il game non è stato ancora inizializzato
+	if (gameInitialized == false) {
+
+		if (loadingGame->statusLoading == 0.0f) {
+			// init PLAYER
+			if (selectedPlayer == PLAYER_BRYCE) {
+				p->initPlayer(PLAYER_BRYCE, weaponType);
+			}
+			else if (selectedPlayer == PLAYER_MICHELLE) {
+				p->initPlayer(PLAYER_MICHELLE, weaponType);
+
+			}
+			cout << "*** Player: Loaded -> Initialized" << endl;
+		}
+
+		if (loadingGame->statusLoading == 25.0f) {
+			// init MAP
+			mappa->initMap();
+			cout << "*** Map: Loaded -> Initialized" << endl;
+		}
+
+		if (loadingGame->statusLoading >= 50 && loadingGame->statusLoading < 90) {
+			// init BOT models
+			initModelBotList();
+			cout << "*** Bot Models: Loaded" << endl;
+		}
+
+		if (loadingGame->statusLoading == 90.0f) {
+			// init PATH
+			initPathList();
+			cout << "*** Paths: Loaded" << endl;
+
+			// init POWERUP
+			power_up->initPowerUp();
+			cout << "*** PowerUp: Loaded" << endl;
+
+			difficolta = 0;
+			cout << "*** Difficolta: 0" << endl;
+
+			gameInitialized = true;	//init game completato
+		}
+	}
+
+	//Se il game è già stato inizializzato. Resetto animazioni e posizioni del player e dei bot
+	else if (gameInitialized == true) {
+
+		if (loadingGame->statusLoading == 1.0f) {
+
+			//Elimino tutti i bot spawnati
+			for (int i = 0; i < spawnedBotList.size(); i++) {
+				spawnedBotList.pop_back();
+			}
+
+			//resetto posizione, animazione e arma del player
+			p->resetPlayer(weaponType);
+
+			//resetto il powerUp
+			power_up->spawned = false;
+
+			//resetto la difficoltà a 0
+			difficolta = 0;
+		}
+	}
+
 }
 
 void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view) {
@@ -335,6 +358,8 @@ void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader 
 	lightShader.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
 	lightShader.setVec3("light.diffuse", 0.7f, 0.7f, 0.7f);
 	lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
+
 }
 
 void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view) {
