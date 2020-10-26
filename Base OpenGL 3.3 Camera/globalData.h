@@ -86,12 +86,14 @@ const float ANGLE_RANGE_SNIPER = 90.0f;
 
 const int MEDIKIT = 3;
 
-// -- PLAYER MOVEMENT -- //
+// -- KEYBOARD/MOUSE BUTTON -- //
 bool muoviDx = false;
 bool muoviSx = false;
 bool muoviSu = false;
 bool muoviGiu = false;
+
 bool mouseSx = false;
+bool buttonEsc = false;
 
 // -- LIFE and DAMAGE -- //
 const float PLAYER_LIFE = 100.0f;

@@ -468,13 +468,17 @@ void update::hitPowerUp(player* p, powerUp* power_up) {
 		if ((p->x >= power_up->x - TILE_DIM / 2 && p->x <= power_up->x + TILE_DIM / 2) && (p->z >= power_up->z - TILE_DIM / 2 && p->z <= power_up->z + TILE_DIM / 2)) {	
 			power_up->hit = true;
 			if (power_up->powerUp_type == WEAPON_SHOTGUN) {
-				p->wea = new weapon(WEAPON_SHOTGUN);
+				//p->wea = new weapon(WEAPON_SHOTGUN);
+				p->wea->weapon_type = WEAPON_SHOTGUN;
+				p->wea->setWeaponProperties();
 				for (int i = 0; i < numShot; i++) {
 					p->listShot[i]->damage = SHOTGUN_DAMAGE;
 				}
 			}
 			if (power_up->powerUp_type == WEAPON_SNIPER) {
-				p->wea = new weapon(WEAPON_SNIPER);
+				p->wea->weapon_type = WEAPON_SNIPER;
+				p->wea->setWeaponProperties();
+				//p->wea = new weapon(WEAPON_SNIPER);
 				for (int i = 0; i < numShot; i++) {
 					p->listShot[i]->damage = SNIPER_DAMAGE;
 				}

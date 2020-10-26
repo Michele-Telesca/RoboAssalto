@@ -254,6 +254,10 @@ void updateAnimation::powerUp_sound(powerUp* powerUp) {
 			SoundEngine->setSoundVolume(0.7);
 			SoundEngine->play2D("audio/sight powerUp.wav", false); //sound no shot available
 		}
+		else if (powerUp->powerUp_type == MEDIKIT) {
+			SoundEngine->setSoundVolume(0.7);
+			SoundEngine->play2D("audio/medikit.wav", false); //sound no shot available
+		}
 		powerUp->hit = false;
 	}
 }

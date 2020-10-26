@@ -71,8 +71,7 @@ void button::drawButton(Shader shader) {
 
 		buttonSelection->Draw(shader);
 	}
-	else if (isSelected) {
-		cout << "render is selected" << endl;
+	else if (isSelected) { 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y - 0.1f, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
@@ -83,7 +82,6 @@ void button::drawButton(Shader shader) {
 		buttonSelection->Draw(shader);
 	}
 	else if (!isSelected && cursorIsAbove) {
-		cout << "render cursor above" << endl;
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));

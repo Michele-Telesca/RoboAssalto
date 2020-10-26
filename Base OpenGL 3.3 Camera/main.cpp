@@ -38,7 +38,6 @@
 game* gameuno = new game();
 mainMenu* main_menu = new mainMenu();
 pauseMenu* pause_menu = new pauseMenu();
-bool buttonEsc = false;
 
 update* update_game = new update();
 updateAnimation* update_animation = new updateAnimation();
@@ -329,8 +328,8 @@ void renderMainMenu(Shader simpleShader, Shader lightShader, Shader animShader) 
 			gameuno->loadingGame->init(); //inizializzo la barra di caricamento 
 			gameuno->loadingGame->isLoading = true; //setto il caricamento a true
 			main_menu->startNewGame = false; //resetto il flag startNewGame
+			
 		}
-
 		previousTime = currentTime;
 	}
 

@@ -244,26 +244,20 @@ void game::powerUp_spawner() {
 }
 
 void game::init(int selectedPlayer, int weaponType) {
-	
+
 	//Se il game non è stato ancora inizializzato
 	if (gameInitialized == false) {
 
 		if (loadingGame->statusLoading == 0.0f) {
-			// init PLAYER
-			if (selectedPlayer == PLAYER_BRYCE) {
-				p->initPlayer(PLAYER_BRYCE, weaponType);
-			}
-			else if (selectedPlayer == PLAYER_MICHELLE) {
-				p->initPlayer(PLAYER_MICHELLE, weaponType);
-
-			}
-			cout << "*** Player: Loaded -> Initialized" << endl;
-		}
-
-		if (loadingGame->statusLoading == 25.0f) {
 			// init MAP
 			mappa->initMap();
 			cout << "*** Map: Loaded -> Initialized" << endl;
+		}
+
+		if (loadingGame->statusLoading == 15.0f) {
+			// init PLAYER
+			p->initPlayer(selectedPlayer, weaponType);
+			cout << "*** Players: Loaded -> Initialized" << endl;
 		}
 
 		if (loadingGame->statusLoading >= 50 && loadingGame->statusLoading < 90) {
@@ -284,7 +278,8 @@ void game::init(int selectedPlayer, int weaponType) {
 			difficolta = 0;
 			cout << "*** Difficolta: 0" << endl;
 
-			gameInitialized = true;	//init game completato
+			gameInitialized = true;	//segnalo che l'init del game è stato completato completato
+			cout << "*** INIT GAME: COMPLETED" << endl;
 		}
 	}
 
@@ -297,9 +292,9 @@ void game::init(int selectedPlayer, int weaponType) {
 			for (int i = 0; i < spawnedBotList.size(); i++) {
 				spawnedBotList.pop_back();
 			}
-
-			//resetto posizione, animazione e arma del player
-			p->resetPlayer(weaponType);
+			
+			//resetto il player
+			p->resetPlayer(selectedPlayer, weaponType);
 
 			//resetto il powerUp
 			power_up->spawned = false;
