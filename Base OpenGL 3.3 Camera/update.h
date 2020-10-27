@@ -43,7 +43,7 @@ public:
 	// ---- Movimento e collisioni degli SHOT ---- //
 	void updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea, player* p);
 	void shotHitBot(vector <playerShot*> listShot, villain* bot);
-	void shotHitTree(vector <playerShot*> listShot);
+	void shotHitTree(playerShot* playerShot);
 
 	// ---- MENU ---- //
 	void cursorMainMenu(mainMenu* main_menu);
@@ -501,7 +501,9 @@ void update::hitPowerUp(player* p, powerUp* power_up) {
 
 //update shot
 void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea, player* p) {
+	
 	for (int i = 0; i < numShot; i++) {
+		shotHitTree(listShot[i]);
 		if (listShot[i]->isShot) {
 			listShot[i]->direction = listShot[i]->direction + 0.1f;
 			float dx = (listShot[i]->direction)*sin(listShot[i]->angle); //direction * sin(angle)
@@ -538,18 +540,18 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot) {
 }
 
 
-void update::shotHitTree(vector <playerShot*> listShot) {
+void update::shotHitTree(playerShot* playerShot) {
 
-	for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
+	//for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
 		for (int i = 0; i < mapTree.size(); i++) {
 			//se uno shot ha colpito il bot
-			if ((listShot[s]->getX() >= mapTree[i].x - TILE_DIM / 2 && listShot[s]->getX() <= mapTree[i].x + TILE_DIM / 2) && (listShot[s]->getZ() >= mapTree[i].y - TILE_DIM / 2 && listShot[s]->getZ() <= mapTree[i].y + TILE_DIM / 2)) {
+			if ((playerShot->getX() >= mapTree[i].x - TILE_DIM / 2 && playerShot->getX() <= mapTree[i].x + TILE_DIM / 2) && (playerShot->getZ() >= mapTree[i].y - TILE_DIM / 2 && playerShot->getZ() <= mapTree[i].y + TILE_DIM / 2)) {
 
-				listShot[s]->inizializza();
+				playerShot->inizializza();
 
 			}
 		}
-	}
+	//}
 }
 
 void update::cursorMainMenu(mainMenu* main_menu) {

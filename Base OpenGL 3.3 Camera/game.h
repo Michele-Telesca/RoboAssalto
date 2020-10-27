@@ -36,12 +36,15 @@ public:
 
 	glm::vec3 mousePoint;				 //Coordinate del mouse
 
+	bool startGameSoundtrack;
+
 	//Costruttore
 	game() {
 		mappa = new gameMap();
 		p = new player();
 		power_up = new powerUp();
 		loadingGame = new loading();
+		startGameSoundtrack = false;
 	};
 
 	// -- Prototipi -- //
@@ -278,6 +281,8 @@ void game::init(int selectedPlayer, int weaponType) {
 			difficolta = 0;
 			cout << "*** Difficolta: 0" << endl;
 
+			
+
 			gameInitialized = true;	//segnalo che l'init del game è stato completato completato
 			cout << "*** INIT GAME: COMPLETED" << endl;
 		}
@@ -301,6 +306,7 @@ void game::init(int selectedPlayer, int weaponType) {
 
 			//resetto la difficoltà a 0
 			difficolta = 0;
+
 		}
 	}
 
@@ -373,7 +379,7 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 	}
 	
 	//DRAW MAP
-	mappa->drawMap(lightShader, view);
+	mappa->drawMap(simpleShader, lightShader, view);
 
 	//DRAW POWERUP
 	if (power_up->spawned) {

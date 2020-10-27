@@ -42,6 +42,8 @@ class mainMenu
 
 		bool buttonClicked;
 
+		bool startMenuSoundtrack; 
+
 		void init();
 		void setShadersProperties(Shader simpleShader, Shader lightShader, Shader animShader);
 		void draw(Shader simpleShader, Shader lightShader, Shader animShader);
@@ -120,6 +122,7 @@ void mainMenu::setShadersProperties(Shader simpleShader, Shader lightShader, Sha
 
 void mainMenu::init() {
 
+	startMenuSoundtrack = false;
 	startNewGame = false;
 	buttonClicked = false;
 	selected_player = PLAYER_BRYCE;

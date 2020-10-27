@@ -30,13 +30,17 @@ class updateAnimation
 {
 public:	
 		
-	irrklang::ISoundEngine* SoundEngine; //proprietà che gestisce il sound
+	irrklang::ISoundEngine* SoundEngine_effect; //proprietà che gestisce il sound
+	irrklang::ISoundEngine* SoundEngine_soundtrack; //proprietà che gestisce il sound
 	
 	//costruttore no-arg
 	updateAnimation(){
-		SoundEngine = irrklang::createIrrKlangDevice(); //inizializzo il soundEngine
-		SoundEngine->setSoundVolume(0);
-		SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
+		SoundEngine_effect = irrklang::createIrrKlangDevice(); //inizializzo il soundEngine
+		SoundEngine_effect->setSoundVolume(0);
+		SoundEngine_effect->play2D("audio/footstep grass.wav", false); //sound step
+		SoundEngine_soundtrack = irrklang::createIrrKlangDevice(); //inizializzo il soundEngine
+		SoundEngine_soundtrack->setSoundVolume(0);
+		SoundEngine_soundtrack->play2D("audio/footstep grass.wav", false); //sound step
 	}
 
 	// ---- prototipi ---- //
@@ -44,13 +48,14 @@ public:
 	//richiamta tutto l'update dei tempi
 	void updateAllAnimations(player* player, vector<villain*> botList, powerUp* powerUp);
 
+	void gameSound(game* game);
+
 	//bot animation time
 	void botAnimation(vector<villain*> botList);
 	void increaseBot_Walk_Attack(vector<villain*> botList);
 	void increaseBot_Hit(vector<villain*> botList);
 	void increaseBot_Dead(vector<villain*> botList);
 	void bot_soundAattack(villain* bot);
-
 
 	//player animation time
 	void playerAnimation(player* player);
@@ -64,6 +69,7 @@ public:
 
 	//menu
 	void increase_menuPlayer_posing(mainMenu* main_menu);
+	void menuSound(mainMenu* main_menu);
 
 };
 
@@ -119,21 +125,21 @@ void updateAnimation::playerAnimation(player* player) {
 void updateAnimation::bot_soundAattack(villain* bot) {
 	if (bot->animationTime_botAttacking >= 1.49f && bot->animationTime_botAttacking <= 1.51f) {
 		int sound_attack_index = randMtoN(1, 5);
-		SoundEngine->setSoundVolume(0.5);
+		SoundEngine_effect->setSoundVolume(0.5);
 		if (sound_attack_index == 1) {
-			SoundEngine->play2D("audio/zombie_attack1.wav", false); //zombie attack sound
+			SoundEngine_effect->play2D("audio/zombie_attack1.wav", false); //zombie attack sound
 		}
 		else if (sound_attack_index == 2) {
-			SoundEngine->play2D("audio/zombie_attack2.wav", false); //zombie attack sound
+			SoundEngine_effect->play2D("audio/zombie_attack2.wav", false); //zombie attack sound
 		}
 		else if (sound_attack_index == 3) {
-			SoundEngine->play2D("audio/zombie_attack3.wav", false); //zombie attack sound
+			SoundEngine_effect->play2D("audio/zombie_attack3.wav", false); //zombie attack sound
 		}
 		else if (sound_attack_index == 4) {
-			SoundEngine->play2D("audio/zombie_attack4.wav", false); //zombie attack sound
+			SoundEngine_effect->play2D("audio/zombie_attack4.wav", false); //zombie attack sound
 		}
 		else if (sound_attack_index == 5) {
-			SoundEngine->play2D("audio/zombie_attack5.wav", false); //zombie attack sound
+			SoundEngine_effect->play2D("audio/zombie_attack5.wav", false); //zombie attack sound
 		}
 	}
 }
@@ -163,12 +169,12 @@ void updateAnimation::increaseBot_Hit(vector<villain*> botList) {
 		}
 		if (botList[i]->animationTime_botHit == 0.12f ) {
 			int sound_hit_index = randMtoN(1,2);
-			SoundEngine->setSoundVolume(0.5);
+			SoundEngine_effect->setSoundVolume(0.5);
 			if (sound_hit_index == 1) {
-				SoundEngine->play2D("audio/zombie_hit1.wav", false); //zombie hit sound
+				SoundEngine_effect->play2D("audio/zombie_hit1.wav", false); //zombie hit sound
 			}
 			else if (sound_hit_index == 2) {
-				SoundEngine->play2D("audio/zombie_hit2.wav", false); //zombie hit sound
+				SoundEngine_effect->play2D("audio/zombie_hit2.wav", false); //zombie hit sound
 			}
 		}
 		if (botList[i]->animationTime_botHit >= 2.0f) {   //quando l'animazione è finita
@@ -205,16 +211,16 @@ void updateAnimation::increasePlayer_Run(player* player) {
 		player->animationTime_playerRunning = player->animationTime_playerRunning + 0.05f;  //incremento l'animazione
 
 		if (player->animationTime_playerRunning == 0.05f) { //quando il player fa primo passo
-			SoundEngine->setSoundVolume(0.8);
-			SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
+			SoundEngine_effect->setSoundVolume(0.8);
+			SoundEngine_effect->play2D("audio/footstep grass.wav", false); //sound step
 		}
 		if (player->animationTime_playerRunning >= 0.49f && player->animationTime_playerRunning <= 0.51f && player->wea->weapon_type == WEAPON_SHOTGUN) { //quando il player fa primo passo
-			SoundEngine->setSoundVolume(0.8);
-			SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
+			SoundEngine_effect->setSoundVolume(0.8);
+			SoundEngine_effect->play2D("audio/footstep grass.wav", false); //sound step
 		}
 		if (player->animationTime_playerRunning >= 0.69f && player->animationTime_playerRunning <= 0.71f && player->wea->weapon_type == WEAPON_SNIPER) {
-			SoundEngine->setSoundVolume(0.8);
-			SoundEngine->play2D("audio/footstep grass.wav", false); //sound step
+			SoundEngine_effect->setSoundVolume(0.8);
+			SoundEngine_effect->play2D("audio/footstep grass.wav", false); //sound step
 		}
 
 		if (player->animationTime_playerRunning > 1.0f && player->wea->weapon_type == WEAPON_SHOTGUN) {   //quando il player fa il secondo passo
@@ -230,33 +236,33 @@ void updateAnimation::increasePlayer_Run(player* player) {
 void updateAnimation::playerShot_sound(player* player) {
 	if (player->startPlayerShot == true && player->numShotsAvailable > 0 && player->delayShotIsFinished) {
 		if (player->wea->weapon_type == WEAPON_SHOTGUN) {
-			SoundEngine->setSoundVolume(0.4);
-			SoundEngine->play2D("audio/shotgun_fire.wav", false); //sound shot SHOTGUN
+			SoundEngine_effect->setSoundVolume(0.3);
+			SoundEngine_effect->play2D("audio/shotgun_fire.wav", false); //sound shot SHOTGUN
 		}
 		else if(player->wea->weapon_type == WEAPON_SNIPER){
-			SoundEngine->setSoundVolume(0.3);
-			SoundEngine->play2D("audio/sniper_fire.wav", false); //sound shot SNIPER
+			SoundEngine_effect->setSoundVolume(0.3);
+			SoundEngine_effect->play2D("audio/sniper_fire.wav", false); //sound shot SNIPER
 		}
 	}
 	else if (player->startPlayerShot == true && player->numShotsAvailable <= 0) {
-		SoundEngine->setSoundVolume(0.5);
-		SoundEngine->play2D("audio/weapon_empty.flac", false); //sound no shot available
+		SoundEngine_effect->setSoundVolume(0.5);
+		SoundEngine_effect->play2D("audio/weapon_empty.flac", false); //sound no shot available
 	}
 }
 
 void updateAnimation::powerUp_sound(powerUp* powerUp) {
 	if (powerUp->hit == true) {
 		if (powerUp->powerUp_type == WEAPON_SHOTGUN) {
-			SoundEngine->setSoundVolume(0.7);
-			SoundEngine->play2D("audio/bullet powerUp.wav", false); //sound no shot available
+			SoundEngine_effect->setSoundVolume(0.7);
+			SoundEngine_effect->play2D("audio/bullet powerUp.wav", false); //sound no shot available
 		}
 		else if (powerUp->powerUp_type == WEAPON_SNIPER) {
-			SoundEngine->setSoundVolume(0.7);
-			SoundEngine->play2D("audio/sight powerUp.wav", false); //sound no shot available
+			SoundEngine_effect->setSoundVolume(0.7);
+			SoundEngine_effect->play2D("audio/sight powerUp.wav", false); //sound no shot available
 		}
 		else if (powerUp->powerUp_type == MEDIKIT) {
-			SoundEngine->setSoundVolume(0.7);
-			SoundEngine->play2D("audio/medikit.wav", false); //sound no shot available
+			SoundEngine_effect->setSoundVolume(0.7);
+			SoundEngine_effect->play2D("audio/medikit.wav", false); //sound no shot available
 		}
 		powerUp->hit = false;
 	}
@@ -275,8 +281,23 @@ void updateAnimation::increase_menuPlayer_posing(mainMenu* main_menu) {
 		main_menu->animationTime_michellePosing = main_menu->animationTime_michellePosing + 0.035f;
 	}
 
+}
 
+void updateAnimation::menuSound(mainMenu* main_menu) {
+	if (main_menu->startMenuSoundtrack == false) {
+		SoundEngine_soundtrack->setSoundVolume(0.7f);
+		SoundEngine_soundtrack->play2D("audio/menu_soundtrack2.wav", true); //sound no shot available
+		main_menu->startMenuSoundtrack = true;
+	}
+	
+}
 
+void updateAnimation::gameSound(game* game) {
+	if (game->startGameSoundtrack == false) {
+		SoundEngine_soundtrack->setSoundVolume(0.3f);
+		SoundEngine_soundtrack->play2D("audio/game_soundtrack1.wav", true); //sound no shot available
+		game->startGameSoundtrack = true;
+	}
 }
 
 

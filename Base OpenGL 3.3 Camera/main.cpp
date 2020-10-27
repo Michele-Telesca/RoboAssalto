@@ -219,6 +219,7 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	currentTime = glfwGetTime();
 	double timeInterval = currentTime - previousTime;
 	if (timeInterval >= RENDER_SPEED) {
+	
 
 		player* player = gameuno->getPlayer();
 		vector <villain*> botList = gameuno->getSpawnedBotList();
@@ -270,11 +271,10 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 
 		// ------- SHOT ------- //
 		update_game->updateShot(player->listShot, botList, player->wea, player);
-		update_game->shotHitTree(player->listShot);
-
 
 		// ------- ANIMATION ------- //
 		update_animation->updateAllAnimations(player, botList, gameuno->power_up);
+		update_animation->gameSound(gameuno);
 
 		// ------- SOUND ------- //
 		previousTime = currentTime;
@@ -319,10 +319,17 @@ void renderMainMenu(Shader simpleShader, Shader lightShader, Shader animShader) 
 	double timeInterval = currentTime - previousTime;
 	if (timeInterval >= RENDER_SPEED) {
 
+		//setto a false la soundtrack del game
+		if (gameuno->startGameSoundtrack == true) {
+			update_animation->SoundEngine_soundtrack->stopAllSounds();
+			gameuno->startGameSoundtrack = false;
+		}
+
 		// ------- MOUSE ------- //
 		mouse_position();
 		update_game->cursorMainMenu(main_menu); //update del cursore
 		update_animation->increase_menuPlayer_posing(main_menu); //update delle animazioni dei player da selezionare
+		update_animation->menuSound(main_menu);
 
 		if (main_menu->startNewGame) { //il flag startNewGame è true (l'utente ha cliccato su play)
 			gameuno->loadingGame->init(); //inizializzo la barra di caricamento 
@@ -341,6 +348,12 @@ void renderLoading(Shader simpleShader) {
 
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//setto a false la soundtrack del menu
+	if (main_menu->startMenuSoundtrack == true) {
+		update_animation->SoundEngine_soundtrack->stopAllSounds();
+		main_menu->startMenuSoundtrack = false;
+	}
 
 	cout << "gameuno->loadingGame->statusLoading" << gameuno->loadingGame->statusLoading << endl;
 	gameuno->loadingGame->draw(simpleShader, gameuno->loadingGame->statusLoading/13.2f); //draw della barra di caricamento
