@@ -34,15 +34,16 @@ class mainMenu
 		Model* boundary_shotgun_selected;
 		Model* boundary_sniper_selected;
 
-		glm::vec3 mousePoint;				 //Coordinate del mouse
+		glm::vec3 mousePoint;
 
-		bool startNewGame;
+		bool startNewGame; //quando è true starta il game
+
 		int selected_player; //PLAYER_MICHELLE = 1 //PLAYER_BRYCE = 2;
 		int selected_weapon; //WEAPON_SHOTGUN = 1 //WEAPON_SNIPER = 2;
 
-		bool buttonClicked;
+		bool buttonClicked; //true quando l'utente clicca su un bottone del meu
 
-		bool startMenuSoundtrack; 
+		bool startMenuSoundtrack;  //quando è true si attiva la soundtrack del menu
 
 		void init();
 		void setShadersProperties(Shader simpleShader, Shader lightShader, Shader animShader);

@@ -8,6 +8,7 @@ public:
 
 	button(){}
 
+	//costruttore 
 	button(float posx, float posy, float posz, float d, float a, float rotatex, float rotatey, float rotatez) {
 		x = posx;
 		y = posy;
@@ -21,24 +22,28 @@ public:
 		rotate_z = rotatez;
 	}
 
-	float x;
+	//coordinate
+	float x; 
 	float y;
 	float z;
 
+	//dimensione
 	float dim;
 
+	//rotazione
 	float angle;
 	float rotate_x;
 	float rotate_y;
 	float rotate_z;
 
+	//modello del bottone
 	Model* buttonSelection;
 
-	bool isSelected;
-	bool cursorIsAbove;
+	bool isSelected; //true se il bottone è selezionato
+	bool cursorIsAbove; //true se il cursore è sopra il bottone
 
-	void init(string path_button);
-	void drawButton(Shader shader);
+	void init(string path_button); //inizializza il bottone
+	void drawButton(Shader shader); //disegna il bottone
 
 };
 
@@ -61,7 +66,7 @@ void button::drawButton(Shader shader) {
 	shader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
 	shader.setFloat("material.shininess", 76.8f);
 
-	if (!isSelected && !cursorIsAbove) {	
+	if (!isSelected && !cursorIsAbove) {	 //se il bottone non è nè selezionato nè il cursore è sopra
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
@@ -71,7 +76,7 @@ void button::drawButton(Shader shader) {
 
 		buttonSelection->Draw(shader);
 	}
-	else if (isSelected) { 
+	else if (isSelected) {  //se l'utente seleziona il bottone (click)
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y - 0.1f, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
@@ -81,7 +86,7 @@ void button::drawButton(Shader shader) {
 
 		buttonSelection->Draw(shader);
 	}
-	else if (!isSelected && cursorIsAbove) {
+	else if (!isSelected && cursorIsAbove) { //se il cursore è sul bottone, ma non è selezionato
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x, y, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));

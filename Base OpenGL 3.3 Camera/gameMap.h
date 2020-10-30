@@ -70,14 +70,14 @@ public:
 	cube* floor;
 
 	//vector <cube*> tiles; //vettore contenente le mattonelle del pavimento
-	vector <mapObject*> objects;
+	vector <mapObject*> objects; //lista di tutti i mapObjects che possono essere instanziati
 
-	vector <mapObject*> mapObjects; //lista di oggetti all'interno della mappa (con cui il player può collidere)
+	vector <mapObject*> mapObjects; //lista di oggetti da renderizzare all'interno della mappa (con cui il player può collidere)
 	vector <mapObject*> externalMapObject; //lista di oggetti esterni alla mappa
 
 	void initMap(); //inizializza e posiziona la mappa con i relativi oggetti 
-	void initObjectsList();
-	void drawMap(Shader simpleShader, Shader lightShader, glm::mat4 view); //disegna gli oggetti della mappa
+	void initObjectsList(); //inizializza la lista di objects
+	void drawMap(Shader simpleShader, Shader lightShader, glm::mat4 view); 
 };
 
 void gameMap::initObjectsList() {

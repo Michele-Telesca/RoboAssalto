@@ -16,9 +16,9 @@ class pauseMenu
 		cube* background;
 		unsigned int texture_background;
 
-		bool buttonClicked;
+		bool buttonClicked; //true quando l'utente clicca un bottone del menu
 
-		glm::vec3 mousePoint;				 //Coordinate del mouse
+		glm::vec3 mousePoint;
 
 		void init();
 		void setShadersProperties(Shader simpleShader, Shader lightShader);

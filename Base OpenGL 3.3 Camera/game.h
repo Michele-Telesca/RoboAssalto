@@ -178,7 +178,7 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 		//ogni indice sarà associato ad un tipo di bot della modelBotList
 		vector <int> bot_index;
 		for (int i = 0; i < difficolta; i++) {
-			int index = randMtoN(0, modelBotList.size() - 1);
+			int index = randMtoN(0, modelBotList.size());
 			bot_index.push_back(index);
 		}
 
@@ -187,7 +187,7 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 		vector <int> matrix_index;
 		int i = 0; 
 		while (i <= N) {
-			int index = randMtoN(0, pathList.size()-1);
+			int index = randMtoN(0, pathList.size());
 			if (!numeroGiaPresente(index, matrix_index)) {
 				matrix_index.push_back(index);
 				i++;

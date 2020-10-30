@@ -5,13 +5,14 @@ class loading
 {
 public:
 
+	//costruttore
 	loading(){
 		loadingInitialized = false;
 	}
 
-	bool isLoading;
-	bool drawLoadingBar;
-	float statusLoading;
+	bool isLoading; //true se  è in caricamento
+	bool drawLoadingBar; //true per il draw
+	float statusLoading; //percentuale di avanzamento del caricamento
 
 	Model* loading_boundary;
 	cube* loading_bar;

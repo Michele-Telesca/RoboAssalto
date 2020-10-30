@@ -260,19 +260,19 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 		// ------- MOUSE ------- //
 		mouse_position();
 
-		// ------- BOT ------- //
+		// -------- BOT -------- //
 		gameuno->BOT_spawner();
 		gameuno->kill_BOT();
 		update_game->updateBot(botList, player, gameuno);
 
-		// ------- POWERUP ------- //
+		// ------ POWERUP ------ //
 		gameuno->powerUp_spawner();
 		update_game->hitPowerUp(player, gameuno->power_up);
 
-		// ------- SHOT ------- //
+		// -------- SHOT ------- //
 		update_game->updateShot(player->listShot, botList, player->wea, player);
 
-		// ------- ANIMATION ------- //
+		// ----- ANIMATION ----- //
 		update_animation->updateAllAnimations(player, botList, gameuno->power_up);
 		update_animation->gameSound(gameuno);
 
@@ -291,10 +291,6 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	//corretta
 	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0f);
 	glm::vec3 at_camera_mobile(x, 0.0f, z);
-
-	////terza persona
-	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);
-	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
 	////dall alto
 	//glm::vec3 pos_camera_mobile(x, 20.0f, z);

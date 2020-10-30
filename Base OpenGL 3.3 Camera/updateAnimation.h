@@ -16,15 +16,18 @@
 
 
 /* Classe di update per le animazioni:
-   vengono gestiti tutti i tempi per
-   gli aggiornamenti delle animazioni 
-   del player, dei bot e del powerUp;
-   inoltre sono gestite anche le tracce
-   audio che accompagnano le animazioni*/
+   vengono gestiti 
+   a) i tempi per gli aggiornamenti 
+      delle animazioni del player, dei bot,
+      del powerUp e del main menu;
+   b) le tracce audio che accompagnano 
+      le animazioni in game (sound effect)
+	  e le soundtrack di background
+	  del menù e del game */
 
 /* NOTE - (1): maggiore è il valore attribuito all'incremento del tempo -> maggiore sarà la velocità di animazione 
           (2): per le animazioni ricorsive (camminata, corsa, attacco), quando il tempo dell'animazione supera 
-		       una certa soglia (settata in questo caso arbitrariamente a 10.0f) si riparte da 0.0f */ 
+		       una certa soglia, ricomincia */ 
 
 class updateAnimation
 {
@@ -154,7 +157,7 @@ void updateAnimation::increaseBot_Walk_Attack(vector<villain*> botList) {
 			bot_soundAattack(botList[i]); 
 		}
 		if (botList[i]->animationTime_botWalking >= 10.0f) {    //quando l'animazione supera la soglia
-			botList[i]->animationTime_botWalking = 0.0f;       //reimposto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
+			botList[i]->animationTime_botWalking = 0.0f;          //reimposto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
 		}
 		if (botList[i]->animationTime_botAttacking >= 3.6f || botList[i]->animation_botAttacking == false) {   //quando l'animazione supera la soglia oppure torna ad essere false
 			botList[i]->animationTime_botAttacking = 0.0f;      //resetto il tempo di animazione all'inizio -> ricomincia da capo (per evitare bug)
