@@ -5,6 +5,8 @@
 glm::vec3 pos_camera_mobile_global(1.0f);
 glm::mat4 view_global(1.0f);
 
+bool quit = false;
+
 // settings
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
@@ -84,12 +86,14 @@ const float ANGLE_RANGE_SNIPER = 90.0f;
 
 const int MEDIKIT = 3;
 
-// -- PLAYER MOVEMENT -- //
+// -- KEYBOARD/MOUSE BUTTON -- //
 bool muoviDx = false;
 bool muoviSx = false;
 bool muoviSu = false;
 bool muoviGiu = false;
+
 bool mouseSx = false;
+bool buttonEsc = false;
 
 // -- LIFE and DAMAGE -- //
 const float PLAYER_LIFE = 100.0f;

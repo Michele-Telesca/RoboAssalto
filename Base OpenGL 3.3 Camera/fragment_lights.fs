@@ -25,6 +25,7 @@ uniform sampler2D myTexture2;
 uniform vec3 viewPos;
 uniform Material material;
 uniform Light light;
+uniform vec3 colormodel;
 
 void main()
 {
@@ -45,6 +46,6 @@ void main()
     vec3 specular = light.specular * (spec * material.specular);  
  
     vec3 result = ambient + diffuse + specular;
-    FragColor = mix(texture(myTexture1, TexCoord), texture(myTexture2, TexCoord), 0.6) * vec4(result, 1.0);
+    FragColor = mix(texture(myTexture1, TexCoord), texture(myTexture2, TexCoord), 0.6) * vec4(result, 1.0) * vec4(colormodel, 1.0);
 	//FragColor = mix(texture(myTexture1, TexCoord), texture(myTexture2, TexCoord), 0.6) * vec4(result, 1.0); //direizonale
 }

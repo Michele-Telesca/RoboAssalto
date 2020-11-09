@@ -9,10 +9,17 @@
 #include "playerShot.h"
 #include "powerUp.h"
 #include "mainMenu.h"
+#include "pauseMenu.h"
 
-/* classe Update qui vengono gestiti tutti
+/* classe Update in cui vengono gestiti tutti
 gli aggiornamenti relativi allo stato degli 
-oggetti in game*/
+oggetti in game e dei menù:
+	a) movimento e collisioni del player
+	b) mira e shot
+	c) movimento e collisioni dei bot
+	d) attacco dei bot
+	e) click dei bottoni del main menù e pause menù 
+*/
 
 class update {
 public:
@@ -41,11 +48,15 @@ public:
 
 	// ---- Movimento e collisioni degli SHOT ---- //
 	void updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea, player* p);
+	
 	void shotHitBot(vector <playerShot*> listShot, villain* bot, weapon* w);
-	void shotHitTree(vector <playerShot*> listShot, weapon* w);
+	//void shotHitTree(vector <playerShot*> listShot, weapon* w);
+	//void shotHitBot(vector <playerShot*> listShot, villain* bot);
+	void shotHitTree(playerShot* playerShot, weapon* w);
 
-	// ---- Main Menu ---- //
-	void cursorMenu(mainMenu* main_menu);
+	// ---- MENU ---- //
+	void cursorMainMenu(mainMenu* main_menu);
+	void cursorPauseMenu(pauseMenu* pause_menu, game* gameuno);
 
 };
 
@@ -466,13 +477,17 @@ void update::hitPowerUp(player* p, powerUp* power_up) {
 		if ((p->x >= power_up->x - TILE_DIM / 2 && p->x <= power_up->x + TILE_DIM / 2) && (p->z >= power_up->z - TILE_DIM / 2 && p->z <= power_up->z + TILE_DIM / 2)) {	
 			power_up->hit = true;
 			if (power_up->powerUp_type == WEAPON_SHOTGUN) {
-				p->wea = new weapon(WEAPON_SHOTGUN);
+				//p->wea = new weapon(WEAPON_SHOTGUN);
+				p->wea->weapon_type = WEAPON_SHOTGUN;
+				p->wea->setWeaponProperties();
 				for (int i = 0; i < numShot; i++) {
 					p->listShot[i]->damage = SHOTGUN_DAMAGE;
 				}
 			}
 			if (power_up->powerUp_type == WEAPON_SNIPER) {
-				p->wea = new weapon(WEAPON_SNIPER);
+				p->wea->weapon_type = WEAPON_SNIPER;
+				p->wea->setWeaponProperties();
+				//p->wea = new weapon(WEAPON_SNIPER);
 				for (int i = 0; i < numShot; i++) {
 					p->listShot[i]->damage = SNIPER_DAMAGE;
 				}
@@ -495,7 +510,9 @@ void update::hitPowerUp(player* p, powerUp* power_up) {
 
 //update shot
 void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea, player* p) {
+	
 	for (int i = 0; i < numShot; i++) {
+		shotHitTree(listShot[i],wea);
 		if (listShot[i]->isShot) {
 			listShot[i]->direction = listShot[i]->direction + 0.1f;
 			float dx = (listShot[i]->direction)*sin(listShot[i]->angle); //direction * sin(angle)
@@ -546,90 +563,175 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot,weapon* w) {
 	}
 }
 
+//void update::shotHitTree(vector <playerShot*> listShot, weapon* w) {
 
-void update::shotHitTree(vector <playerShot*> listShot, weapon* w) {
+void update::shotHitTree(playerShot* playerShot, weapon* w) {
 
-	for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
+	//for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
 		for (int i = 0; i < mapTree.size(); i++) {
 			//se uno shot ha colpito il bot
-			if ((listShot[s]->getX() >= mapTree[i].x - TILE_DIM / 2 && listShot[s]->getX() <= mapTree[i].x + TILE_DIM / 2) && (listShot[s]->getZ() >= mapTree[i].y - TILE_DIM / 2 && listShot[s]->getZ() <= mapTree[i].y + TILE_DIM / 2)) {
+			if ((playerShot->getX() >= mapTree[i].x - TILE_DIM / 2 && playerShot->getX() <= mapTree[i].x + TILE_DIM / 2) && (playerShot->getZ() >= mapTree[i].y - TILE_DIM / 2 && playerShot->getZ() <= mapTree[i].y + TILE_DIM / 2)) {
 
-				listShot[s]->inizializza();
+				playerShot->inizializza();
 
 				if (w->weapon_type == WEAPON_SHOTGUN) {
-					listShot[s]->damage = SHOTGUN_DAMAGE;
+					playerShot->damage = SHOTGUN_DAMAGE;
 				}
 				else {
-					listShot[s]->damage = SNIPER_DAMAGE;
+					playerShot->damage = SNIPER_DAMAGE;
 				}
 
 			}
 		}
-	}
+	//}
 }
 
-void update::cursorMenu(mainMenu* main_menu) {
+void update::cursorMainMenu(mainMenu* main_menu) {
 
 	float mouseX = main_menu->getMousePoint().x;
 	float mouseZ = main_menu->getMousePoint().z;
 	
 	//cout << mouseX << ", " << mouseZ << endl;
 
-	if (mouseSx && (mouseX >= 2.96f && mouseX <= 5.68f && mouseZ >= 3.53f && mouseZ <= 4.97f)) {
-		main_menu->button_NewGame->isSelected = true;
+	if (mouseX >= 2.4f && mouseX <= 4.78f && mouseZ >= 2.16f && mouseZ <= 3.3f) {
+		main_menu->button_NewGame->cursorIsAbove = true;
+		if (mouseSx) {
+			main_menu->button_NewGame->isSelected = true;
+		}
+		if (main_menu->buttonClicked) {
+			cout << "START NEW GAME" << endl;
+			main_menu->buttonClicked = false;
+			main_menu->startNewGame = true;
+			main_menu->button_NewGame->isSelected = false;
+		}
 	}
-	if (main_menu->buttonClicked && (mouseX >= 2.96f && mouseX <= 5.68f && mouseZ >= 3.53f && mouseZ <= 4.97f)) {
-		cout << "START NEW GAME" << endl;
-		main_menu->buttonClicked = false;
-		main_menu->startNewGame = true;
-		main_menu->button_NewGame->isSelected = true;
+	else {
+		main_menu->button_NewGame->cursorIsAbove = false;
 	}
 
-	if (mouseSx && (mouseX >= 3.68f && mouseX <= 4.43f && mouseZ >= -1.05f && mouseZ <= -0.043f)) {
-		main_menu->button_Right->isSelected = true;
+	if (mouseX >= 2.28f && mouseX <= 2.88f && mouseZ >= -1.25f && mouseZ <= -0.69f) {
+		main_menu->button_Right->cursorIsAbove = true;
+		if (mouseSx) {
+			main_menu->button_Right->isSelected = true;
+		}
+		if (main_menu->buttonClicked) {
+			cout << "BUTTON RIGHT" << endl;
+			main_menu->buttonClicked = false;
+			if (main_menu->selected_player == PLAYER_BRYCE) {
+				main_menu->selected_player = PLAYER_MICHELLE;
+				main_menu->animation_michellePosing = true;
+			}
+			else {
+				main_menu->selected_player = PLAYER_BRYCE;
+				main_menu->animation_brycePosing = true;
+			}
+			main_menu->button_Right->isSelected = false;
+		}
 	}
-	if (main_menu->buttonClicked && (mouseX >= 3.68f && mouseX <= 4.43f &&  mouseZ >= -1.05f && mouseZ <= -0.043f)) {
-		cout << "BUTTON RIGHT" << endl;
-		main_menu->buttonClicked = false;
-		if (main_menu->selected_player == PLAYER_BRYCE) {
-			main_menu->selected_player = PLAYER_MICHELLE;
-			main_menu->animation_michellePosing = true;
-		}
-		else {
-			main_menu->selected_player = PLAYER_BRYCE;
-			main_menu->animation_brycePosing = true;
-		}
-		main_menu->button_Right->isSelected = false;
-	}
-
-	if (mouseSx && (mouseX >= -4.24f && mouseX <= -3.46f && mouseZ >= -1.075f && mouseZ <= -0.058f)) {
-		main_menu->button_Left->isSelected = true;
-	}
-	if (main_menu->buttonClicked && (mouseX >= -4.24f && mouseX <= -3.46f && mouseZ >= -1.075f && mouseZ <= -0.058f)) {
-		cout << "BUTTON LEFT" << endl;
-		main_menu->buttonClicked = false;
-		if (main_menu->selected_player == PLAYER_BRYCE) {
-			main_menu->selected_player = PLAYER_MICHELLE;
-			main_menu->animation_michellePosing = true;
-		}
-		else {
-			main_menu->selected_player = PLAYER_BRYCE;
-			main_menu->animation_brycePosing = true;
-		}
-		main_menu->button_Left->isSelected = false;
+	else {
+		main_menu->button_Right->cursorIsAbove = false;
 	}
 
-	if (mouseSx && (mouseX >= -6.69f && mouseX <= -3.15f && mouseZ >= 3.63f && mouseZ <= 5.026f)) {
+
+	if (mouseX >= -2.72f && mouseX <= -2.13f && mouseZ >= -1.24f && mouseZ <= -0.66f) {
+		main_menu->button_Left->cursorIsAbove = true;
+		if (mouseSx) {
+			main_menu->button_Left->isSelected = true;
+		}
+		if (main_menu->buttonClicked) {
+			cout << "BUTTON LEFT" << endl;
+			main_menu->buttonClicked = false;
+			if (main_menu->selected_player == PLAYER_BRYCE) {
+				main_menu->selected_player = PLAYER_MICHELLE;
+				main_menu->animation_michellePosing = true;
+			}
+			else {
+				main_menu->selected_player = PLAYER_BRYCE;
+				main_menu->animation_brycePosing = true;
+			}
+			main_menu->button_Left->isSelected = false;
+		}
+	}
+	else {
+		main_menu->button_Left->cursorIsAbove = false;
+	}
+
+	if (mouseSx && (mouseX >= -5.61f && mouseX <= -2.25f && mouseZ >= 2.14f && mouseZ <= 3.31f)) {
 		cout << "SHOTGUN SELECTED" << endl;
 		main_menu->selected_weapon = WEAPON_SHOTGUN;
 	}
-	if (mouseSx && (mouseX >= -2.9f && mouseX <= 0.69f && mouseZ >= 3.63f && mouseZ <= 5.026f)) {
+	if (mouseSx && (mouseX >= -1.6f && mouseX <= 2.59f && mouseZ >= 2.14f && mouseZ <= 3.31f)) {
 		cout << "SNIPER SELECTED" << endl;
 		main_menu->selected_weapon = WEAPON_SNIPER;
 	}
 
-	else {
-		main_menu->buttonClicked = false;
+	
+	main_menu->buttonClicked = false;
+
+
+}
+
+void update::cursorPauseMenu(pauseMenu* pause_menu, game* gameuno) {
+	float mouseX = pause_menu->getMousePoint().x;
+	float mouseZ = pause_menu->getMousePoint().z;
+
+
+	if (mouseX >= -0.91f && mouseX <= 1.065f && mouseZ >= -2.22f && mouseZ <= -1.25f) {
+		pause_menu->returnGame->cursorIsAbove = true;
+		if (mouseSx) {
+			pause_menu->returnGame->isSelected = true;
+		}
+		if (pause_menu->buttonClicked) {
+			cout << "RETURN" << endl;
+			pause_menu->buttonClicked = false;
+			gameuno->gamePause = false;
+			pause_menu->returnGame->isSelected = false;
+		}
 	}
+	else {
+		pause_menu->returnGame->cursorIsAbove = false;
+	}
+
+
+	if (mouseX >= -0.91f && mouseX <= 1.065f && mouseZ >= -0.28 && mouseZ <= 0.69) {
+		pause_menu->goToMainMenu->cursorIsAbove = true;
+		if (mouseSx) {
+			pause_menu->goToMainMenu->isSelected = true;
+		}
+		if (pause_menu->buttonClicked) {
+			cout << "MAIN MENU" << endl;
+			pause_menu->buttonClicked = false;
+
+			//back to main menu
+			gameuno->inGame = false;
+			gameuno->gamePause = false;
+
+			pause_menu->goToMainMenu->isSelected = false;
+		}
+	}
+	else {
+		pause_menu->goToMainMenu->cursorIsAbove = false;
+	}
+
+
+	if (mouseX >= -0.91f && mouseX <= 1.065f && mouseZ >= 1.68f && mouseZ <= 2.64f) {
+		pause_menu->quit->cursorIsAbove = true;
+		if (mouseSx) {
+			pause_menu->quit->isSelected = true;
+		}
+		if (pause_menu->buttonClicked) {
+			cout << "QUIT" << endl;
+			pause_menu->buttonClicked = false;
+			quit = true;
+			pause_menu->quit->isSelected = false;
+		}
+	}
+	else {
+		pause_menu->quit->cursorIsAbove = false;
+	}
+
+
+	pause_menu->buttonClicked = false;
+	
 
 }

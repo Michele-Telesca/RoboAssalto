@@ -30,16 +30,18 @@
 #include "globalData.h"
 #include "globalPathData.h"
 #include "mainMenu.h"
+#include "pauseMenu.h"
 
 #include <irrKlang/irrKlang.h>
 
 // dichiarazione oggetti
 game* gameuno = new game();
 mainMenu* main_menu = new mainMenu();
+pauseMenu* pause_menu = new pauseMenu();
+
 update* update_game = new update();
 updateAnimation* update_animation = new updateAnimation();
 
-bool drawLoadingBar = false;
 
 //time
 float timebase = 0;
@@ -57,8 +59,12 @@ glm::vec3 up(0.0, 1.0, 0.0);
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow* window)
 {	
+	if (quit == true) {
+		glfwSetWindowShouldClose(window, true);
+	}
+
 	//CALLBACK MENU
-	if (!gameuno->gameInitialized && !gameuno->gamePause) {
+	if (!gameuno->inGame || gameuno->gamePause) {
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 			if (!mouseSx) {
 				mouseSx = true;
@@ -67,13 +73,14 @@ void processInput(GLFWwindow* window)
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
 			if (mouseSx) {
 				main_menu->buttonClicked = true;
+				pause_menu->buttonClicked = true;
 			}
 			mouseSx = false;
 		}
 	}
 
 	//CALLBACK GAME
-	if (gameuno->gameInitialized && !gameuno->gamePause) {
+	if (gameuno->inGame) {
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 			mouseSx = true;
 		}
@@ -83,9 +90,24 @@ void processInput(GLFWwindow* window)
 			}
 			mouseSx = false;
 		}
+
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-			glfwSetWindowShouldClose(window, true);
+			if (buttonEsc == false) {
+				buttonEsc = true;
+				if (gameuno->gamePause == false) {
+					cout << "metto in pausa" << endl;
+					gameuno->gamePause = true;
+				}
+				else {
+					cout << "tolgo la pausa" << endl;
+					gameuno->gamePause = false;
+				}
+			}	
 		}
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
+			buttonEsc = false;
+		}
+
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			if (muoviSx != true) {
 				muoviDx = true;
@@ -142,6 +164,7 @@ void ray_plane(glm::vec3 plane_normal_word, glm::vec3 plane_pos_word, glm::vec3 
 
 			gameuno->setMousePoint(p);
 			main_menu->setMousePoint(p);
+			pause_menu->setMousePoint(p);
 		}
 
 	}
@@ -196,6 +219,7 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	currentTime = glfwGetTime();
 	double timeInterval = currentTime - previousTime;
 	if (timeInterval >= RENDER_SPEED) {
+	
 
 		player* player = gameuno->getPlayer();
 		vector <villain*> botList = gameuno->getSpawnedBotList();
@@ -236,22 +260,22 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 		// ------- MOUSE ------- //
 		mouse_position();
 
-		// ------- BOT ------- //
+		// -------- BOT -------- //
 		gameuno->BOT_spawner();
 		gameuno->kill_BOT();
 		update_game->updateBot(botList, player, gameuno);
 
-		// ------- POWERUP ------- //
+		// ------ POWERUP ------ //
 		gameuno->powerUp_spawner();
 		update_game->hitPowerUp(player, gameuno->power_up);
 
-		// ------- SHOT ------- //
+		// -------- SHOT ------- //
 		update_game->updateShot(player->listShot, botList, player->wea, player);
-		update_game->shotHitTree(player->listShot,player->wea);
 
 
-		// ------- ANIMATION ------- //
+		// ----- ANIMATION ----- //
 		update_animation->updateAllAnimations(player, botList, gameuno->power_up);
+		update_animation->gameSound(gameuno);
 
 		// ------- SOUND ------- //
 		previousTime = currentTime;
@@ -268,10 +292,6 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	//corretta
 	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0f);
 	glm::vec3 at_camera_mobile(x, 0.0f, z);
-
-	////terza persona
-	//glm::vec3 pos_player(x, 0.8f, z - 9.0f);
-	//glm::vec3 at_camera_mobile(x, 0.5f, z - 1.0f);
 
 	////dall alto
 	//glm::vec3 pos_camera_mobile(x, 20.0f, z);
@@ -296,16 +316,24 @@ void renderMainMenu(Shader simpleShader, Shader lightShader, Shader animShader) 
 	double timeInterval = currentTime - previousTime;
 	if (timeInterval >= RENDER_SPEED) {
 
-		// ------- MOUSE ------- //
-		mouse_position();
-		update_game->cursorMenu(main_menu);
-		update_animation->increase_menuPlayer_posing(main_menu);
-
-		if (main_menu->startNewGame) {
-			gameuno->loadingGame->init();
-			gameuno->loadingGame->isLoading = true;
+		//setto a false la soundtrack del game
+		if (gameuno->startGameSoundtrack == true) {
+			update_animation->SoundEngine_soundtrack->stopAllSounds();
+			gameuno->startGameSoundtrack = false;
 		}
 
+		// ------- MOUSE ------- //
+		mouse_position();
+		update_game->cursorMainMenu(main_menu); //update del cursore
+		update_animation->increase_menuPlayer_posing(main_menu); //update delle animazioni dei player da selezionare
+		update_animation->menuSound(main_menu);
+
+		if (main_menu->startNewGame) { //il flag startNewGame è true (l'utente ha cliccato su play)
+			gameuno->loadingGame->init(); //inizializzo la barra di caricamento 
+			gameuno->loadingGame->isLoading = true; //setto il caricamento a true
+			main_menu->startNewGame = false; //resetto il flag startNewGame
+			
+		}
 		previousTime = currentTime;
 	}
 
@@ -318,38 +346,63 @@ void renderLoading(Shader simpleShader) {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	cout << "gameuno->loadingGame->statusLoading" << gameuno->loadingGame->statusLoading << endl;
-	gameuno->loadingGame->draw(simpleShader, gameuno->loadingGame->statusLoading/13.2f);
+	//setto a false la soundtrack del menu
+	if (main_menu->startMenuSoundtrack == true) {
+		update_animation->SoundEngine_soundtrack->stopAllSounds();
+		main_menu->startMenuSoundtrack = false;
+	}
 
-	if (gameuno->loadingGame->statusLoading == 100.0f) {
-		gameuno->gamePause = false;				  //setto il game NON in pausa
-		gameuno->gameInitialized = true;		  //init game completato
-		gameuno->loadingGame->isLoading = false;  //loading completato
+	cout << "gameuno->loadingGame->statusLoading" << gameuno->loadingGame->statusLoading << endl;
+	gameuno->loadingGame->draw(simpleShader, gameuno->loadingGame->statusLoading/13.2f); //draw della barra di caricamento
+
+	if (gameuno->loadingGame->statusLoading == 100.0f) { //quando statusLoading ha raggiunto il 100%
+		gameuno->loadingGame->isLoading = false;  //setto il loading completato
+		gameuno->gamePause = false;				  //setto il flag gamePause a false
+		gameuno->inGame = true;                   //setto il flag inGame a true
 	}
 
 }
 
-void renderPauseMenu();
+void renderPauseMenu(Shader simpleShader, Shader lightShader) {
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	currentTime = glfwGetTime();
+	double timeInterval = currentTime - previousTime;
+	if (timeInterval >= RENDER_SPEED) {
+
+		// ------- MOUSE ------- //
+		mouse_position();
+		update_game->cursorPauseMenu(pause_menu, gameuno);
+
+		previousTime = currentTime;
+	}
+
+	pause_menu->draw(simpleShader, lightShader);
+}
 
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
 void render(Shader simpleShader, Shader lightShader, Shader animShader)
 {
 
-	if (!gameuno->gameInitialized && !gameuno->loadingGame->isLoading) {
+	if (!gameuno->inGame && !gameuno->loadingGame->isLoading) {
 		renderMainMenu(simpleShader, lightShader, animShader);
 	}
-	else if (!gameuno->gameInitialized && gameuno->loadingGame->isLoading && drawLoadingBar == false) {
+	else if (!gameuno->inGame && gameuno->loadingGame->isLoading && !gameuno->loadingGame->drawLoadingBar) {
 		renderLoading(simpleShader);
-		drawLoadingBar = true;
+		gameuno->loadingGame->drawLoadingBar = true;
 	}
-	else if (!gameuno->gameInitialized && gameuno->loadingGame->isLoading && drawLoadingBar == true) {
+	else if (!gameuno->inGame && gameuno->loadingGame->isLoading && gameuno->loadingGame->drawLoadingBar) {
 		renderLoading(simpleShader);
 		gameuno->init(main_menu->selected_player, main_menu->selected_weapon);
-		drawLoadingBar = false;
+		gameuno->loadingGame->drawLoadingBar = false;
 		gameuno->loadingGame->statusLoading++;
 	}
-	else if (gameuno->gameInitialized && !gameuno->loadingGame->isLoading) {
+	else if (gameuno->inGame && !gameuno->loadingGame->isLoading && !gameuno->gamePause) {
 		renderGame(simpleShader, lightShader, animShader);
+	}
+	else if (gameuno->inGame && !gameuno->loadingGame->isLoading && gameuno->gamePause) {
+		renderPauseMenu(simpleShader, lightShader);
 	}
 
 }
@@ -358,6 +411,7 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 void init() {
 
 	main_menu->init();
+	pause_menu->init();
 
 }
 
@@ -437,7 +491,7 @@ int main()
 	gameuno->loadingGame->texture_background = loadtexture("texture/background_menu.jpg");
 
 	main_menu->texture_background = loadtexture("texture/background_menu.jpg");
-
+	pause_menu->texture_background = loadtexture("texture/background_menu.jpg");
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);

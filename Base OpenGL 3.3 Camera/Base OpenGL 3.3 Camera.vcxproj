@@ -180,6 +180,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="model.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="path.h" />
+    <ClInclude Include="pauseMenu.h" />
     <ClInclude Include="playerShot.h" />
     <ClInclude Include="point3D.h" />
     <ClInclude Include="powerUp.h" />

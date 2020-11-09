@@ -1,31 +1,31 @@
 #pragma once
 #include <vector>
 
-class utility
-{
-};
+/* Contiene delle funzioni di
+   utility utilizzate a livello
+   globale dalle altre classi */
 
-//float randMToN(int M, int N) {
-//	return M + (rand() / (RAND_MAX / (N - M)));
-//}
-
+//rand int tra: M(incluso) ed N(escluso) 
 int randMtoN(int M, int N) {
 	return M + rand() % N;
 }
 
+//rand float tra: M(incluso) ed N(escluso) 
 float frandMToN(float M, float N) {
 	return M + (rand() / (RAND_MAX / (N - M)));
 }
-bool numeroGiaPresente(int numero, vector<int> lista) {
-	for (int i = 0; i < lista.size(); i++) {
-		if (numero == lista[i]) {
+
+//Controlla se un numero int è già presente (return true) o no (return false) all'interno di un <vector>
+bool numeroGiaPresente(int numero, vector<int> vettore) {
+	for (int i = 0; i < vettore.size(); i++) {
+		if (numero == vettore[i]) {
 			return true; //numero presente
 		}
 	}
 	return false; //numero non presete
 }
 
-//restituisce true se a = b a meno di un valore epsilon (molto piccolo). Risolve il problema del confronto tra float
+//Funzione di confronto tra due float: restituisce true se a = b a meno di un valore epsilon (molto piccolo)
 bool isEqual(float a, float b, float epsilon)
 {
 	return fabs(a - b) < epsilon;

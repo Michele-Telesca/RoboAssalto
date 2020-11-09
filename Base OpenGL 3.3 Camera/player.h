@@ -32,11 +32,18 @@ public:
 	bool mouseSxIsSelected = false;
 	bool startPlayerShot = false;
 
+	int playerSelected;
+
 	// modelli 3D con scheletro e animazione
-	SkinnedMesh meshRunning_shotgun;
-	SkinnedMesh meshStanding_shotgun;
-	SkinnedMesh meshRunning_sniper;
-	SkinnedMesh meshStanding_sniper;
+	SkinnedMesh bryce_meshRunning_shotgun;
+	SkinnedMesh bryce_meshStanding_shotgun;
+	SkinnedMesh bryce_meshRunning_sniper;
+	SkinnedMesh bryce_meshStanding_sniper;
+
+	SkinnedMesh michelle_meshRunning_shotgun;
+	SkinnedMesh michelle_meshStanding_shotgun;
+	SkinnedMesh michelle_meshRunning_sniper;
+	SkinnedMesh michelle_meshStanding_sniper;
 
 	// tempo per le animazioni
 	float animationTime_playerStanding;
@@ -63,6 +70,8 @@ public:
 	void drawChestLife(Shader lightShader);
 	void drawShotAvaiable(int numShotsAvailable, float currentTime, Shader lightShader);
 	bool checkShotDelay(float currentTime);
+	void resetPlayer(int selectedPlayer, int weaponType);
+	void loadMeshModel(int selectedPlayer);
 
 	//get e set
 	bool getStartPlayerShot() {
@@ -122,9 +131,14 @@ public:
 
 };
 
-void player::initPlayer(int selectedPlayer, int weaponType) {
+void  player::resetPlayer(int selectedPlayer, int weaponType) {
+	cout << "INIT selectedplayer: " << selectedPlayer << endl;
 
-	wea =  new weapon(weaponType);
+	playerSelected = selectedPlayer;
+	cout << "ASSENGNATO: " << playerSelected << endl;
+
+	wea = new weapon(weaponType);
+	wea->setWeaponProperties();
 
 	//punto in cui nasce
 	x = 0.0f;
@@ -156,29 +170,33 @@ void player::initPlayer(int selectedPlayer, int weaponType) {
 		listShot[i]->inizializza();
 	}
 
-	//loading meshes with animation
-	if (selectedPlayer == PLAYER_MICHELLE) {
-		//michelle
-		meshRunning_shotgun.loadMesh("animation/player_michelle/shotgun_running/shotgun_running.dae");
-		meshStanding_shotgun.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
-		meshRunning_sniper.loadMesh("animation/player_michelle/sniper_running/sniper_running.dae");
-		meshStanding_sniper.loadMesh("animation/player_michelle/sniper_standing/sniper_standing.dae");
-		
-	}
-	else if (selectedPlayer == PLAYER_BRYCE) {
-		//bryce
-		meshRunning_shotgun.loadMesh("animation/player_bryce/shotgun_running/shotgun_running.dae");
-		meshStanding_shotgun.loadMesh("animation/player_bryce/shotgun_standing/shotgun_standing.dae");
-		meshRunning_sniper.loadMesh("animation/player_bryce/sniper_running/sniper_running.dae");
-		meshStanding_sniper.loadMesh("animation/player_bryce/sniper_standing/sniper_standing.dae");
-	}
-
 	// tempo per le animazioni
 	animationTime_playerStanding = 0.0f;
 	animationTime_playerRunning = 0.0f;
-	
+
 	delayShotTime = 0.0f; //delay tra uno sparo e un altro
 	delayShotIsFinished = true;
+}
+
+void player::loadMeshModel(int selectedPlayer) {
+
+	michelle_meshRunning_shotgun.loadMesh("animation/player_michelle/shotgun_running/shotgun_running.dae");
+	michelle_meshStanding_shotgun.loadMesh("animation/player_michelle/shotgun_standing/shotgun_standing.dae");
+	michelle_meshRunning_sniper.loadMesh("animation/player_michelle/sniper_running/sniper_running.dae");
+	michelle_meshStanding_sniper.loadMesh("animation/player_michelle/sniper_standing/sniper_standing.dae");
+
+	bryce_meshRunning_shotgun.loadMesh("animation/player_bryce/shotgun_running/shotgun_running.dae");
+	bryce_meshStanding_shotgun.loadMesh("animation/player_bryce/shotgun_standing/shotgun_standing.dae");
+	bryce_meshRunning_sniper.loadMesh("animation/player_bryce/sniper_running/sniper_running.dae");
+	bryce_meshStanding_sniper.loadMesh("animation/player_bryce/sniper_standing/sniper_standing.dae");
+
+}
+
+void player::initPlayer(int selectedPlayer, int weaponType) {
+	cout << "INIT selectedplayer: " << selectedPlayer << endl;
+
+	resetPlayer(selectedPlayer, weaponType);
+	loadMeshModel(selectedPlayer);
 
 }
 
@@ -336,43 +354,86 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 }
 
 void player::animatePlayer(Shader animShader) {
+
 	vector <glm::mat4> transforms;
 
 	if (muoviDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) { //se non mi muovo -> meshStanding
 		if (wea->weapon_type == WEAPON_SHOTGUN) {
-			meshStanding_shotgun.boneTransform(animationTime_playerStanding, transforms);
-			glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
-				transforms.size(),
-				GL_FALSE,
-				glm::value_ptr(transforms[0]));
-			meshStanding_shotgun.render();
+			if (playerSelected == PLAYER_MICHELLE) {
+				michelle_meshStanding_shotgun.boneTransform(animationTime_playerStanding, transforms);
+				glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+					transforms.size(),
+					GL_FALSE,
+					glm::value_ptr(transforms[0]));
+				michelle_meshStanding_shotgun.render();
+			}
+			else if (playerSelected == PLAYER_BRYCE) {
+				bryce_meshStanding_shotgun.boneTransform(animationTime_playerStanding, transforms);
+				glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+					transforms.size(),
+					GL_FALSE,
+					glm::value_ptr(transforms[0]));
+				bryce_meshStanding_shotgun.render();
+			}
+
 		}
 		else if (wea->weapon_type == WEAPON_SNIPER) {
-			meshStanding_sniper.boneTransform(animationTime_playerStanding, transforms);
-			glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
-				transforms.size(),
-				GL_FALSE,
-				glm::value_ptr(transforms[0]));
-			meshStanding_sniper.render();
+			if (playerSelected == PLAYER_MICHELLE) {
+				michelle_meshStanding_sniper.boneTransform(animationTime_playerStanding, transforms);
+				glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+					transforms.size(),
+					GL_FALSE,
+					glm::value_ptr(transforms[0]));
+				michelle_meshStanding_sniper.render();
+			}
+			else if (playerSelected == PLAYER_BRYCE) {
+				bryce_meshStanding_sniper.boneTransform(animationTime_playerStanding, transforms);
+				glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+					transforms.size(),
+					GL_FALSE,
+					glm::value_ptr(transforms[0]));
+				bryce_meshStanding_sniper.render();
+			}
+
 		}
 		
 	}
 	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning		
 		if (wea->weapon_type == WEAPON_SHOTGUN) {
-			meshRunning_shotgun.boneTransform(animationTime_playerRunning, transforms);
-			glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
-				transforms.size(),
-				GL_FALSE,
-				glm::value_ptr(transforms[0]));
-			meshRunning_shotgun.render();
+			if (playerSelected == PLAYER_MICHELLE) {
+				michelle_meshRunning_shotgun.boneTransform(animationTime_playerRunning, transforms);
+				glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+					transforms.size(),
+					GL_FALSE,
+					glm::value_ptr(transforms[0]));
+				michelle_meshRunning_shotgun.render();
+			}
+			else if (playerSelected == PLAYER_BRYCE) {
+				bryce_meshRunning_shotgun.boneTransform(animationTime_playerRunning, transforms);
+				glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+					transforms.size(),
+					GL_FALSE,
+					glm::value_ptr(transforms[0]));
+				bryce_meshRunning_shotgun.render();
+			}
 		}
 		else if (wea->weapon_type == WEAPON_SNIPER) {
-			meshRunning_sniper.boneTransform(animationTime_playerRunning, transforms);
-			glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
-				transforms.size(),
-				GL_FALSE,
-				glm::value_ptr(transforms[0]));
-			meshRunning_sniper.render();
+			if (playerSelected == PLAYER_MICHELLE) {
+				michelle_meshRunning_sniper.boneTransform(animationTime_playerRunning, transforms);
+				glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+					transforms.size(),
+					GL_FALSE,
+					glm::value_ptr(transforms[0]));
+				michelle_meshRunning_sniper.render();
+			}
+			else if (playerSelected == PLAYER_BRYCE) {
+				bryce_meshRunning_sniper.boneTransform(animationTime_playerRunning, transforms);
+				glUniformMatrix4fv(glGetUniformLocation(animShader.ID, "bones"),
+					transforms.size(),
+					GL_FALSE,
+					glm::value_ptr(transforms[0]));
+				bryce_meshRunning_sniper.render();
+			}
 		}
 	}
 }

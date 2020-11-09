@@ -5,10 +5,14 @@ class loading
 {
 public:
 
-	loading(){}
+	//costruttore
+	loading(){
+		loadingInitialized = false;
+	}
 
-	bool isLoading;
-	float statusLoading;
+	bool isLoading; //true se  è in caricamento
+	bool drawLoadingBar; //true per il draw
+	float statusLoading; //percentuale di avanzamento del caricamento
 
 	Model* loading_boundary;
 	cube* loading_bar;
@@ -18,18 +22,28 @@ public:
 	unsigned int texture_boundary;
 	unsigned int texture_background;
 
+	bool loadingInitialized;
+
 	void draw(Shader simpleShader, float width);
 	void init();
 };
 
 void loading::init() {
 
-	background = new cube(23.0f, 0.0f, 23.0f, glm::radians(40.0f), 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	isLoading = false;
+	drawLoadingBar = false;
+	statusLoading = 0.0f;
 
-	loading_bar = new cube(0.1f, 0.0f, 0.9f, glm::radians(40.0f), 1.0f, 0.0f, 0.0f, -1.9f, 1.0f, 0.5f);
-	
-	loading_boundary = new Model();
-	loading_boundary->loadModel("models/menu/boundary_loading.dae");
+	if (loadingInitialized == false) {
+		cout << "loadinginit" << endl;
+		background = new cube(23.0f, 0.0f, 23.0f, glm::radians(40.0f), 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+		loading_bar = new cube(0.1f, 0.0f, 0.9f, glm::radians(40.0f), 1.0f, 0.0f, 0.0f, -1.9f, 1.0f, 0.5f);
+
+		loading_boundary = new Model();
+		loading_boundary->loadModel("models/menu/boundary_loading.dae");
+		loadingInitialized = true;
+	}
 }
 
 void loading::draw(Shader simpleShader, float width) {
