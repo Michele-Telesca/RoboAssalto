@@ -303,7 +303,6 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	pos_camera_mobile_global = pos_camera_mobile;
 	view_global = view;
 	lightShader.setMat4("view", view);
-
 	simpleShader.setMat4("view", view);
 
 	// ------- DRAW ------- //
@@ -490,7 +489,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	// caricamento texture
-	gameuno->getGameMap()->texturePrato = loadtexture("texture/background_menu.jpg", false);
+	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png", false);
 	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png", true);
 	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png", true);
 	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png", true);

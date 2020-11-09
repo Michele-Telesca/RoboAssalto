@@ -350,8 +350,7 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 		}
 	}
 
-	// ----- OMBRA ------- //
-	drawShadowPlayer(simpleShader);
+	
 
 	//DRAW LIFE_INTERFACE
 
@@ -363,32 +362,6 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 }
 
 void player::drawShadowPlayer(Shader simpleShader) {
-
-
-	simpleShader.use();
-
-	glEnable(GL_BLEND);
-
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glActiveTexture(GL_TEXTURE0);
-
-	glBindTexture(GL_TEXTURE_2D, textureLife);
-	glBindVertexArray(cubeVAO);
-
-	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-	glm::mat4 modelF = glm::mat4(1.0f);
-
-
-	modelF = glm::translate(modelF, glm::vec3(-0.5f, ((DIM + 12) / 2) + 0.5f, 0.5f));
-	modelF = glm::rotate(modelF, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	modelF = glm::translate(modelF, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelF = glm::scale(modelF, glm::vec3(DIM + 12, DIM + 12, DIM + 12));
-
-	simpleShader.setMat4("model", modelF);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-
-	glDisable(GL_BLEND);
 
 	simpleShader.use();
 
@@ -565,7 +538,6 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 void player::drawLifePlayer(Shader simpleShader) {
 
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	simpleShader.use();
 

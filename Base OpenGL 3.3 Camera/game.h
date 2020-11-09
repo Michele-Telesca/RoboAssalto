@@ -372,7 +372,6 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 	setShadersProperties(simpleShader, lightShader, animShader, view); 
 
 	//DRAW PLAYER
-	p->drawPlayer(simpleShader, animShader, getMousePoint());
 
 	//DRAW BOTS
 	if (spawnedBotList.size() >= 1) {
@@ -386,6 +385,10 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 	
 	//DRAW MAP
 	mappa->drawMap(simpleShader, lightShader, view);
+
+
+	//DRAW PLAYER
+	p->drawPlayer(simpleShader, animShader, getMousePoint());
 
 	//DRAW POWERUP
 	if (power_up->spawned) {
