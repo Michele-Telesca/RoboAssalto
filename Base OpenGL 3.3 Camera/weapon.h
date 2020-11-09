@@ -46,22 +46,28 @@ void weapon::drawTarget(Shader simpleShader, float x, float y, float z, int text
 
 	simpleShader.use();
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glActiveTexture(GL_TEXTURE0);
+
 	glBindTexture(GL_TEXTURE_2D, texturePlayer);
 	glBindVertexArray(cubeVAO);
 
-	simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 	glm::mat4 modelW = glm::mat4(1.0f);
 	float dx = (lengthRange / 2.0f) * sin(angle);
 	float dy = (lengthRange / 2.0f) * cos(angle);
 
-	modelW = glm::translate(modelW, glm::vec3(dx + x, y+0.01f, dy + z));
+	modelW = glm::translate(modelW, glm::vec3(dx + x, y+0.015f, dy + z));
 	modelW = glm::rotate(modelW, angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	modelW = glm::translate(modelW, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelW = glm::scale(modelW, glm::vec3(lengthBase, 0.01f, lengthRange));
+	modelW = glm::scale(modelW, glm::vec3(lengthBase, 0.001f, lengthRange));
 
 	simpleShader.setMat4("model", modelW);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glDisable(GL_BLEND);
 
 }
 

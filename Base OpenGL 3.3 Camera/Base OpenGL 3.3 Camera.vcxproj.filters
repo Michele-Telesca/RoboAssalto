@@ -63,6 +63,12 @@
     <None Include="vertex_lights.vs">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="frag_text.fs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="vrt_text.vs">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">

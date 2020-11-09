@@ -378,10 +378,37 @@ void gameMap::initMap() {
 void gameMap::drawMap(Shader simpleShader, Shader lightShader, glm::mat4 view) {
 
 	// ---- Floor ---- //
-	floor->drawCube(lightShader, texturePrato);
+	//floor->drawCube(simpleShader, texturePrato);
 	/*for (int i = 0; i < tiles.size(); i++) {
 		tiles[i]->drawCube(lightShader, texturePrato);
 	}*/
+
+	simpleShader.use();
+
+	glEnable(GL_BLEND);
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glActiveTexture(GL_TEXTURE0);
+
+	glBindTexture(GL_TEXTURE_2D, texturePrato);
+	glBindVertexArray(cubeVAO);
+
+	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	glm::mat4 modelF = glm::mat4(1.0f);
+
+
+	modelF = glm::translate(modelF, glm::vec3(-0.5f, ((DIM + 12) / 2) + 0.5f, 0.5f));
+	modelF = glm::rotate(modelF, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	modelF = glm::translate(modelF, glm::vec3(0.0f, 0.0f, 0.0f));
+	modelF = glm::scale(modelF, glm::vec3(DIM + 12, DIM + 12, DIM + 12));
+
+	simpleShader.setMat4("model", modelF);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glDisable(GL_BLEND);
+
+
 
 	// ---- Objects ---- //
 	for (int i = 0; i < mapObjects.size(); i++) {

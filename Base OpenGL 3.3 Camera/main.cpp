@@ -304,6 +304,8 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	view_global = view;
 	lightShader.setMat4("view", view);
 
+	simpleShader.setMat4("view", view);
+
 	// ------- DRAW ------- //
 	gameuno->draw(simpleShader, lightShader, animShader, view);
 }
@@ -364,7 +366,7 @@ void renderLoading(Shader simpleShader) {
 }
 
 void renderPauseMenu(Shader simpleShader, Shader lightShader) {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	currentTime = glfwGetTime();
@@ -416,7 +418,7 @@ void init() {
 }
 
 // load and create a texture 
-unsigned int loadtexture(std::string filename)
+unsigned int loadtexture(std::string filename, bool png)
 {
 	unsigned int texture;
 
@@ -426,7 +428,7 @@ unsigned int loadtexture(std::string filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// load image, create texture and generate mipmaps
 	int width, height, nrChannels;
@@ -435,8 +437,16 @@ unsigned int loadtexture(std::string filename)
 	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
+		{
+			if (nrChannels == 4) {
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+				glGenerateMipmap(GL_TEXTURE_2D);
+			}
+			else {
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+				glGenerateMipmap(GL_TEXTURE_2D);
+			}
+		}
 	}
 	else
 	{
@@ -477,21 +487,22 @@ int main()
 		return -1;
 	}
 
-	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 
 	// caricamento texture
-	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png");
-	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png");
-	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png");
-	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png");
-	gameuno->textureLifeBar = loadtexture("texture/lifeBar.png");
+	gameuno->getGameMap()->texturePrato = loadtexture("texture/background_menu.jpg", false);
+	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png", true);
+	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png", true);
+	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png", true);
+	gameuno->textureLifeBar = loadtexture("texture/lifeBar.png", true);
+	gameuno->getPlayer()->textureShadow = loadtexture("texture/ombra.png", true);
 
-	gameuno->loadingGame->texture_statusbar = loadtexture("texture/loadingBar.png");
-	gameuno->loadingGame->texture_boundary = loadtexture("texture/texture_boundary.png");
-	gameuno->loadingGame->texture_background = loadtexture("texture/background_menu.jpg");
+	gameuno->loadingGame->texture_statusbar = loadtexture("texture/loadingBar.png", true);
+	gameuno->loadingGame->texture_boundary = loadtexture("texture/texture_boundary.png", true);
+	gameuno->loadingGame->texture_background = loadtexture("texture/background_menu.jpg", false);
 
-	main_menu->texture_background = loadtexture("texture/background_menu.jpg");
-	pause_menu->texture_background = loadtexture("texture/background_menu.jpg");
+	main_menu->texture_background = loadtexture("texture/background_menu.jpg", false);
+	pause_menu->texture_background = loadtexture("texture/background_menu.jpg",false);
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);
@@ -520,7 +531,6 @@ int main()
 	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	glEnable(GL_DEPTH_TEST);
 
 	//glEnable(GL_DEPTH);
 

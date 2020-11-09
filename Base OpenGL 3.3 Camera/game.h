@@ -344,6 +344,7 @@ void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader 
 	glm::mat4 projection2 = glm::mat4(1.0f);	//identity matrix
 	projection2 = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	simpleShader.setMat4("projection", projection2);
+	simpleShader.setVec4("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
 	// ---- LIGHT Shader ---- //
 	lightShader.use();

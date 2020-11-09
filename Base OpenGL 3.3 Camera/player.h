@@ -59,6 +59,7 @@ public:
 	unsigned int texture1;
 	unsigned int textureLife;
 	unsigned int textureShotBar;
+	unsigned int textureShadow;
 
 	//prototipi
 	void drawPlayer(Shader animShader, Shader lightShader, glm::vec3 mousePoint); //disegna il player
@@ -72,6 +73,7 @@ public:
 	bool checkShotDelay(float currentTime);
 	void resetPlayer(int selectedPlayer, int weaponType);
 	void loadMeshModel(int selectedPlayer);
+	void drawShadowPlayer(Shader lightShader);
 
 	//get e set
 	bool getStartPlayerShot() {
@@ -305,6 +307,7 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 
 	animatePlayer(animShader); //animazione player
 
+	
 
 	// ----- TARGET - SHOT - LIFE ----- //
 
@@ -327,6 +330,9 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 		startPlayerShot = false;
 	}
 
+	// ----- OMBRA ------- //
+	drawShadowPlayer(simpleShader);
+
 	//DRAW TARGET
 	if (mouseSxIsSelected) {
 		wea->drawTarget(simpleShader, x, y, z, texture1, angleWeapon);
@@ -344,6 +350,9 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 		}
 	}
 
+	// ----- OMBRA ------- //
+	drawShadowPlayer(simpleShader);
+
 	//DRAW LIFE_INTERFACE
 
 	drawLifePlayer(simpleShader);
@@ -351,6 +360,59 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 
 	//DRAW SHOT_INTERFACE
 	drawShotAvaiable(numShotsAvailable, currentTime, simpleShader);
+}
+
+void player::drawShadowPlayer(Shader simpleShader) {
+
+
+	simpleShader.use();
+
+	glEnable(GL_BLEND);
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glActiveTexture(GL_TEXTURE0);
+
+	glBindTexture(GL_TEXTURE_2D, textureLife);
+	glBindVertexArray(cubeVAO);
+
+	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	glm::mat4 modelF = glm::mat4(1.0f);
+
+
+	modelF = glm::translate(modelF, glm::vec3(-0.5f, ((DIM + 12) / 2) + 0.5f, 0.5f));
+	modelF = glm::rotate(modelF, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	modelF = glm::translate(modelF, glm::vec3(0.0f, 0.0f, 0.0f));
+	modelF = glm::scale(modelF, glm::vec3(DIM + 12, DIM + 12, DIM + 12));
+
+	simpleShader.setMat4("model", modelF);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glDisable(GL_BLEND);
+
+	simpleShader.use();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glActiveTexture(GL_TEXTURE0);
+
+	glBindTexture(GL_TEXTURE_2D, textureShadow);
+	glBindVertexArray(cubeVAO);
+
+	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	glm::mat4 modelS = glm::mat4(1.0f);
+
+
+	modelS = glm::translate(modelS, glm::vec3(x, y + 0.02f, z));
+	modelS = glm::rotate(modelS, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	modelS = glm::translate(modelS, glm::vec3(0.0f, 0.0f, 0.0f));
+	modelS = glm::scale(modelS, glm::vec3(1.0f, 0.02f, 1.0f));
+
+	simpleShader.setMat4("model", modelS);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glDisable(GL_BLEND);
 }
 
 void player::animatePlayer(Shader animShader) {
@@ -445,7 +507,12 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 	float shotHalfBar = (shotBarLenght / 2.0);
 	float center = x - shotBarLenght;
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	for (int i = 0; i < numShotsAvailable; i++) {
+
+		
 
 		simpleShader.use();
 
@@ -493,9 +560,12 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
-
+	glDisable(GL_BLEND);
 }
 void player::drawLifePlayer(Shader simpleShader) {
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	simpleShader.use();
 
@@ -527,10 +597,15 @@ void player::drawLifePlayer(Shader simpleShader) {
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
+	glDisable(GL_BLEND);
+
 }
 
 
 void player::drawChestLife(Shader simpleShader) {
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	simpleShader.use();
 
@@ -561,5 +636,6 @@ void player::drawChestLife(Shader simpleShader) {
 	simpleShader.setMat4("model", modelLife);
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDisable(GL_BLEND);
 
 }

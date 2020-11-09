@@ -74,13 +74,16 @@ public:
 		lightShader.use();
 
 		// material properties
-		lightShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
+		/*lightShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
 		lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
 		lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
-		lightShader.setFloat("material.shininess", 76.8f);
+		lightShader.setFloat("material.shininess", 76.8f);*/
 
 		// texture
-		lightShader.setInt("myTexture1", 0);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		//lightShader.setInt("myTexture1", 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glBindVertexArray(cubeVAO);
@@ -93,6 +96,8 @@ public:
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glDisable(GL_BLEND);
 	}
 
 

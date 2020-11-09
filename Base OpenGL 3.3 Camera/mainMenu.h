@@ -168,12 +168,17 @@ void mainMenu::draw(Shader simpleShader, Shader lightShader, Shader animShader) 
 	
 	setShadersProperties(simpleShader, lightShader, animShader);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	button_NewGame->drawButton(lightShader);
 	button_Left->drawButton(lightShader);
 	button_Right->drawButton(lightShader);
 	background->drawCube(simpleShader, texture_background);
 
 	if (selected_weapon == WEAPON_SNIPER) {
+		
+
 		glm::mat4 model_boun_sniper = glm::mat4(1.0f);
 		model_boun_sniper = glm::translate(model_boun_sniper, glm::vec3(0.0f, 1.0f, 3.0f));
 		model_boun_sniper = glm::rotate(model_boun_sniper, glm::radians(-86.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -186,6 +191,9 @@ void mainMenu::draw(Shader simpleShader, Shader lightShader, Shader animShader) 
 		model_boun_shotgun = glm::rotate(model_boun_shotgun, glm::radians(-85.25f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model_boun_shotgun = glm::scale(model_boun_shotgun, glm::vec3(0.38f, 0.38f, 0.38f));
 		simpleShader.setMat4("model", model_boun_shotgun);
+
+		simpleShader.setVec4("colorcube", 1.0f, 0.0f, 0.0f,0.0f);	
+
 		boundary_shotgun_unselected->Draw(simpleShader);
 	}
 	else if(selected_weapon == WEAPON_SHOTGUN){
@@ -203,6 +211,7 @@ void mainMenu::draw(Shader simpleShader, Shader lightShader, Shader animShader) 
 		simpleShader.setMat4("model", model_boun_sniper);
 		boundary_sniper_unselected->Draw(simpleShader);
 	}
+	glEnable(GL_BLEND);
 
 
 
