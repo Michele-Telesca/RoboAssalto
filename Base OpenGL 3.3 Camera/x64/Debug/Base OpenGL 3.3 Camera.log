@@ -44,13 +44,13 @@ C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Ca
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\globalData.h(106,36): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\globalData.h(109,35): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\globalData.h(112,31): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\villain.h(276,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\villain.h(284,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\villain.h(292,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\villain.h(301,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\game.h(182,47): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\game.h(191,43): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\game.h(226,74): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\villain.h(308,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\villain.h(316,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\villain.h(324,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\villain.h(333,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\game.h(184,47): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\game.h(193,43): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\game.h(229,74): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\mainMenu.h(261,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\mainMenu.h(271,33): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\update.h(101,5): warning C4551: chiamata di funzione senza elenco di argomenti
@@ -75,4 +75,7 @@ C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Ca
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\updateAnimation.h(258,42): warning C4305: 'argomento': troncamento da 'double' a 'irrklang::ik_f32'
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\updateAnimation.h(262,42): warning C4305: 'argomento': troncamento da 'double' a 'irrklang::ik_f32'
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\updateAnimation.h(266,42): warning C4305: 'argomento': troncamento da 'double' a 'irrklang::ik_f32'
+texture.obj : warning LNK4099: impossibile trovare il PDB 'vc142.pdb' con 'texture.obj' o in 'C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\x64\Debug\vc142.pdb'; oggetto collegato senza informazioni di debug
+skinned_mesh.obj : warning LNK4099: impossibile trovare il PDB 'vc142.pdb' con 'skinned_mesh.obj' o in 'C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\x64\Debug\vc142.pdb'; oggetto collegato senza informazioni di debug
+glad.obj : warning LNK4099: impossibile trovare il PDB 'vc142.pdb' con 'glad.obj' o in 'C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\x64\Debug\vc142.pdb'; oggetto collegato senza informazioni di debug
   Base OpenGL 3.3 Camera.vcxproj -> C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\x64\Debug\RoboAssalto.exe

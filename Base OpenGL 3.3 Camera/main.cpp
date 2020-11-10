@@ -494,6 +494,8 @@ int main()
 	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png", true);
 	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png", true);
 	gameuno->textureLifeBar = loadtexture("texture/lifeBar.png", true);
+	gameuno->textureShadow = loadtexture("texture/ombra.png", true);
+
 	gameuno->getPlayer()->textureShadow = loadtexture("texture/ombra.png", true);
 
 	gameuno->loadingGame->texture_statusbar = loadtexture("texture/loadingBar.png", true);

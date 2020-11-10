@@ -57,6 +57,7 @@ public:
 
 	//Texture barra vita
 	 unsigned int textureLifeVillain;
+	 unsigned int textureShadow;
 
 	
 	//weapon* weapon; //per avere la gittata del villain
@@ -65,12 +66,14 @@ public:
 
 	//Prototipi
 	void drawVillain(Shader animShader , Shader simpleShader);
-	void drawLifeVillain(Shader simpleShader);//disegna il player
+	void drawLifeVillain(Shader simpleShader);//disegna life
+	void drawShadowVillain(Shader simpleShader);//disegna ombra
 	void animate(Shader animShader);
 	void initModel_Zombie1();
 	void initModel_Zombie2();
 	void initModel_Zombie3();
 	void initVillain(path* path);
+
 
 	//GET e SET
 	float getX() {
@@ -216,7 +219,36 @@ void villain::drawVillain(Shader animShader, Shader simpleShader){
 	animShader.setFloat("material.shininess", 76.8f);
 
 	animate(animShader); //animazione
+	drawShadowVillain(simpleShader);
+
 	drawLifeVillain(simpleShader);
+}
+
+void villain::drawShadowVillain(Shader simpleShader) {
+
+	simpleShader.use();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glActiveTexture(GL_TEXTURE0);
+
+	glBindTexture(GL_TEXTURE_2D, textureShadow);
+	glBindVertexArray(cubeVAO);
+
+	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	glm::mat4 modelSV = glm::mat4(1.0f);
+
+
+	modelSV = glm::translate(modelSV, glm::vec3(x, y + 0.55f, z));
+	modelSV = glm::rotate(modelSV, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	modelSV = glm::translate(modelSV, glm::vec3(0.0f, 0.0f, 0.0f));
+	modelSV = glm::scale(modelSV, glm::vec3(1.5f, 0.02f, 1.5f));
+
+	simpleShader.setMat4("model", modelSV);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glDisable(GL_BLEND);
 }
 
 void villain::drawLifeVillain(Shader simpleShader) {

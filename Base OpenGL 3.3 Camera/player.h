@@ -380,7 +380,7 @@ void player::drawShadowPlayer(Shader simpleShader) {
 	modelS = glm::translate(modelS, glm::vec3(x, y + 0.02f, z));
 	modelS = glm::rotate(modelS, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	modelS = glm::translate(modelS, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelS = glm::scale(modelS, glm::vec3(1.0f, 0.02f, 1.0f));
+	modelS = glm::scale(modelS, glm::vec3(1.4f, 0.02f, 1.4f));
 
 	simpleShader.setMat4("model", modelS);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
