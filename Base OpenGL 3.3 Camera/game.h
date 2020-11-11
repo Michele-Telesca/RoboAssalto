@@ -40,7 +40,7 @@ public:
 	unsigned int textureShadow;
 
 	bool startGameSoundtrack;
-
+	bool gameOver = false;
 	//Costruttore
 	game() {
 		mappa = new gameMap();
@@ -379,6 +379,9 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 
 	//DRAW PLAYER
 
+	//DRAW PLAYER
+	p->drawPlayer(simpleShader, animShader, getMousePoint());
+
 	//DRAW BOTS
 	if (spawnedBotList.size() >= 1) {
 		for (int i = 0; i < spawnedBotList.size(); i++) {
@@ -391,8 +394,6 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 	
 	
 
-	//DRAW PLAYER
-	p->drawPlayer(simpleShader, animShader, getMousePoint());
 
 	//DRAW POWERUP
 	if (power_up->spawned) {

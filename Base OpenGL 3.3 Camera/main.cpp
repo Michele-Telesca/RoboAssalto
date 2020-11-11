@@ -59,7 +59,7 @@ glm::vec3 up(0.0, 1.0, 0.0);
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow* window)
 {	
-	if (quit == true) {
+	if (quit == true ) {
 		glfwSetWindowShouldClose(window, true);
 	}
 
@@ -91,7 +91,7 @@ void processInput(GLFWwindow* window)
 			mouseSx = false;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS || gameuno->gameOver == true) {
 			if (buttonEsc == false) {
 				buttonEsc = true;
 				if (gameuno->gamePause == false) {
@@ -99,12 +99,14 @@ void processInput(GLFWwindow* window)
 					gameuno->gamePause = true;
 				}
 				else {
-					cout << "tolgo la pausa" << endl;
-					gameuno->gamePause = false;
+					if (gameuno->gameOver == true) {
+						cout << "tolgo la pausa" << endl;
+						gameuno->gamePause = false;
+					}
 				}
 			}	
 		}
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE && gameuno->gameOver == false) {
 			buttonEsc = false;
 		}
 
@@ -254,6 +256,9 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 		else {
 			gameuno->getPlayer()->startPlayerShot = false;
 		}
+		if (gameuno->getPlayer()->chest_life <= 0.0f) {
+			gameuno->gameOver = true;
+		}
 
 		update_game->calculateAnglePlayer(player); //player rotation
 
@@ -330,6 +335,7 @@ void renderMainMenu(Shader simpleShader, Shader lightShader, Shader animShader) 
 		update_animation->menuSound(main_menu);
 
 		if (main_menu->startNewGame) { //il flag startNewGame è true (l'utente ha cliccato su play)
+			gameuno->gameOver = false;
 			gameuno->loadingGame->init(); //inizializzo la barra di caricamento 
 			gameuno->loadingGame->isLoading = true; //setto il caricamento a true
 			main_menu->startNewGame = false; //resetto il flag startNewGame
@@ -379,7 +385,7 @@ void renderPauseMenu(Shader simpleShader, Shader lightShader) {
 		previousTime = currentTime;
 	}
 
-	pause_menu->draw(simpleShader, lightShader);
+	pause_menu->draw(simpleShader, lightShader,gameuno->gameOver);
 }
 
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
@@ -495,6 +501,7 @@ int main()
 	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png", true);
 	gameuno->textureLifeBar = loadtexture("texture/lifeBar.png", true);
 	gameuno->textureShadow = loadtexture("texture/ombra.png", true);
+	gameuno->getGameMap()->textureShadow = loadtexture("texture/ombra.png", true);
 
 	gameuno->getPlayer()->textureShadow = loadtexture("texture/ombra.png", true);
 
@@ -504,7 +511,7 @@ int main()
 
 	main_menu->texture_background = loadtexture("texture/background_menu.jpg", false);
 	pause_menu->texture_background = loadtexture("texture/background_menu.jpg",false);
-
+	pause_menu ->texture_gameover = loadtexture("texture/background_gameover.png", true);
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);
 

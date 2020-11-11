@@ -675,17 +675,18 @@ void update::cursorPauseMenu(pauseMenu* pause_menu, game* gameuno) {
 	float mouseX = pause_menu->getMousePoint().x;
 	float mouseZ = pause_menu->getMousePoint().z;
 
-
-	if (mouseX >= -0.91f && mouseX <= 1.065f && mouseZ >= -2.22f && mouseZ <= -1.25f) {
-		pause_menu->returnGame->cursorIsAbove = true;
-		if (mouseSx) {
-			pause_menu->returnGame->isSelected = true;
-		}
-		if (pause_menu->buttonClicked) {
-			cout << "RETURN" << endl;
-			pause_menu->buttonClicked = false;
-			gameuno->gamePause = false;
-			pause_menu->returnGame->isSelected = false;
+	if (gameuno->gameOver == false) {
+		if (mouseX >= -0.91f && mouseX <= 1.065f && mouseZ >= -2.22f && mouseZ <= -1.25f) {
+			pause_menu->returnGame->cursorIsAbove = true;
+			if (mouseSx) {
+				pause_menu->returnGame->isSelected = true;
+			}
+			if (pause_menu->buttonClicked) {
+				cout << "RETURN" << endl;
+				pause_menu->buttonClicked = false;
+				gameuno->gamePause = false;
+				pause_menu->returnGame->isSelected = false;
+			}
 		}
 	}
 	else {

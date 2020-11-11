@@ -13,8 +13,11 @@ class pauseMenu
 		button* goToMainMenu;
 		button* quit;
 
+		cube* gameOver;
 		cube* background;
 		unsigned int texture_background;
+		unsigned int texture_gameover;
+
 
 		bool buttonClicked; //true quando l'utente clicca un bottone del menu
 
@@ -22,7 +25,7 @@ class pauseMenu
 
 		void init();
 		void setShadersProperties(Shader simpleShader, Shader lightShader);
-		void draw(Shader simpleShader, Shader lightShader);
+		void draw(Shader simpleShader, Shader lightShader,bool gameover);
 
 		void setMousePoint(glm::vec3 w) {
 			mousePoint = w;
@@ -39,6 +42,9 @@ void pauseMenu::init() {
 
 	returnGame = new button(0.0f, 1.0f, -2.0f, 0.25f, glm::radians(-85.0f), 1.0f, 0.0f, 0.0f);
 	returnGame->init("models/menu/button_return.dae");
+
+	gameOver = new cube(0.0f, 1.0f, -2.0f, glm::radians(4.9f), 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
 
 	goToMainMenu = new button(0.0f, 1.0f, 0.0f, 0.25f, glm::radians(-85.0f), 1.0f, 0.0f, 0.0f);
 	goToMainMenu->init("models/menu/button_mainMenu.dae");
@@ -94,12 +100,19 @@ void pauseMenu::setShadersProperties(Shader simpleShader, Shader lightShader) {
 	lightShader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
 }
 
-void pauseMenu::draw(Shader simpleShader, Shader lightShader) {
+void pauseMenu::draw(Shader simpleShader, Shader lightShader,bool gameover) {
 	setShadersProperties(simpleShader, lightShader);
 
 	background->drawCube(simpleShader, texture_background);
 
-	returnGame->drawButton(lightShader);
+
+	if (gameover == false) {
+		returnGame->drawButton(lightShader);
+	}
+	else {
+		gameOver->drawCube(lightShader, texture_gameover);
+	}
+	
 	goToMainMenu->drawButton(lightShader);
 	quit->drawButton(lightShader);
 

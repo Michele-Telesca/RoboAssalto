@@ -67,6 +67,8 @@ public:
 	gameMap() {}
 
 	unsigned int texturePrato;
+	unsigned int textureShadow;
+
 	cube* floor;
 
 	//vector <cube*> tiles; //vettore contenente le mattonelle del pavimento
@@ -215,6 +217,8 @@ void gameMap::initMap() {
 					mapObject* tree1 = new mapObject(x, 1.8f, z, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree1->objectModel = objects[TREE1]->objectModel;
 					tree1->specular = NONE;
+					tree1->shadowObject = textureShadow;
+
 					mapObjects.push_back(tree1);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 					mapTree.push_back(glm::vec2(x, z));
@@ -224,6 +228,8 @@ void gameMap::initMap() {
 					mapObject* tree2 = new mapObject(x, 1.8f, z, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree2->objectModel = objects[TREE2]->objectModel;
 					tree2->specular = NONE;
+					tree2->shadowObject = textureShadow;
+
 					mapObjects.push_back(tree2);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 					mapTree.push_back(glm::vec2(x, z));
@@ -233,6 +239,8 @@ void gameMap::initMap() {
 					mapObject* tree3 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree3->objectModel = objects[TREE3]->objectModel;
 					tree3->specular = NONE;
+					tree3->shadowObject = textureShadow;
+
 					mapObjects.push_back(tree3);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 					mapTree.push_back(glm::vec2(x, z));
@@ -242,6 +250,8 @@ void gameMap::initMap() {
 					mapObject* tree4 = new mapObject(x, 1.8f, z, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f);
 					tree4->objectModel = objects[TREE4]->objectModel;
 					tree4->specular = NONE;
+					tree4->shadowObject = textureShadow;
+
 					mapObjects.push_back(tree4);
 					mapObjectsCoord.push_back(glm::vec2(x, z));
 					mapTree.push_back(glm::vec2(x, z));
@@ -356,21 +366,29 @@ void gameMap::initMap() {
 	mapObject* tree_external1 = new mapObject(8.0f, 1.8f, 25.6f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 	tree_external1->objectModel = objects[TREE2]->objectModel;
 	tree_external1->specular = NONE;
+	tree_external1->shadowObject = textureShadow;
+
 	mapObjects.push_back(tree_external1);
 
 	mapObject* tree_external2 = new mapObject(8.9f, 1.8f, 25.0f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 	tree_external2->objectModel = objects[TREE2]->objectModel;
 	tree_external2->specular = NONE;
+	tree_external2->shadowObject = textureShadow;
+
 	mapObjects.push_back(tree_external2);
 
 	mapObject* tree_external3 = new mapObject(9.8f, 1.8f, 24.2f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 	tree_external3->objectModel = objects[TREE2]->objectModel;
 	tree_external3->specular = NONE;
+	tree_external3->shadowObject = textureShadow;
+
 	mapObjects.push_back(tree_external3);
 
 	mapObject* tree_external4 = new mapObject(-3.0f, 1.8f, 25.5f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f);
 	tree_external4->objectModel = objects[TREE2]->objectModel;
 	tree_external4->specular = NONE;
+	tree_external4->shadowObject = textureShadow;
+
 	mapObjects.push_back(tree_external4);
 
 }
@@ -390,12 +408,13 @@ void gameMap::drawMap(Shader simpleShader, Shader lightShader, glm::mat4 view) {
 		lightShader.setVec3("light.diffuse", 0.7f, 0.7f, 0.7f);
 		lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 		lightShader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
-		mapObjects[i]->drawMapObject(lightShader);
+		mapObjects[i]->drawMapObject(lightShader,simpleShader);
 	}
 
 	//---- External Objects ---- //
 	for (int i = 0; i < externalMapObject.size(); i++) {
-		externalMapObject[i]->drawMapObject(lightShader);
+		externalMapObject[i]->drawMapObject(lightShader,simpleShader);
 	}
+
 
 }

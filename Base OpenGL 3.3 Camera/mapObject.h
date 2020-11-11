@@ -18,6 +18,7 @@ public:
 
 	Model* objectModel;
 
+	int shadowObject;
 	int specular; //HIGH - MODERATE - NONE
 	
 	//costruttore no arg
@@ -36,7 +37,7 @@ public:
 	}
 
 	void initMapObject(string path);
-	void drawMapObject(Shader myShader);
+	void drawMapObject(Shader myShader, Shader simpleShader);
 
 	void setX(float new_x) {
 		x = new_x;
@@ -57,7 +58,7 @@ void mapObject::initMapObject(string path) {
 
 }
 
-void mapObject::drawMapObject(Shader lightShader) {
+void mapObject::drawMapObject(Shader lightShader,Shader simpleShader) {
 
 	lightShader.use();
 
@@ -85,6 +86,32 @@ void mapObject::drawMapObject(Shader lightShader) {
 	lightShader.setMat4("model", model);
 
 	objectModel->Draw(lightShader);
+
+	if (shadowObject != 0) {
+		simpleShader.use();
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glActiveTexture(GL_TEXTURE0);
+
+		glBindTexture(GL_TEXTURE_2D, shadowObject);
+		glBindVertexArray(cubeVAO);
+
+		//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+		glm::mat4 modelSV = glm::mat4(1.0f);
+
+
+		modelSV = glm::translate(modelSV, glm::vec3(x, y + 0.55f, z));
+		modelSV = glm::rotate(modelSV, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		modelSV = glm::translate(modelSV, glm::vec3(0.0f, 0.0f, 0.0f));
+		modelSV = glm::scale(modelSV, glm::vec3(scale, 0.02f, scale));
+
+		simpleShader.setMat4("model", modelSV);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		glDisable(GL_BLEND);
+	}
 	
 }
 
