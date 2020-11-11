@@ -2,34 +2,34 @@
   main.cpp
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\shader_s.h(56,35): warning C4101: 'e': variabile locale senza riferimenti
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\mesh.h(84,1): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(175,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(175,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(181,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(181,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(187,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(187,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(193,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(193,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(199,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(199,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(205,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(205,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(211,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(211,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(217,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(217,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(228,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(228,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(239,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(239,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(250,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(250,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(261,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(261,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(268,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(268,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(282,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(282,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(177,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(177,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(183,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(183,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(189,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(189,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(195,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(195,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(201,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(201,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(207,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(207,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(213,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(213,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(219,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(219,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(231,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(231,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(243,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(243,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(255,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(255,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(266,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(266,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(273,48): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(273,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(287,49): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\gameMap.h(287,40): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\globalData.h(100,26): warning C4244: '=': conversione da 'float' a 'int'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\player.h(315,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\player.h(402,35): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
@@ -75,4 +75,7 @@ C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Ca
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\updateAnimation.h(258,42): warning C4305: 'argomento': troncamento da 'double' a 'irrklang::ik_f32'
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\updateAnimation.h(262,42): warning C4305: 'argomento': troncamento da 'double' a 'irrklang::ik_f32'
 C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\Base OpenGL 3.3 Camera\updateAnimation.h(266,42): warning C4305: 'argomento': troncamento da 'double' a 'irrklang::ik_f32'
+texture.obj : warning LNK4099: impossibile trovare il PDB 'vc142.pdb' con 'texture.obj' o in 'C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\x64\Debug\vc142.pdb'; oggetto collegato senza informazioni di debug
+skinned_mesh.obj : warning LNK4099: impossibile trovare il PDB 'vc142.pdb' con 'skinned_mesh.obj' o in 'C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\x64\Debug\vc142.pdb'; oggetto collegato senza informazioni di debug
+glad.obj : warning LNK4099: impossibile trovare il PDB 'vc142.pdb' con 'glad.obj' o in 'C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\x64\Debug\vc142.pdb'; oggetto collegato senza informazioni di debug
   Base OpenGL 3.3 Camera.vcxproj -> C:\Users\miche\OneDrive\Desktop\ProgettoGrafica\Versioni\0.35\x64\Debug\RoboAssalto.exe

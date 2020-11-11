@@ -374,7 +374,7 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 	//Setto le proprietà view, projection degli shaders
 	setShadersProperties(simpleShader, lightShader, animShader, view); 
 
-	//DRAW MAP
+	//DRAW MAP Floor
 	mappa->drawMap(simpleShader, lightShader, view);
 
 	//DRAW PLAYER
@@ -392,7 +392,8 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 		}
 	}
 	
-	
+	//DRAW MAP ODJECT
+	mappa->drawMapObject(simpleShader, lightShader, view);
 
 
 	//DRAW POWERUP

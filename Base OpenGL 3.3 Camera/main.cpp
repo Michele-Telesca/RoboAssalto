@@ -99,7 +99,7 @@ void processInput(GLFWwindow* window)
 					gameuno->gamePause = true;
 				}
 				else {
-					if (gameuno->gameOver == true) {
+					if (gameuno->gameOver == false) {
 						cout << "tolgo la pausa" << endl;
 						gameuno->gamePause = false;
 					}

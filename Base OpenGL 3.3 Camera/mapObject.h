@@ -16,6 +16,8 @@ public:
 	float rotate_y;
 	float rotate_z;
 
+	bool shadow;
+
 	Model* objectModel;
 
 	int shadowObject;
@@ -34,6 +36,7 @@ public:
 		rotate_x = r_x;
 		rotate_y = r_y;
 		rotate_z = r_z;
+		shadow = false;
 	}
 
 	void initMapObject(string path);
@@ -87,7 +90,9 @@ void mapObject::drawMapObject(Shader lightShader,Shader simpleShader) {
 
 	objectModel->Draw(lightShader);
 
-	if (shadowObject != 0) {
+	// TEST OMBRA OGGETTI DI SCENA ANDREBBE 
+
+	if (shadow) {
 		simpleShader.use();
 
 		glEnable(GL_BLEND);
@@ -102,10 +107,10 @@ void mapObject::drawMapObject(Shader lightShader,Shader simpleShader) {
 		glm::mat4 modelSV = glm::mat4(1.0f);
 
 
-		modelSV = glm::translate(modelSV, glm::vec3(x, y + 0.55f, z));
+		modelSV = glm::translate(modelSV, glm::vec3(x, y - 1.25f, z));
 		modelSV = glm::rotate(modelSV, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 		modelSV = glm::translate(modelSV, glm::vec3(0.0f, 0.0f, 0.0f));
-		modelSV = glm::scale(modelSV, glm::vec3(scale, 0.02f, scale));
+		modelSV = glm::scale(modelSV, glm::vec3(scale*6, 0.02f, scale*6));
 
 		simpleShader.setMat4("model", modelSV);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
