@@ -18,6 +18,8 @@ class powerUp
 		float y;
 		float z;
 
+		unsigned int texture_base;
+
 		bool spawned; //true se il power up è spawnato
 		bool hit; //true se è stato hittato dal player
 
@@ -35,7 +37,8 @@ class powerUp
 		float animationTime_rotate_y;
 
 		void initPowerUp();
-		void drawPowerUp(Shader lightShader);
+		void drawPowerUp(Shader lightShader,Shader simpleShader);
+		void drawBase(Shader simpleShader);
 };
 
 void powerUp::initPowerUp() {
@@ -67,7 +70,7 @@ void powerUp::initPowerUp() {
 	spawnCoordsList.push_back(glm::vec3(13.0f, 1.0f, 14.0f));   // indice: 9
 }
 
-void powerUp::drawPowerUp(Shader lightShader) {
+void powerUp::drawPowerUp(Shader lightShader,Shader simpleShader) {
 
 	lightShader.use();
 
@@ -104,5 +107,31 @@ void powerUp::drawPowerUp(Shader lightShader) {
 		medikit->Draw(lightShader); //bullet draw
 	}
 	
+	drawBase(simpleShader);
 }
 
+void powerUp::drawBase(Shader simpleShader) {
+	simpleShader.use();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glActiveTexture(GL_TEXTURE0);
+
+	glBindTexture(GL_TEXTURE_2D, texture_base);
+	glBindVertexArray(cubeVAO);
+
+	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	glm::mat4 modelS = glm::mat4(1.0f);
+
+
+	modelS = glm::translate(modelS, glm::vec3(x, y + 0.02f, z));
+	modelS = glm::rotate(modelS, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	modelS = glm::translate(modelS, glm::vec3(0.0f, 0.0f, 0.0f));
+	modelS = glm::scale(modelS, glm::vec3(1.6f, 0.02f, 1.6f));
+
+	simpleShader.setMat4("model", modelS);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glDisable(GL_BLEND);
+}

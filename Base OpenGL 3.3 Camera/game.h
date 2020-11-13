@@ -380,7 +380,7 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 	//DRAW PLAYER
 
 	//DRAW PLAYER
-	p->drawPlayer(simpleShader, animShader, getMousePoint());
+	p->drawPlayer(simpleShader, animShader, getMousePoint(), lightShader);
 
 	//DRAW BOTS
 	if (spawnedBotList.size() >= 1) {
@@ -398,7 +398,7 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 
 	//DRAW POWERUP
 	if (power_up->spawned) {
-		power_up->drawPowerUp(lightShader);
+		power_up->drawPowerUp(lightShader, simpleShader);
 	}
 
 }

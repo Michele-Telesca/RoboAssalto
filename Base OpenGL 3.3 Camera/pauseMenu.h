@@ -26,7 +26,7 @@ class pauseMenu
 		void init();
 		void setShadersProperties(Shader simpleShader, Shader lightShader);
 		void draw(Shader simpleShader, Shader lightShader,bool gameover);
-
+		void drawGameOver(Shader simpleShader);
 		void setMousePoint(glm::vec3 w) {
 			mousePoint = w;
 		}
@@ -110,10 +110,36 @@ void pauseMenu::draw(Shader simpleShader, Shader lightShader,bool gameover) {
 		returnGame->drawButton(lightShader);
 	}
 	else {
-		gameOver->drawCube(lightShader, texture_gameover);
+		drawGameOver(simpleShader);
 	}
 	
 	goToMainMenu->drawButton(lightShader);
 	quit->drawButton(lightShader);
 
+}
+
+void pauseMenu::drawGameOver(Shader simpleShader) {
+	simpleShader.use();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glActiveTexture(GL_TEXTURE0);
+
+	glBindTexture(GL_TEXTURE_2D, texture_gameover);
+	glBindVertexArray(cubeVAO);
+
+	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
+	glm::mat4 modelS = glm::mat4(1.0f);
+
+	modelS = glm::translate(modelS, glm::vec3(0.0f, 2.0f, -2.0f));
+	modelS = glm::rotate(modelS, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	modelS = glm::translate(modelS, glm::vec3(0.0f, 0.0f, 0.0f));
+	modelS = glm::scale(modelS, glm::vec3(3.4f, 0.02f, 2.0f));
+
+
+	simpleShader.setMat4("model", modelS);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glDisable(GL_BLEND);
 }

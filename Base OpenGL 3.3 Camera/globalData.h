@@ -66,9 +66,10 @@ const int NONE = 0;
 
 // -- SHOT, WEAPON, POWERUP -- //
 const int numShot = 3; //numero proiettili
-const float SHOT_SPEED = 3.0f; //velocità proiettili
-const float SHOT_DIM = 0.5f; //dimensione x,z del proiettile
-const float SHOT_DIM2 = 1.5f; //dimensione x,z del proiettile
+const float SHOT_SPEED = 4.0f; //velocità proiettili
+const float SHOT_DIM2 = 0.03; //dimensione x,z del proiettile
+const float SHOT_DIM = 0.20; //dimensione x,z del proiettile
+
 bool startPlayerShot = false;
 
 float DELAY_SHOTGUN = 1.1f; //secondi per l'ejectingBullet SHOTGUN
@@ -76,7 +77,7 @@ float DELAY_SNIPER = 2.0f; //secondi per l'ejectingBullet SNIPER
 
 const int WEAPON_SHOTGUN = 1;
 const float LENGTH_RANGE_SHOTGUN = 3.0f; //lunghezza di mira
-const float LENGTH_BASE_SHOTGUN = 2.5f;
+const float LENGTH_BASE_SHOTGUN = 2.0f;
 const float ANGLE_RANGE_SHOTGUN = 90.0f;
 
 const int WEAPON_SNIPER = 2;
@@ -101,7 +102,7 @@ const float CHEST_LIFE = 200.0f;
 const float MEDIKIT_HEAL = 50.0f;
 
 const float SNIPER_DAMAGE = 50.0f;
-const float SHOTGUN_DAMAGE = 100.0f;
+const float SHOTGUN_DAMAGE = 130.0f;
 
 const float ZOMBIE_PRISONER_LIFE = 100.0f;
 const float ZOMBIE_PRISONER_DAMAGE = 15.0f;

@@ -62,7 +62,7 @@ public:
 	unsigned int textureShadow;
 
 	//prototipi
-	void drawPlayer(Shader animShader, Shader lightShader, glm::vec3 mousePoint); //disegna il player
+	void drawPlayer(Shader animShader, Shader simpleShader, glm::vec3 mousePoint, Shader lightShader); //disegna il player
 	void animatePlayer(Shader animShader);
 	void initPlayer(int selectedPlayer, int weaponType); //inizializza il player
 	void updateAngleShot(float tempDegree, float anglePlayer);
@@ -266,7 +266,7 @@ void player::updateAngleShot(float tempDegree, float anglePlayer) {
 	}
 }
 
-void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mousePoint) {
+void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mousePoint,Shader lightShader) {
 	
 	// ----- PLAYER ----- //
 
@@ -341,12 +341,9 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 	//DRAW SHOT
 	for (int i = 0; i < numShot; i++) {
 		if (listShot[i]->isShot) {
-			if (wea->lengthBase == LENGTH_BASE_SHOTGUN) {
-				listShot[i]->drawPlayerShot(simpleShader, texture1, SHOT_DIM2);
-			}
-			else {
-				listShot[i]->drawPlayerShot(simpleShader, texture1, SHOT_DIM);
-			}
+
+				listShot[i]->drawPlayerShot(lightShader, texture1, wea);
+			
 		}
 	}
 
@@ -560,7 +557,7 @@ void player::drawLifePlayer(Shader simpleShader) {
 	//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 	glm::mat4 modelLife = glm::mat4(1.0f);
 
-	modelLife = glm::translate(modelLife, glm::vec3(x - offSet, y + 2.5f, z));
+	modelLife = glm::translate(modelLife, glm::vec3(x - offSet, y + 2.4f, z));
 	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
 	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.15f));

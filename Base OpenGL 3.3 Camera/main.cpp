@@ -33,10 +33,12 @@
 #include "pauseMenu.h"
 
 #include <irrKlang/irrKlang.h>
+#include "prevMenu.h"
 
 // dichiarazione oggetti
 game* gameuno = new game();
 mainMenu* main_menu = new mainMenu();
+prevMenu* prev_menu = new prevMenu();
 pauseMenu* pause_menu = new pauseMenu();
 
 update* update_game = new update();
@@ -346,6 +348,8 @@ void renderMainMenu(Shader simpleShader, Shader lightShader, Shader animShader) 
 
 	main_menu->draw(simpleShader, lightShader, animShader);
 
+	
+
 }
 
 void renderLoading(Shader simpleShader) {
@@ -388,30 +392,43 @@ void renderPauseMenu(Shader simpleShader, Shader lightShader) {
 	pause_menu->draw(simpleShader, lightShader,gameuno->gameOver);
 }
 
+void renderName(Shader simpleShader,Shader lightShader,bool nameProject) {
+
+	glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	prev_menu->draw(simpleShader, lightShader, nameProject);
+}
+
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
 void render(Shader simpleShader, Shader lightShader, Shader animShader)
 {
+	currentTime = glfwGetTime();
 
-	if (!gameuno->inGame && !gameuno->loadingGame->isLoading) {
-		renderMainMenu(simpleShader, lightShader, animShader);
+	if (currentTime < 10) {
+		renderName(simpleShader, lightShader, true);
+	} else if (currentTime >= 10 && currentTime < 20) {
+		renderName(simpleShader, lightShader, false);
+	} else {
+		if (!gameuno->inGame && !gameuno->loadingGame->isLoading) {
+			renderMainMenu(simpleShader, lightShader, animShader);
+		}
+		else if (!gameuno->inGame && gameuno->loadingGame->isLoading && !gameuno->loadingGame->drawLoadingBar) {
+			renderLoading(simpleShader);
+			gameuno->loadingGame->drawLoadingBar = true;
+		}
+		else if (!gameuno->inGame && gameuno->loadingGame->isLoading && gameuno->loadingGame->drawLoadingBar) {
+			renderLoading(simpleShader);
+			gameuno->init(main_menu->selected_player, main_menu->selected_weapon);
+			gameuno->loadingGame->drawLoadingBar = false;
+			gameuno->loadingGame->statusLoading++;
+		}
+		else if (gameuno->inGame && !gameuno->loadingGame->isLoading && !gameuno->gamePause) {
+			renderGame(simpleShader, lightShader, animShader);
+		}
+		else if (gameuno->inGame && !gameuno->loadingGame->isLoading && gameuno->gamePause) {
+			renderPauseMenu(simpleShader, lightShader);
+		}
 	}
-	else if (!gameuno->inGame && gameuno->loadingGame->isLoading && !gameuno->loadingGame->drawLoadingBar) {
-		renderLoading(simpleShader);
-		gameuno->loadingGame->drawLoadingBar = true;
-	}
-	else if (!gameuno->inGame && gameuno->loadingGame->isLoading && gameuno->loadingGame->drawLoadingBar) {
-		renderLoading(simpleShader);
-		gameuno->init(main_menu->selected_player, main_menu->selected_weapon);
-		gameuno->loadingGame->drawLoadingBar = false;
-		gameuno->loadingGame->statusLoading++;
-	}
-	else if (gameuno->inGame && !gameuno->loadingGame->isLoading && !gameuno->gamePause) {
-		renderGame(simpleShader, lightShader, animShader);
-	}
-	else if (gameuno->inGame && !gameuno->loadingGame->isLoading && gameuno->gamePause) {
-		renderPauseMenu(simpleShader, lightShader);
-	}
-
 }
 
 // viene richiamata prima dell'inizio del while e server per inizializzare il game (vengono creati gli oggetti)
@@ -419,7 +436,7 @@ void init() {
 
 	main_menu->init();
 	pause_menu->init();
-
+	prev_menu->init();
 }
 
 // load and create a texture 
@@ -495,23 +512,27 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	// caricamento texture
-	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato1.png", false);
+	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato2.png", false);
 	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png", true);
 	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png", true);
 	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png", true);
 	gameuno->textureLifeBar = loadtexture("texture/lifeBar.png", true);
 	gameuno->textureShadow = loadtexture("texture/ombra.png", true);
-	gameuno->getGameMap()->textureShadow = loadtexture("texture/ombra.png", true);
+	gameuno->getGameMap()->textureShadow = loadtexture("texture/ombraAlberi.png", true);
+	gameuno->power_up->texture_base = loadtexture("texture/powerUp.png", true);
 
 	gameuno->getPlayer()->textureShadow = loadtexture("texture/ombra.png", true);
 
 	gameuno->loadingGame->texture_statusbar = loadtexture("texture/loadingBar.png", true);
 	gameuno->loadingGame->texture_boundary = loadtexture("texture/texture_boundary.png", true);
-	gameuno->loadingGame->texture_background = loadtexture("texture/background_menu.jpg", false);
+	gameuno->loadingGame->texture_background = loadtexture("texture/sfondo2.png", false);
 
-	main_menu->texture_background = loadtexture("texture/background_menu.jpg", false);
-	pause_menu->texture_background = loadtexture("texture/background_menu.jpg",false);
-	pause_menu ->texture_gameover = loadtexture("texture/background_gameover.png", true);
+	main_menu->texture_background = loadtexture("texture/sfondo2.png", true);
+	pause_menu->texture_background = loadtexture("texture/sfondo2.png",false);
+	pause_menu ->texture_gameover = loadtexture("texture/gameover.png", true);
+	prev_menu->texture_name= loadtexture("texture/nomi.png", true);
+	prev_menu->texture_team = loadtexture("texture/progetto.png", true);
+
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);
 
@@ -546,6 +567,7 @@ int main()
 	Shader simpleShader("vertex_simple.vs", "fragment_simple.fs");
 	Shader lightShader("vertex_lights.vs", "fragment_lights.fs");
 	Shader animationShader("vertex_anim_lights.vs", "fragment_anim_lights.fs");
+	
 
 	init();
 
