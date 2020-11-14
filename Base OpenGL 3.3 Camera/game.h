@@ -26,8 +26,9 @@ public:
 	vector <villain*> modelBotList;      //Lista dei modelli di bot
 	vector <path*> pathList;		     //Lista dei path
 
-	int difficolta;                      //Livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
+	int difficolta;     //Livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
 
+	int score = 0;
 	bool gameInitialized;
 	bool inGame;
 	bool gamePause;
@@ -41,6 +42,10 @@ public:
 
 	bool startGameSoundtrack;
 	bool gameOver = false;
+
+	unsigned int score_texture; //texture score
+	unsigned int num_texture[10]; //texture Numeri
+
 	//Costruttore
 	game() {
 		mappa = new gameMap();
@@ -61,6 +66,8 @@ public:
 	void kill_BOT(); //killa un bot
 	void BOT_spawner(); //gestisce lo spawn dei bot
 	void powerUp_spawner(); //gestisce lo spawn di powerUp
+
+	void drawScore(Shader simpleShader,player* p); //draw dello Score
 
 	// -- GET -- //
 	gameMap* getGameMap() {
@@ -371,6 +378,8 @@ void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader 
 
 void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm::mat4 view) {
 	
+
+
 	//Setto le proprietà view, projection degli shaders
 	setShadersProperties(simpleShader, lightShader, animShader, view); 
 
@@ -381,6 +390,7 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 
 	//DRAW PLAYER
 	p->drawPlayer(simpleShader, animShader, getMousePoint(), lightShader);
+
 
 	//DRAW BOTS
 	if (spawnedBotList.size() >= 1) {
@@ -396,11 +406,82 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 	mappa->drawMapObject(simpleShader, lightShader, view);
 
 
+
 	//DRAW POWERUP
 	if (power_up->spawned) {
 		power_up->drawPowerUp(lightShader, simpleShader);
 	}
 
+	drawScore(simpleShader,p);
+
+	
 }
 
+
+void game::drawScore(Shader simpleShader,player* p) {
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	simpleShader.use();
+
+	/*
+	//camera pos
+	glm::vec3 pos_camera(0.0f, 0.0f, 1.0f);
+	glm::vec3 at_camera(0.0f, 0.0f, -1.0f);
+	pos_camera_mobile_global = pos_camera;
+	glm::vec3 up(0.0, 1.0, 0.0);
+
+	//view
+	glm::mat4 view2 = glm::mat4(1.0f);
+	view2 = glm::lookAt(pos_camera, at_camera, up);
+	view_global = view2;
+	simpleShader.setMat4("view", view2);
+
+	//projection
+	glm::mat4 projection2 = glm::mat4(1.0f);	//identity matrix
+	projection2 = glm::perspective(glm::radians(85.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	simpleShader.setMat4("projection", projection2);
+	*/
+	glActiveTexture(GL_TEXTURE0);
+
+	glm::mat4 modelGameOver = glm::mat4(1.0f);	//identity matrix
+	modelGameOver = glm::translate(modelGameOver, glm::vec3(p->getX(), p->getY()+3.0f, p->getZ() - 5.0f));
+	modelGameOver = glm::rotate(modelGameOver, 3.14f, glm::vec3(1.0f, 0.0f, 0.0f));
+	modelGameOver = glm::scale(modelGameOver, glm::vec3(2.5f, 0.1f, 2.5f));
+	simpleShader.setMat4("model", modelGameOver);
+	glBindTexture(GL_TEXTURE_2D, score_texture);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	int decine = 0;
+	int unita = 0;
+
+	if (score != 0) {
+		decine = score / 10;
+		unita = score % 10;
+	}
+
+
+	/*DECINE*/
+	glm::mat4 decineM = glm::mat4(1.0f);
+
+	decineM = glm::translate(decineM, glm::vec3(p->getX() + 1.8f, p->getY() + 3.0f, p->getZ()-5.0f));
+	decineM = glm::rotate(decineM, 3.14f, glm::vec3(1.0f, 0.0f, 0.0f));
+	decineM = glm::scale(decineM, glm::vec3(0.7f, 0.1f, 0.7f));
+	simpleShader.setMat4("model", decineM);
+	glBindTexture(GL_TEXTURE_2D, num_texture[decine]);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	//UNITA
+	glm::mat4 unitM = glm::mat4(1.0f);
+
+	unitM = glm::mat4(1.0f);	//identity matrix
+	unitM = glm::translate(unitM, glm::vec3(p->getX() + 2.5f, p->getY() +3.0f, p->getZ()-5.0f));
+	unitM = glm::rotate(unitM, 3.14f, glm::vec3(1.0f, 0.0f, 0.0f));
+	unitM = glm::scale(unitM, glm::vec3(0.7f, 0.1f, 0.7f));
+	simpleShader.setMat4("model", unitM);
+	glBindTexture(GL_TEXTURE_2D, num_texture[unita]);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisable(GL_BLEND);
+}
 

@@ -41,7 +41,7 @@ public:
 
 	// ---- BOT ---- //
 	void updateBot(vector <villain*> botList, player* p, game* game);
-	void moveBot(villain* bot, player* p);
+	void moveBot(villain* bot, player* p,game* gameuno);
 	void rotateBot(villain* bot); //rotazione del bot
 	void botCollideVSPlayer(villain* bot, player* p); //collisione del bot
 	void botAttacking(villain* bot, player* p);
@@ -49,7 +49,7 @@ public:
 	// ---- Movimento e collisioni degli SHOT ---- //
 	void updateShot(vector <playerShot*> listShot, vector <villain*> botList, weapon* wea, player* p);
 	
-	void shotHitBot(vector <playerShot*> listShot, villain* bot, weapon* w);
+	void shotHitBot(vector <playerShot*> listShot, villain* bot, weapon* w,game* gameuno);
 	//void shotHitTree(vector <playerShot*> listShot, weapon* w);
 	//void shotHitBot(vector <playerShot*> listShot, villain* bot);
 	void shotHitTree(playerShot* playerShot, weapon* w);
@@ -232,7 +232,7 @@ void update::botAttacking(villain* bot, player* p) {
 void update::updateBot(vector <villain*> botList, player* p, game* game) {
 	if (botList.size() >= 1) { //se la lista di bot NON è VUOTA
 		for (int i = 0; i < botList.size(); i++) {
-			moveBot(botList[i], p);		 //gestisce il movimento del bot lungo il path (incluse collisioni con il player e con gli shot)
+			moveBot(botList[i], p,game);		 //gestisce il movimento del bot lungo il path (incluse collisioni con il player e con gli shot)
 	
 			rotateBot(botList[i]);   //gestisce le rotazioni che avvengono contemporaneamnete al movimento lungo il path (solo se il bot cammina)
 
@@ -283,7 +283,7 @@ void update::rotateBot(villain* bot) {
 	}
 }
 
-void update::moveBot(villain* bot, player* p) {
+void update::moveBot(villain* bot, player* p,game* gameuno) {
 
 	int path_nextStep = bot->getPath_currentStep() + 1;
 
@@ -296,7 +296,7 @@ void update::moveBot(villain* bot, player* p) {
 			float newCoord_z = bot->getPath()->getPath_map()[path_nextStep].y; //coordinata z
 
 			botCollideVSPlayer(bot, p); //setta il booleano della collisione con il player e dell' animazione attacco 
-			shotHitBot(p->listShot, bot, p->wea); //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead
+			shotHitBot(p->listShot, bot, p->wea,gameuno); //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead
 
 			//Se il bot NON collide col player, NON è hittato dal proiettile, NON è morto-> AVANZA
 			if (bot->animation_botWalking && !bot->animation_botAttacking && !bot->animation_botHit && !bot->animation_botDead) {
@@ -395,7 +395,7 @@ void update::moveBot(villain* bot, player* p) {
 		bot->animation_botWalking = false;
 		bot->animation_botAttacking = true;
 		bot->angleToReach = bot->rotationAngle; //evita il bug della rotazione infinita
-		shotHitBot(p->listShot, bot, p->wea);           //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead	
+		shotHitBot(p->listShot, bot, p->wea,gameuno);           //setta il booleano dell' animazione hit se viene colpito e se muore setta il booleano dell'animazione dead	
 	}
 
 }
@@ -534,7 +534,7 @@ void update::updateShot(vector <playerShot*> listShot, vector <villain*> botList
 	}
 }
 
-void update::shotHitBot(vector <playerShot*> listShot, villain* bot,weapon* w) {
+void update::shotHitBot(vector <playerShot*> listShot, villain* bot,weapon* w,game* gameuno) {
 	for (int s = 0; s < numShot; s++) { //ciclo la lista degli shot
 		//se uno shot ha colpito il bot
 		if ((listShot[s]->getX() >= bot->getX() - TILE_DIM / 2 && listShot[s]->getX() <= bot->getX() + TILE_DIM / 2) && (listShot[s]->getZ() >= bot->getZ() - TILE_DIM / 2 && listShot[s]->getZ() <= bot->getZ() + TILE_DIM / 2)) {
@@ -554,6 +554,7 @@ void update::shotHitBot(vector <playerShot*> listShot, villain* bot,weapon* w) {
 
 			if (bot->life <= 0) { //se la vita scende a 0 
 				bot->animation_botDead = true; //setto a true l'animazione della morte
+				gameuno->score++;
 			}
 			else {
 				bot->animation_botHit = true; // setto a true l'animazione dell'hit

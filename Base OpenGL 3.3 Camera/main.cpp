@@ -533,6 +533,14 @@ int main()
 	prev_menu->texture_name= loadtexture("texture/nomi.png", true);
 	prev_menu->texture_team = loadtexture("texture/progetto.png", true);
 
+	gameuno->score_texture = loadtexture("texture/font/Score.png", true);
+	for (int j = 0; j < 10; j++) {
+		string file = "texture/font/" + to_string(j);
+		file = file + ".png";
+		cout << file << endl;
+		gameuno->num_texture[j] = loadtexture(file, true);;
+	}
+
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(false);
 
