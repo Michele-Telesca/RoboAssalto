@@ -308,16 +308,21 @@ void update::moveBot(villain* bot, player* p,game* gameuno) {
 					//Allora risetto la rotazione secondo il path 
 					if (bot->old_direction == DIRECTION_RIGHT) {
 						bot->rotationAngle = 90.0f;
+						bot->angleToReach = 90.0f;
 					}
 					else if (bot->old_direction == DIRECTION_LEFT) {
 						bot->rotationAngle = 270.0f;
+						bot->angleToReach = 270.0f;
 					}
 					else if (bot->old_direction == DIRECTION_UP) {
 						bot->rotationAngle = 180.0f;
+						bot->angleToReach = 180.0f;
 					}
 					else if (bot->old_direction == DIRECTION_DOWN) {
 						bot->rotationAngle = 0.0f;
+						bot->angleToReach = 0.0f;
 					}
+
 					bot->isOnPath = true; //Segnalo che ora la rotazione del bot è corretta secondo il path
 				}
 
@@ -689,10 +694,11 @@ void update::cursorPauseMenu(pauseMenu* pause_menu, game* gameuno) {
 				pause_menu->returnGame->isSelected = false;
 			}
 		}
+		else {
+			pause_menu->returnGame->cursorIsAbove = false;
+		}
 	}
-	else {
-		pause_menu->returnGame->cursorIsAbove = false;
-	}
+
 
 
 	if (mouseX >= -0.91f && mouseX <= 1.065f && mouseZ >= -0.28 && mouseZ <= 0.69) {

@@ -258,7 +258,7 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 		else {
 			gameuno->getPlayer()->startPlayerShot = false;
 		}
-		if (gameuno->getPlayer()->chest_life <= 0.0f) {
+		if (gameuno->getPlayer()->chest_life <= 0.0f || gameuno->getPlayer()->life <= 0.0f) {
 			gameuno->gameOver = true;
 		}
 
