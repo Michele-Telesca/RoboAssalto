@@ -206,16 +206,16 @@ void villain::drawVillain(Shader animShader, Shader simpleShader){
 	animShader.use();
 
 	//model
-	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(UNIT);
 	model = glm::translate(model, glm::vec3(x, 0.5f, z));
-	model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, UNIT, 0.0f));
 	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 	animShader.setMat4("model", model);
 
 	// material properties
-	animShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
-	animShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	animShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	animShader.setVec3("material.ambient", UNIT, UNIT, UNIT);
+	animShader.setVec3("material.diffuse", UNIT, UNIT, UNIT);
+	animShader.setVec3("material.specular", UNIT, UNIT, UNIT);
 	animShader.setFloat("material.shininess", 76.8f);
 
 	animate(animShader); //animazione
@@ -236,12 +236,12 @@ void villain::drawShadowVillain(Shader simpleShader) {
 	glBindTexture(GL_TEXTURE_2D, textureShadow);
 	glBindVertexArray(cubeVAO);
 
-	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-	glm::mat4 modelSV = glm::mat4(1.0f);
+	//simpleShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+	glm::mat4 modelSV = glm::mat4(UNIT);
 
 
 	modelSV = glm::translate(modelSV, glm::vec3(x, y + 0.55f, z));
-	modelSV = glm::rotate(modelSV, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	modelSV = glm::rotate(modelSV, 3.14f / 2.0f, glm::vec3(0.0f, UNIT, 0.0f));
 	modelSV = glm::translate(modelSV, glm::vec3(0.0f, 0.0f, 0.0f));
 	modelSV = glm::scale(modelSV, glm::vec3(1.5f, 0.02f, 1.5f));
 
@@ -283,11 +283,11 @@ void villain::drawLifeVillain(Shader simpleShader) {
 	glBindTexture(GL_TEXTURE_2D, textureLifeVillain);
 	glBindVertexArray(cubeVAO);
 
-	//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-	glm::mat4 modelLife = glm::mat4(1.0f);
+	//lightShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+	glm::mat4 modelLife = glm::mat4(UNIT);
 
 	modelLife = glm::translate(modelLife, glm::vec3(x - offSet, y + 2.5f, z));
-	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(UNIT, 0.0f, 0.0f));
 	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
 	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.15f));
 

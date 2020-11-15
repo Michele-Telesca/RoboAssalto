@@ -20,12 +20,12 @@ unsigned int cubeVBO, cubeVAO;
 
 float verticesCube[] = {
 	// positions          // normals           // texture coords
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  0.0f,  0.0f,
-	0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  1.0f,  0.0f,
-	0.5f,  -0.5f, 0.5f,   0.0f, 1.0f, 0.0f,  1.0f,  1.0f,
-	0.5f,  -0.5f, 0.5f,   0.0f, 1.0f, 0.0f,  1.0f,  1.0f,
-	-0.5f,  -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,  0.0f,  1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  0.0f,  0.0f
+	-0.5f, -0.5f, -0.5f,  0.0f, UNIT, 0.0f,  0.0f,  0.0f,
+	0.5f, -0.5f, -0.5f,   0.0f, UNIT, 0.0f,  UNIT,  0.0f,
+	0.5f,  -0.5f, 0.5f,   0.0f, UNIT, 0.0f,  UNIT,  UNIT,
+	0.5f,  -0.5f, 0.5f,   0.0f, UNIT, 0.0f,  UNIT,  UNIT,
+	-0.5f,  -0.5f, 0.5f,  0.0f, UNIT, 0.0f,  0.0f,  UNIT,
+	-0.5f, -0.5f, -0.5f,  0.0f, UNIT, 0.0f,  0.0f,  0.0f
 };
 
 class cube {
@@ -75,8 +75,8 @@ public:
 
 		// material properties
 		/*lightShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
-		lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-		lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+		lightShader.setVec3("material.diffuse", UNIT, UNIT, UNIT);
+		lightShader.setVec3("material.specular", UNIT, UNIT, UNIT);
 		lightShader.setFloat("material.shininess", 76.8f);*/
 
 		// texture
@@ -88,7 +88,7 @@ public:
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glBindVertexArray(cubeVAO);
 
-		glm::mat4 model = glm::mat4(1.0f);	//identity matrix
+		glm::mat4 model = glm::mat4(UNIT);	//identity matrix
 		model = glm::translate(model, glm::vec3(posizione_x, posizione_y, posizione_z));
 		model = glm::rotate(model, angle, glm::vec3(rotation_x, rotation_y, rotation_z));
 		model = glm::scale(model, glm::vec3(dimensione_x, dimensione_y, dimensione_z));

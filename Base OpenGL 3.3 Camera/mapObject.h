@@ -66,8 +66,8 @@ void mapObject::drawMapObject(Shader lightShader,Shader simpleShader) {
 	lightShader.use();
 
 	// material properties
-	lightShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
-	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.ambient", UNIT, UNIT, UNIT);
+	lightShader.setVec3("material.diffuse", UNIT, UNIT, UNIT);
 
 	if (specular == NONE) {
 		lightShader.setVec3("material.specular", 0.0f,0.0f, 0.0f);
@@ -78,11 +78,11 @@ void mapObject::drawMapObject(Shader lightShader,Shader simpleShader) {
 		lightShader.setFloat("material.shininess", 75.0f);
 	}
 	else if (specular == HIGH) {
-		lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+		lightShader.setVec3("material.specular", UNIT, UNIT, UNIT);
 		lightShader.setFloat("material.shininess", 50.0f);
 	}
 
-	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(UNIT);
 	model = glm::translate(model, glm::vec3(x, y, z));
 	model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
 	model = glm::scale(model, glm::vec3(scale, scale, scale));
@@ -103,12 +103,12 @@ void mapObject::drawMapObject(Shader lightShader,Shader simpleShader) {
 		glBindTexture(GL_TEXTURE_2D, shadowObject);
 		glBindVertexArray(cubeVAO);
 
-		//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-		glm::mat4 modelSV = glm::mat4(1.0f);
+		//simpleShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+		glm::mat4 modelSV = glm::mat4(UNIT);
 
 
 		modelSV = glm::translate(modelSV, glm::vec3(x, y - 1.25f, z));
-		modelSV = glm::rotate(modelSV, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		modelSV = glm::rotate(modelSV, 3.14f / 2.0f, glm::vec3(0.0f, UNIT, 0.0f));
 		modelSV = glm::translate(modelSV, glm::vec3(0.0f, 0.0f, 0.0f));
 		modelSV = glm::scale(modelSV, glm::vec3(scale*8, 0.02f, scale*8));
 

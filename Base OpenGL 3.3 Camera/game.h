@@ -26,9 +26,9 @@ public:
 	vector <villain*> modelBotList;      //Lista dei modelli di bot
 	vector <path*> pathList;		     //Lista dei path
 
-	int difficolta;     //Livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
+	int difficulty;     //Livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
 
-	int score = 0;
+	int score = INITIAL_SCORE;
 	bool gameInitialized;
 	bool inGame;
 	bool gamePause;
@@ -104,19 +104,19 @@ public:
 void game::initModelBotList() {
 	//inizializzo i di bot
 
-	if (loadingGame->statusLoading == 50) {
+	if (loadingGame->statusLoading == STATUS_LOADING_2) {
 		villain* zombie1 = new villain();
 		zombie1->initModel_Zombie1();
 		modelBotList.push_back(zombie1);
 	}
 
-	if (loadingGame->statusLoading == 60) {
+	if (loadingGame->statusLoading == STATUS_LOADING_3) {
 		villain* zombie2 = new villain();
 		zombie2->initModel_Zombie2();
 		modelBotList.push_back(zombie2);
 	}
 
-	if (loadingGame->statusLoading == 80) {
+	if (loadingGame->statusLoading == STATUS_LOADING_4) {
 		villain* zombie3 = new villain();
 		zombie3->initModel_Zombie3();
 		modelBotList.push_back(zombie3);
@@ -167,7 +167,7 @@ void game::initPathList() {
 
 void game::kill_BOT() {
 	
-	for (int i = 0; i < spawnedBotList.size(); i++) {
+	for (int i = FIRST; i < spawnedBotList.size(); i++) {
 		if (spawnedBotList[i]->isDead == true) {
 			spawnedBotList.erase(spawnedBotList.begin() + i); //elimina dall botList il bot in posizione i
 		}
@@ -179,15 +179,15 @@ void game::kill_BOT() {
 void game::BOT_spawner() { //N = numero di bot da spawnare
 	if (spawnedBotList.empty()) { //se la lista di bot NON è vuota
 
-		if (difficolta <= 6) {
-			difficolta++; //aumento la difficoltà
+		if (difficulty <= FINAL_DIFFICULTY) {
+			difficulty++; //aumento la difficoltà
 		}
-		int N = difficolta;
+		int N = difficulty;
 		
 		//inserisco N indici random all'interno di una lista
 		//ogni indice sarà associato ad un tipo di bot della modelBotList
 		vector <int> bot_index;
-		for (int i = 0; i < difficolta; i++) {
+		for (int i = 0; i < difficulty; i++) {
 			int index = randMtoN(0, modelBotList.size());
 			bot_index.push_back(index);
 		}
@@ -205,7 +205,7 @@ void game::BOT_spawner() { //N = numero di bot da spawnare
 		}	
 
 		//spawn dei bot (associando il modello di bot della prima lista ad un path della seconda lista)
-		for (int i = 0; i < N; i++) {
+		for (int i = FIRST; i < N; i++) {
 			spawn_BOT(pathList[matrix_index[i]], bot_index[i]);
 		}
 
@@ -240,7 +240,7 @@ void game::powerUp_spawner() {
 		power_up->z = powerUp_coord.z;
 
 		int i = randMtoN(1, 2);
-		if (p->life <= PLAYER_LIFE/4 || p->chest_life <= CHEST_LIFE/4) {
+		if (p->life <= PLAYER_LIFE/2 || p->chest_life <= CHEST_LIFE/2) {
 			power_up->powerUp_type = MEDIKIT;
 		}
 		else {
@@ -263,25 +263,25 @@ void game::init(int selectedPlayer, int weaponType) {
 	//Se il game non è stato ancora inizializzato
 	if (gameInitialized == false) {
 
-		if (loadingGame->statusLoading == 0.0f) {
+		if (loadingGame->statusLoading == STATUS_LOADING_0) {
 			// init MAP
 			mappa->initMap();
 			cout << "*** Map: Loaded -> Initialized" << endl;
 		}
 
-		if (loadingGame->statusLoading == 15.0f) {
+		if (loadingGame->statusLoading == STATUS_LOADING_1) {
 			// init PLAYER
 			p->initPlayer(selectedPlayer, weaponType);
 			cout << "*** Players: Loaded -> Initialized" << endl;
 		}
 
-		if (loadingGame->statusLoading >= 50 && loadingGame->statusLoading < 90) {
+		if (loadingGame->statusLoading >= STATUS_LOADING_2 && loadingGame->statusLoading < STATUS_LOADING_5) {
 			// init BOT models
 			initModelBotList();
 			cout << "*** Bot Models: Loaded" << endl;
 		}
 
-		if (loadingGame->statusLoading == 90.0f) {
+		if (loadingGame->statusLoading == STATUS_LOADING_5) {
 			// init PATH
 			initPathList();
 			cout << "*** Paths: Loaded" << endl;
@@ -290,7 +290,7 @@ void game::init(int selectedPlayer, int weaponType) {
 			power_up->initPowerUp();
 			cout << "*** PowerUp: Loaded" << endl;
 
-			difficolta = 0;
+			difficulty = START_DIFFICULTY;
 			cout << "*** Difficolta: 0" << endl;
 
 			
@@ -303,10 +303,10 @@ void game::init(int selectedPlayer, int weaponType) {
 	//Se il game è già stato inizializzato. Resetto animazioni e posizioni del player e dei bot
 	else if (gameInitialized == true) {
 
-		if (loadingGame->statusLoading == 1.0f) {
+		if (loadingGame->statusLoading == UNIT) {
 
 			//Elimino tutti i bot spawnati
-			for (int i = 0; i < spawnedBotList.size(); i++) {
+			for (int i = FIRST; i < spawnedBotList.size(); i++) {
 				spawnedBotList.pop_back();
 			}
 			
@@ -317,7 +317,7 @@ void game::init(int selectedPlayer, int weaponType) {
 			power_up->spawned = false;
 
 			//resetto la difficoltà a 0
-			difficolta = 0;
+			difficulty = START_DIFFICULTY;
 
 		}
 	}
@@ -330,8 +330,8 @@ void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader 
 	animShader.use();
 
 	//projection
-	glm::mat4 projection_animation = glm::mat4(1.0f);	//identity matrix
-	projection_animation = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	glm::mat4 projection_animation = glm::mat4(UNIT);	//identity matrix
+	projection_animation = glm::perspective(glm::radians(PROJECTION_ANGLE_45), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	animShader.setMat4("projection", projection_animation);
 
 	//view
@@ -339,9 +339,9 @@ void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader 
 
 	//light properties
 	animShader.setVec3("light.position", lightPos);
-	animShader.setVec3("light.ambient", 1.0f, 1.0f, 1.0f);
-	animShader.setVec3("light.diffuse", 1.0f, 1.0f, 1.0f);
-	animShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	animShader.setVec3("light.ambient", UNIT, UNIT, UNIT);
+	animShader.setVec3("light.diffuse", UNIT, UNIT, UNIT);
+	animShader.setVec3("light.specular", UNIT, UNIT, UNIT);
 
 
 	// ---- SIMPLE Shader ---- //
@@ -351,17 +351,17 @@ void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader 
 	simpleShader.setMat4("view", view);
 
 	//projection
-	glm::mat4 projection2 = glm::mat4(1.0f);	//identity matrix
-	projection2 = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	glm::mat4 projection2 = glm::mat4(UNIT);	//identity matrix
+	projection2 = glm::perspective(glm::radians(PROJECTION_ANGLE_45), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	simpleShader.setMat4("projection", projection2);
-	simpleShader.setVec4("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	simpleShader.setVec4("color", UNIT, UNIT, UNIT, UNIT);
 
 	// ---- LIGHT Shader ---- //
 	lightShader.use();
 
 	//projection
-	glm::mat4 projection3 = glm::mat4(1.0f);	//identity matrix
-	projection3 = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	glm::mat4 projection3 = glm::mat4(UNIT);	//identity matrix
+	projection3 = glm::perspective(glm::radians(PROJECTION_ANGLE_45), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	lightShader.setMat4("projection", projection3);
 
 	//view
@@ -371,8 +371,8 @@ void game::setShadersProperties(Shader simpleShader, Shader lightShader, Shader 
 	lightShader.setVec3("light.position", lightPos);
 	lightShader.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
 	lightShader.setVec3("light.diffuse", 0.7f, 0.7f, 0.7f);
-	lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-	lightShader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("light.specular", UNIT, UNIT, UNIT);
+	lightShader.setVec3("colormodel", UNIT, UNIT, UNIT);
 
 }
 
@@ -394,7 +394,7 @@ void game::draw(Shader simpleShader, Shader lightShader, Shader animShader, glm:
 
 	//DRAW BOTS
 	if (spawnedBotList.size() >= 1) {
-		for (int i = 0; i < spawnedBotList.size(); i++) {
+		for (int i = FIRST; i < spawnedBotList.size(); i++) {
 
 			
 			spawnedBotList[i]->drawVillain(animShader,simpleShader);
@@ -424,60 +424,43 @@ void game::drawScore(Shader simpleShader,player* p) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	simpleShader.use();
 
-	/*
-	//camera pos
-	glm::vec3 pos_camera(0.0f, 0.0f, 1.0f);
-	glm::vec3 at_camera(0.0f, 0.0f, -1.0f);
-	pos_camera_mobile_global = pos_camera;
-	glm::vec3 up(0.0, 1.0, 0.0);
-
-	//view
-	glm::mat4 view2 = glm::mat4(1.0f);
-	view2 = glm::lookAt(pos_camera, at_camera, up);
-	view_global = view2;
-	simpleShader.setMat4("view", view2);
-
-	//projection
-	glm::mat4 projection2 = glm::mat4(1.0f);	//identity matrix
-	projection2 = glm::perspective(glm::radians(85.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	simpleShader.setMat4("projection", projection2);
-	*/
+	
 	glActiveTexture(GL_TEXTURE0);
 
-	glm::mat4 modelGameOver = glm::mat4(1.0f);	//identity matrix
-	modelGameOver = glm::translate(modelGameOver, glm::vec3(p->getX(), p->getY()+3.0f, p->getZ() - 5.0f));
-	modelGameOver = glm::rotate(modelGameOver, 3.14f, glm::vec3(1.0f, 0.0f, 0.0f));
-	modelGameOver = glm::scale(modelGameOver, glm::vec3(2.5f, 0.1f, 2.5f));
-	simpleShader.setMat4("model", modelGameOver);
+	glm::mat4 modelScore = glm::mat4(UNIT);	//identity matrix
+	modelScore = glm::translate(modelScore, glm::vec3(p->getX(), p->getY()+ OFFSET_Y_SCORE, p->getZ() - OFFSET_Z_SCORE));
+	modelScore = glm::rotate(modelScore, PI, glm::vec3(UNIT, 0.0f, 0.0f));
+	modelScore = glm::scale(modelScore, glm::vec3(SCALE_SCORE_X, SCALE_SCORE_Y, SCALE_SCORE_Z));
+	simpleShader.setMat4("model", modelScore);
 	glBindTexture(GL_TEXTURE_2D, score_texture);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
-	int decine = 0;
-	int unita = 0;
+	int ten = FIRST_NAMBER;
+	int unita = FIRST_NAMBER;
 
-	if (score != 0) {
-		decine = score / 10;
-		unita = score % 10;
+	if (score != FIRST_NAMBER) {
+		ten = score / LAST_NAMBER;
+		unita = score % LAST_NAMBER;
 	}
 
 
 	/*DECINE*/
-	glm::mat4 decineM = glm::mat4(1.0f);
+	glm::mat4 tenModel = glm::mat4(UNIT);
 
-	decineM = glm::translate(decineM, glm::vec3(p->getX() + 1.8f, p->getY() + 3.0f, p->getZ()-5.0f));
-	decineM = glm::rotate(decineM, 3.14f, glm::vec3(1.0f, 0.0f, 0.0f));
-	decineM = glm::scale(decineM, glm::vec3(0.7f, 0.1f, 0.7f));
-	simpleShader.setMat4("model", decineM);
-	glBindTexture(GL_TEXTURE_2D, num_texture[decine]);
+	tenModel = glm::translate(tenModel, glm::vec3(p->getX() + OFFSET_TEN_X, p->getY() + OFFSET_TEN_Y, p->getZ()- OFFSET_TEN_Z));
+	tenModel = glm::rotate(tenModel, PI, glm::vec3(UNIT, 0.0f, 0.0f));
+	tenModel = glm::scale(tenModel, glm::vec3(SCALE_TEN_X, SCALE_TEN_Y, SCALE_TEN_Z));
+	simpleShader.setMat4("model", tenModel);
+	glBindTexture(GL_TEXTURE_2D, num_texture[ten]);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	//UNITA
-	glm::mat4 unitM = glm::mat4(1.0f);
+	glm::mat4 unitM = glm::mat4(UNIT);
 
-	unitM = glm::mat4(1.0f);	//identity matrix
-	unitM = glm::translate(unitM, glm::vec3(p->getX() + 2.5f, p->getY() +3.0f, p->getZ()-5.0f));
-	unitM = glm::rotate(unitM, 3.14f, glm::vec3(1.0f, 0.0f, 0.0f));
-	unitM = glm::scale(unitM, glm::vec3(0.7f, 0.1f, 0.7f));
+	unitM = glm::mat4(UNIT);	//identity matrix
+	unitM = glm::translate(unitM, glm::vec3(p->getX() + OFFSET_UNIT_X, p->getY() + OFFSET_TEN_Y, p->getZ()- OFFSET_TEN_Z));
+	unitM = glm::rotate(unitM, 3.14f, glm::vec3(UNIT, 0.0f, 0.0f));
+	unitM = glm::scale(unitM, glm::vec3(SCALE_TEN_X, SCALE_TEN_Y, SCALE_TEN_Z));
 	simpleShader.setMat4("model", unitM);
 	glBindTexture(GL_TEXTURE_2D, num_texture[unita]);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

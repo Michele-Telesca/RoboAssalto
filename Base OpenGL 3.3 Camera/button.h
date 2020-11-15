@@ -62,32 +62,32 @@ void button::drawButton(Shader shader) {
 
 	// material properties
 	shader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
-	shader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	shader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("material.diffuse", UNIT, UNIT, UNIT);
+	shader.setVec3("material.specular", UNIT, UNIT, UNIT);
 	shader.setFloat("material.shininess", 76.8f);
 
 	if (!isSelected && !cursorIsAbove) {	 //se il bottone non è nè selezionato nè il cursore è sopra
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(UNIT);
 		model = glm::translate(model, glm::vec3(x, y, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
 		model = glm::scale(model, glm::vec3(dim, dim, dim));
 		shader.setMat4("model", model);
-		shader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
+		shader.setVec3("colormodel", UNIT, UNIT, UNIT);
 
 		buttonSelection->Draw(shader);
 	}
 	else if (isSelected) {  //se l'utente seleziona il bottone (click)
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(UNIT);
 		model = glm::translate(model, glm::vec3(x, y - 0.1f, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
 		model = glm::scale(model, glm::vec3(dim, dim, dim));
 		shader.setMat4("model", model);
-		shader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
+		shader.setVec3("colormodel", UNIT, UNIT, UNIT);
 
 		buttonSelection->Draw(shader);
 	}
 	else if (!isSelected && cursorIsAbove) { //se il cursore è sul bottone, ma non è selezionato
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(UNIT);
 		model = glm::translate(model, glm::vec3(x, y, z));
 		model = glm::rotate(model, angle, glm::vec3(rotate_x, rotate_y, rotate_z));
 		model = glm::scale(model, glm::vec3(dim, dim, dim));

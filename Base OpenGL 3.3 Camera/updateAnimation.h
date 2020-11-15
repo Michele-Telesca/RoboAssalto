@@ -209,7 +209,7 @@ void updateAnimation::increasePlayer_Stand(player* player) {
 
 void updateAnimation::increasePlayer_Run(player* player) {
 
-	if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se il player cammina
+	if (moveDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se il player cammina
 		player->animationTime_playerRunning = player->animationTime_playerRunning + 0.05f;  //incremento l'animazione
 
 		if (player->animationTime_playerRunning == 0.05f) { //quando il player fa primo passo
@@ -225,7 +225,7 @@ void updateAnimation::increasePlayer_Run(player* player) {
 			SoundEngine_effect->play2D("audio/footstep grass.wav", false); //sound step
 		}
 
-		if (player->animationTime_playerRunning > 1.0f && player->wea->weapon_type == WEAPON_SHOTGUN) {   //quando il player fa il secondo passo
+		if (player->animationTime_playerRunning > UNIT && player->wea->weapon_type == WEAPON_SHOTGUN) {   //quando il player fa il secondo passo
 			player->animationTime_playerRunning = 0.0f;     //resetto il tempo di animazione all'inizio -> ricomincia da 
 		}
 
@@ -275,7 +275,7 @@ void updateAnimation::increase_menuPlayer_posing(mainMenu* main_menu) {
 	if (main_menu->animation_brycePosing == true) {
 		main_menu->animationTime_brycePosing = main_menu->animationTime_brycePosing + 0.06f;
 		if (main_menu->animationTime_brycePosing >= 9.2f) {
-			main_menu->animationTime_brycePosing = 1.0f;
+			main_menu->animationTime_brycePosing = UNIT;
 		}
 	}
 

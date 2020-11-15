@@ -36,9 +36,9 @@ void loading::init() {
 
 	if (loadingInitialized == false) {
 		cout << "loadinginit" << endl;
-		background = new cube(23.0f, 0.0f, 23.0f, glm::radians(40.0f), 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+		background = new cube(23.0f, 0.0f, 23.0f, glm::radians(40.0f), UNIT, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
-		loading_bar = new cube(0.1f, 0.0f, 0.9f, glm::radians(40.0f), 1.0f, 0.0f, 0.0f, -1.9f, 1.0f, 0.5f);
+		loading_bar = new cube(0.1f, 0.0f, 0.9f, glm::radians(40.0f), UNIT, 0.0f, 0.0f, -1.9f, UNIT, 0.5f);
 
 		loading_boundary = new Model();
 		loading_boundary->loadModel("models/menu/boundary_loading.dae");
@@ -56,13 +56,13 @@ void loading::draw(Shader simpleShader, float width) {
 	simpleShader.use();
 
 	//view
-	glm::mat4 view2 = glm::mat4(1.0f);
+	glm::mat4 view2 = glm::mat4(UNIT);
 	view2 = glm::lookAt(pos_camera, at_camera, up);
 	view_global = view2;
 	simpleShader.setMat4("view", view2);
 
 	//projection
-	glm::mat4 projection2 = glm::mat4(1.0f);	//identity matrix
+	glm::mat4 projection2 = glm::mat4(UNIT);	//identity matrix
 	projection2 = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	simpleShader.setMat4("projection", projection2);
 
@@ -72,10 +72,10 @@ void loading::draw(Shader simpleShader, float width) {
 	loading_bar->setDimX(width + 0.1f);
 	loading_bar->drawCube(simpleShader, texture_statusbar);
 
-	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(UNIT);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.0f));
-	model = glm::rotate(model, glm::radians(-50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(-50.0f), glm::vec3(UNIT, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(UNIT, UNIT, UNIT));
 	simpleShader.setMat4("model", model);
 	loading_boundary->Draw(simpleShader);
 

@@ -7,16 +7,57 @@ glm::mat4 view_global(1.0f);
 
 bool quit = false;
 
-
+// FOR FIRST
+const int FIRST = 0;
+// valore unitario
+const float UNIT = 1.0f;
+const float INIT_ZERO = 0.0f;
+//PI
+const float PI = 3.14f;
+const float HALF_PI = 3.14f / 2.0F;
 //camera parameters
-const float UP_X = 0.0;
-const float UP_Y = 1.0;
-const float UP_Z = 0.0;
+const float UP_X = 0.0f;
+const float UP_Y = 1.0f;
+const float UP_Z = 0.0f;
 
+const float PROJECTION_ANGLE_45 = 45.0f;
+
+//time start 
+const float TIMEBASE_START = 0.0f;
+const double TIME_START = 0.0f;
+const float DELTA_TIME_START = 0.0f;
+const float LAST_FRAME_START = 0.0f;
+
+//time utility
+const int TIME_END_FIRST_INTRO = 13;
+const int TIME_END_SECOND_INTRO = 19;
+const int TIME_END_LAST_INTRO = 24;
+
+//plane hit mouse
+const float PLANE_NORMAL_X = 0.0f;
+const float PLANE_NORMAL_Y = 1.0f;
+const float PLANE_NORMAL_Z = 0.0f;
+
+const float PLANE_POS_X = 0.75f;
+const float PLANE_POS_Y = 1.0f;
+const float PLANE_POS_Z = 0.75f;
+
+//clear color parameters
+const float COLOR_R = 0.2f;
+const float COLOR_G = 0.3f;
+const float COLOR_B = 0.3f;
+
+
+//TEXTURE FONT
+const int FIRST_NAMBER = 0;
+const int LAST_NAMBER = 10;
 
 // settings
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
+
+//VERTEX ATTRIBUTES
+const int STRIDE = 8;
 
 float RENDER_SPEED = 0.03f; //Più è alto e più rallenta; più è basso e più velocizza
 
@@ -32,11 +73,49 @@ float EPSILON_3 = 0.25f; // epsilon di collisione tra player e bot
 
 // -- CAMERA -- //
 glm::vec3 lightPos(0.0f, 25.0f, 0.0f); //posizione luce
-//glm::vec3 lightPos(0.0f, -1.0f, 0.0f); //DIREZIONE luce
+//glm::vec3 lightPos(0.0f, -UNIT, 0.0f); //DIREZIONE luce
+const float MOBILE_CAMERA_OFFSET_Y = 12.0f;
+const float MOBILE_CAMERA_OFFSET_Z = 10.0f;
+const float MOBILE_CAMERA_AT_Y = 0.0f;
+
 
 // -- PLAYER -- //
 const int PLAYER_MICHELLE = 1;
 const int PLAYER_BRYCE = 2;
+
+const float MIN_LIFE_PLAYER = 0.0f;
+const float MIN_LIFE_CHEST = 0.0f;
+
+const float PLAYER_SPOW_X = 0.0f;
+const float PLAYER_SPOW_Y = 0.5f;
+const float PLAYER_SPOW_Z = 0.0f;
+const float CHARGING_TIME = 5.0f;
+
+
+const int MAX_SHOT_AVAILABLE = 3;
+const int MIN_SHOT_AVAILABLE = 0;
+
+const float ANGLE_PLAYER_ROTATE = 90.0f;
+
+const float ANGLE_0 = 0.0f;
+const float ANGLE_180 = 180.0f;
+const float ANGLE_360 = 360.0f;
+
+const float ANGLE_OFFSET = 15.0f;
+
+const float SHADOW_OFFSET_Y_PLAYER = 0.02f;
+const float SHADOW_SCALE_PLAYER = 1.4f;
+
+const float OFFSET_SHOT_BAR = 2.22f;
+const float SCALE_OFFSET_SHOT_BAR = 0.03f;
+const float SCALE_SHOT_BAR_Y = 0.01f;
+const float SCALE_SHOT_BAR_Z = 0.10f;
+
+const float OFFSET_POSITION_LIFEBAR = 2.4f;
+const float SCALE_LIFEBARZ = 0.15f;
+
+const float OFFSET_Y_CHESTlIFE_BAR = 1.5f;
+
 
 // -- MAPOBJECT -- //
 const int STONE1 = 1;
@@ -95,7 +174,7 @@ const float ANGLE_RANGE_SNIPER = 90.0f;
 const int MEDIKIT = 3;
 
 // -- KEYBOARD/MOUSE BUTTON -- //
-bool muoviDx = false;
+bool moveDx = false;
 bool muoviSx = false;
 bool muoviSu = false;
 bool muoviGiu = false;
@@ -105,7 +184,7 @@ bool buttonEsc = false;
 
 // -- LIFE and DAMAGE -- //
 const float PLAYER_LIFE = 100.0f;
-const float CHEST_LIFE = 200.0f;
+const float CHEST_LIFE = 250.0f;
 const float MEDIKIT_HEAL = 50.0f;
 
 const float SNIPER_DAMAGE = 50.0f;
@@ -124,3 +203,35 @@ const float ZOMBIE_COP_DAMAGE = 50.0f;
 const int FIRST_INTRO = 1;
 const int SECOND_INTRO = 2;
 const int LAST_INTRO = 3;
+
+
+
+//GAME PARAMETERS
+const int INITIAL_SCORE = 0.0f;
+
+const int STATUS_LOADING_0 = 0;
+const int STATUS_LOADING_1 = 15;
+const int STATUS_LOADING_2 = 50;
+const int STATUS_LOADING_3 = 60;
+const int STATUS_LOADING_4 = 80;
+const int STATUS_LOADING_5 = 90;
+
+
+const int FINAL_DIFFICULTY = 6;
+const int START_DIFFICULTY = 0;
+
+const float SCALE_SCORE_X = 2.5f;
+const float SCALE_SCORE_Y = 0.1f;
+const float SCALE_SCORE_Z = 2.5f;
+const float OFFSET_Y_SCORE = 3.0f;
+const float OFFSET_Z_SCORE = 5.0f;
+
+const float OFFSET_TEN_X = 1.8f;
+const float OFFSET_TEN_Y = 3.0f;
+const float OFFSET_TEN_Z = 5.0f;
+const float SCALE_TEN_X = 0.7f;
+const float SCALE_TEN_Y = 0.1f;
+const float SCALE_TEN_Z = 0.7F;
+const float OFFSET_UNIT_X = 2.5f;
+
+ 

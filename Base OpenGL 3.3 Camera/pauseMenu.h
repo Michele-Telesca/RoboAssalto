@@ -40,26 +40,26 @@ void pauseMenu::init() {
 
 	buttonClicked = false;
 
-	returnGame = new button(0.0f, 1.0f, -2.0f, 0.25f, glm::radians(-85.0f), 1.0f, 0.0f, 0.0f);
+	returnGame = new button(0.0f, UNIT, -2.0f, 0.25f, glm::radians(-85.0f), UNIT, 0.0f, 0.0f);
 	returnGame->init("models/menu/button_return.dae");
 
-	gameOver = new cube(0.0f, 1.0f, -2.0f, glm::radians(4.9f), 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	gameOver = new cube(0.0f, UNIT, -2.0f, glm::radians(4.9f), UNIT, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 
-	goToMainMenu = new button(0.0f, 1.0f, 0.0f, 0.25f, glm::radians(-85.0f), 1.0f, 0.0f, 0.0f);
+	goToMainMenu = new button(0.0f, UNIT, 0.0f, 0.25f, glm::radians(-85.0f), UNIT, 0.0f, 0.0f);
 	goToMainMenu->init("models/menu/button_mainMenu.dae");
 
-	quit = new button(0.0f, 1.0f, 2.0f, 0.25f, glm::radians(-85.0f), 1.0f, 0.0f, 0.0f);
+	quit = new button(0.0f, UNIT, 2.0f, 0.25f, glm::radians(-85.0f), UNIT, 0.0f, 0.0f);
 	quit->init("models/menu/button_quit.dae");
 
-	background = new cube(18.0f, 0.0f, 18.0f, glm::radians(4.9f), 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	background = new cube(18.0f, 0.0f, 18.0f, glm::radians(4.9f), UNIT, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 }
 
 void pauseMenu::setShadersProperties(Shader simpleShader, Shader lightShader) {
 
 	//camera pos
-	glm::vec3 pos_camera(0.0f, 12.0f, 1.0f);
+	glm::vec3 pos_camera(0.0f, 12.0f, UNIT);
 	glm::vec3 at_camera(0.0f, 0.0f, 0.0f);
 	pos_camera_mobile_global = pos_camera;
 	glm::vec3 up(0.0, 1.0, 0.0);
@@ -68,13 +68,13 @@ void pauseMenu::setShadersProperties(Shader simpleShader, Shader lightShader) {
 	simpleShader.use();
 
 	//view
-	glm::mat4 view2 = glm::mat4(1.0f);
+	glm::mat4 view2 = glm::mat4(UNIT);
 	view2 = glm::lookAt(pos_camera, at_camera, up);
 	view_global = view2;
 	simpleShader.setMat4("view", view2);
 
 	//projection
-	glm::mat4 projection2 = glm::mat4(1.0f);	//identity matrix
+	glm::mat4 projection2 = glm::mat4(UNIT);	//identity matrix
 	projection2 = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	simpleShader.setMat4("projection", projection2);
 
@@ -82,12 +82,12 @@ void pauseMenu::setShadersProperties(Shader simpleShader, Shader lightShader) {
 	lightShader.use();
 
 	//projection
-	glm::mat4 projection3 = glm::mat4(1.0f);	//identity matrix
+	glm::mat4 projection3 = glm::mat4(UNIT);	//identity matrix
 	projection3 = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	lightShader.setMat4("projection", projection3);
 
 	//view
-	glm::mat4 view3 = glm::mat4(1.0f);
+	glm::mat4 view3 = glm::mat4(UNIT);
 	view3 = glm::lookAt(pos_camera, at_camera, up);
 	view_global = view3;
 	lightShader.setMat4("view", view3);
@@ -96,8 +96,8 @@ void pauseMenu::setShadersProperties(Shader simpleShader, Shader lightShader) {
 	lightShader.setVec3("light.position", lightPos);
 	lightShader.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
 	lightShader.setVec3("light.diffuse", 0.7f, 0.7f, 0.7f);
-	lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-	lightShader.setVec3("colormodel", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("light.specular", UNIT, UNIT, UNIT);
+	lightShader.setVec3("colormodel", UNIT, UNIT, UNIT);
 }
 
 void pauseMenu::draw(Shader simpleShader, Shader lightShader,bool gameover) {
@@ -129,11 +129,11 @@ void pauseMenu::drawGameOver(Shader simpleShader) {
 	glBindTexture(GL_TEXTURE_2D, texture_gameover);
 	glBindVertexArray(cubeVAO);
 
-	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-	glm::mat4 modelS = glm::mat4(1.0f);
+	//simpleShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+	glm::mat4 modelS = glm::mat4(UNIT);
 
 	modelS = glm::translate(modelS, glm::vec3(0.0f, 2.0f, -2.0f));
-	modelS = glm::rotate(modelS, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	modelS = glm::rotate(modelS, glm::radians(180.0f), glm::vec3(UNIT, 0.0f, 0.0f));
 	modelS = glm::translate(modelS, glm::vec3(0.0f, 0.0f, 0.0f));
 	modelS = glm::scale(modelS, glm::vec3(3.4f, 0.02f, 2.0f));
 

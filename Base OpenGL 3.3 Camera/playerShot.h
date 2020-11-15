@@ -68,15 +68,15 @@ void playerShot::drawPlayerShot(Shader simpleShader, int texturePlayer,weapon *w
 
 	// material properties
 	simpleShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
-	simpleShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	simpleShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	simpleShader.setVec3("material.diffuse", UNIT, UNIT, UNIT);
+	simpleShader.setVec3("material.specular", UNIT, UNIT, UNIT);
 	simpleShader.setFloat("material.shininess", 76.8f);
 
 	if (wea->lengthBase != LENGTH_BASE_SHOTGUN) {
 
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(UNIT);
 		model = glm::translate(model, glm::vec3(x, y, z));
-		model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, angle, glm::vec3(0.0f, UNIT, 0.0f));
 		model = glm::scale(model, glm::vec3(0.03f, 0.03f, 0.20f)); //bullet scale
 		simpleShader.setMat4("model", model);
 		shotModel->Draw(simpleShader); //bullet draw
@@ -84,33 +84,33 @@ void playerShot::drawPlayerShot(Shader simpleShader, int texturePlayer,weapon *w
 	else {
 
 		simpleShader.use();
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(UNIT);
 		model = glm::translate(model, glm::vec3(x - 0.5f, y, z));
-		model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, angle, glm::vec3(0.0f, UNIT, 0.0f));
 		model = glm::scale(model, glm::vec3(0.03f, 0.03f, 0.20f)); 
 		simpleShader.setMat4("model", model);
 		shotModel->Draw(simpleShader); 
 
 		simpleShader.use();
-		glm::mat4 model1 = glm::mat4(1.0f);
+		glm::mat4 model1 = glm::mat4(UNIT);
 		model1 = glm::translate(model1, glm::vec3(x + 0.5f, y, z));
-		model1 = glm::rotate(model1, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+		model1 = glm::rotate(model1, angle, glm::vec3(0.0f, UNIT, 0.0f));
 		model1 = glm::scale(model1, glm::vec3(0.03f, 0.03f, 0.20f));
 		simpleShader.setMat4("model", model1);
 		shotModel->Draw(simpleShader); 
 
 		simpleShader.use();
-		glm::mat4 model2 = glm::mat4(1.0f);
+		glm::mat4 model2 = glm::mat4(UNIT);
 		model2 = glm::translate(model2, glm::vec3(x, y - 0.2f, z));
-		model2 = glm::rotate(model2, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+		model2 = glm::rotate(model2, angle, glm::vec3(0.0f, UNIT, 0.0f));
 		model2 = glm::scale(model2, glm::vec3(0.03f, 0.03f, 0.20f));
 		simpleShader.setMat4("model", model2);
 		shotModel->Draw(simpleShader); 
 
 		simpleShader.use();
-		glm::mat4 model3 = glm::mat4(1.0f);
+		glm::mat4 model3 = glm::mat4(UNIT);
 		model3 = glm::translate(model3, glm::vec3(x, y + 0.2f, z));
-		model3 = glm::rotate(model3, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+		model3 = glm::rotate(model3, angle, glm::vec3(0.0f, UNIT, 0.0f));
 		model3 = glm::scale(model3, glm::vec3(0.03f, 0.03f, 0.20f)); 
 		simpleShader.setMat4("model", model3);
 		shotModel->Draw(simpleShader); 
@@ -122,11 +122,11 @@ void playerShot::drawPlayerShot(Shader simpleShader, int texturePlayer,weapon *w
 	glBindTexture(GL_TEXTURE_2D, texturePlayer);
 	glBindVertexArray(cubeVAO);
 
-	simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-	glm::mat4 modelW = glm::mat4(1.0f);
+	simpleShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+	glm::mat4 modelW = glm::mat4(UNIT);
 
 	modelW = glm::translate(modelW, glm::vec3(x, y, z));
-	modelW = glm::rotate(modelW, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+	modelW = glm::rotate(modelW, angle, glm::vec3(0.0f, UNIT, 0.0f));
 	modelW = glm::scale(modelW, glm::vec3(dim, dim, dim));
 
 	simpleShader.setMat4("model", modelW);

@@ -56,7 +56,7 @@ public:
 	vector<playerShot*> listShot;
 
 	//texture
-	unsigned int texture1;
+	unsigned int texture_target;
 	unsigned int textureLife;
 	unsigned int textureShotBar;
 	unsigned int textureShadow;
@@ -120,11 +120,11 @@ public:
 	}
 
 	void addNumShotAvailable() {
-		numShotsAvailable = numShotsAvailable + 1;
+		numShotsAvailable = numShotsAvailable++;
 	}
 
 	void removeShot() {
-		numShotsAvailable = numShotsAvailable -1;
+		numShotsAvailable = numShotsAvailable--;
 	}
 
 	int getNumShot() {
@@ -143,9 +143,9 @@ void  player::resetPlayer(int selectedPlayer, int weaponType) {
 	wea->setWeaponProperties();
 
 	//punto in cui nasce
-	x = 0.0f;
-	y = 0.5f;
-	z = 0.0f;
+	x = PLAYER_SPOW_X;
+	y = PLAYER_SPOW_Y;
+	z = PLAYER_SPOW_Z;
 
 	anglePlayer = 0.0f;
 
@@ -160,10 +160,10 @@ void  player::resetPlayer(int selectedPlayer, int weaponType) {
 	setNumShotAvailable(numShot);
 
 	//tempo ricarica colpo
-	chargingTime = 5.0f;
+	chargingTime = CHARGING_TIME;
 
 	//tempo ultimo colpo
-	timeLastShot = 0.0f;
+	timeLastShot = INIT_ZERO;
 
 	//inizializzo la lista dei colpi
 	for (int i = 0; i < numShot; i++) {
@@ -173,10 +173,10 @@ void  player::resetPlayer(int selectedPlayer, int weaponType) {
 	}
 
 	// tempo per le animazioni
-	animationTime_playerStanding = 0.0f;
-	animationTime_playerRunning = 0.0f;
+	animationTime_playerStanding = INIT_ZERO;
+	animationTime_playerRunning = INIT_ZERO;
 
-	delayShotTime = 0.0f; //delay tra uno sparo e un altro
+	delayShotTime = INIT_ZERO; //delay tra uno sparo e un altro
 	delayShotIsFinished = true;
 }
 
@@ -210,7 +210,7 @@ float angleBetween(const glm::vec3 a, const glm::vec3 b) {
 
 bool player::checkShotDelay(float currentTime) { //tempo tra uno shot e un altro di file
 	if (wea->weapon_type == WEAPON_SHOTGUN) {
-		if (delayShotTime == 0.0f || (currentTime - delayShotTime) > DELAY_SHOTGUN) {
+		if (delayShotTime == INIT_ZERO || (currentTime - delayShotTime) > DELAY_SHOTGUN) {
 			return true;
 		}
 		else {
@@ -230,10 +230,10 @@ bool player::checkShotDelay(float currentTime) { //tempo tra uno shot e un altro
 
 bool player::checkShotIsAvaiable(float currentTime) {
 	//controllo se gli shot disponibili sono minori di tre e se è passato il tempo necessario per caricare un colpo
-	if (numShotsAvailable == 3) {
+	if (numShotsAvailable == MAX_SHOT_AVAILABLE) {
 		setTimeLastShot(currentTime);
 	}
-	if (numShotsAvailable < 3) {
+	if (numShotsAvailable < MAX_SHOT_AVAILABLE) {
 		if ((currentTime - timeLastShot) > chargingTime) {
 			addNumShotAvailable();
 			setTimeLastShot(currentTime);
@@ -241,7 +241,7 @@ bool player::checkShotIsAvaiable(float currentTime) {
 		}
 	}
 	//se i colpi disponibili sono minori di 0 non posso sparare oppure il tempo passato dal lastshot è inferiore a tot
-	if (numShotsAvailable == 0) {
+	if (numShotsAvailable == MIN_SHOT_AVAILABLE) {
 		return false;
 	}
 	//se ho colpi disponibili setto il tempo di lastShot e torno true
@@ -252,16 +252,16 @@ bool player::checkShotIsAvaiable(float currentTime) {
 
 void player::updateAngleShot(float tempDegree, float anglePlayer) {
 
-	for (float ang = 0.0f; ang < 180.0f; ang = ang + 15.0f) {
-		float tempAng = ang + 15.0f;
+	for (float ang = ANGLE_0; ang < ANGLE_180; ang = ang + ANGLE_OFFSET) {
+		float tempAng = ang + ANGLE_OFFSET;
 		if (tempDegree >= ang && tempDegree < tempAng) {
 			setAnglePlayer(ang);
 		}
 	}
-	for (float ang = -180.0f; ang < 0.0f; ang = ang + 15.0f) {
-		float tempAng = ang + 15.0f;
+	for (float ang = -ANGLE_180; ang < ANGLE_0; ang = ang + ANGLE_OFFSET) {
+		float tempAng = ang + ANGLE_OFFSET;
 		if (tempDegree >= ang && tempDegree < tempAng) {
-			setAnglePlayer(ang + 360.0f);
+			setAnglePlayer(ang + ANGLE_360);
 		}
 	}
 }
@@ -292,11 +292,11 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 	}
 
 	//model
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(x, 0.5f, z));
-	model = glm::rotate(model, radiansAngle, glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //per metterlo in posizione verticale sul pavimento
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	glm::mat4 model = glm::mat4(UNIT);
+	model = glm::translate(model, glm::vec3(x, PLAYER_SPOW_Y, z));
+	model = glm::rotate(model, radiansAngle, glm::vec3(INIT_ZERO, UNIT, INIT_ZERO));
+	model = glm::rotate(model, glm::radians(-ANGLE_PLAYER_ROTATE), glm::vec3(UNIT, INIT_ZERO, INIT_ZERO)); //per metterlo in posizione verticale sul pavimento
+	model = glm::scale(model, glm::vec3(UNIT, UNIT, UNIT));
 	animShader.setMat4("model", model);	
 
 	//material properties
@@ -335,14 +335,14 @@ void player::drawPlayer(Shader simpleShader, Shader animShader, glm::vec3 mouseP
 
 	//DRAW TARGET
 	if (mouseSxIsSelected) {
-		wea->drawTarget(simpleShader, x, y, z, texture1, angleWeapon);
+		wea->drawTarget(simpleShader, x, y, z, texture_target, angleWeapon);
 	}
 
 	//DRAW SHOT
-	for (int i = 0; i < numShot; i++) {
+	for (int i = FIRST_NAMBER; i < numShot; i++) {
 		if (listShot[i]->isShot) {
 
-				listShot[i]->drawPlayerShot(lightShader, texture1, wea);
+				listShot[i]->drawPlayerShot(lightShader, texture_target, wea);
 			
 		}
 	}
@@ -370,14 +370,14 @@ void player::drawShadowPlayer(Shader simpleShader) {
 	glBindTexture(GL_TEXTURE_2D, textureShadow);
 	glBindVertexArray(cubeVAO);
 
-	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-	glm::mat4 modelS = glm::mat4(1.0f);
+	//simpleShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+	glm::mat4 modelS = glm::mat4(UNIT);
 
 
-	modelS = glm::translate(modelS, glm::vec3(x, y + 0.02f, z));
-	modelS = glm::rotate(modelS, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	modelS = glm::translate(modelS, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelS = glm::scale(modelS, glm::vec3(1.4f, 0.02f, 1.4f));
+	modelS = glm::translate(modelS, glm::vec3(x, y + SHADOW_OFFSET_Y_PLAYER, z));
+	modelS = glm::rotate(modelS, HALF_PI, glm::vec3(INIT_ZERO, UNIT, INIT_ZERO));
+	modelS = glm::translate(modelS, glm::vec3(INIT_ZERO, INIT_ZERO, INIT_ZERO));
+	modelS = glm::scale(modelS, glm::vec3(SHADOW_SCALE_PLAYER, SHADOW_OFFSET_Y_PLAYER, SHADOW_SCALE_PLAYER));
 
 	simpleShader.setMat4("model", modelS);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -389,7 +389,7 @@ void player::animatePlayer(Shader animShader) {
 
 	vector <glm::mat4> transforms;
 
-	if (muoviDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) { //se non mi muovo -> meshStanding
+	if (moveDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) { //se non mi muovo -> meshStanding
 		if (wea->weapon_type == WEAPON_SHOTGUN) {
 			if (playerSelected == PLAYER_MICHELLE) {
 				michelle_meshStanding_shotgun.boneTransform(animationTime_playerStanding, transforms);
@@ -430,7 +430,7 @@ void player::animatePlayer(Shader animShader) {
 		}
 		
 	}
-	else if (muoviDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning		
+	else if (moveDx == true || muoviSx == true || muoviSu == true || muoviGiu == true) { //se mi muovo -> meshRunning		
 		if (wea->weapon_type == WEAPON_SHOTGUN) {
 			if (playerSelected == PLAYER_MICHELLE) {
 				michelle_meshRunning_shotgun.boneTransform(animationTime_playerRunning, transforms);
@@ -470,10 +470,12 @@ void player::animatePlayer(Shader animShader) {
 	}
 }
 
-void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader simpleShader) {
-	
 
-	float shotBarLenght = (lifeMax / 3.0f) / lifeMax;
+//DRAW SHOT PLAYER
+void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader simpleShader) {
+
+
+	float shotBarLenght = (lifeMax / MAX_SHOT_AVAILABLE) / lifeMax;
 	float shotHalfBar = (shotBarLenght / 2.0);
 	float center = x - shotBarLenght;
 
@@ -482,7 +484,7 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 
 	for (int i = 0; i < numShotsAvailable; i++) {
 
-		
+
 
 		simpleShader.use();
 
@@ -491,13 +493,13 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 		glBindTexture(GL_TEXTURE_2D, textureShotBar);
 		glBindVertexArray(cubeVAO);
 
-		//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-		glm::mat4 modelLife = glm::mat4(1.0f);
+		//lightShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+		glm::mat4 modelLife = glm::mat4(UNIT);
 
-		modelLife = glm::translate(modelLife, glm::vec3(center + (shotBarLenght*i), y + 2.22f, z));
-		modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelLife = glm::translate(modelLife, glm::vec3(center + (shotBarLenght * i), y + OFFSET_SHOT_BAR, z));
+		modelLife = glm::rotate(modelLife, HALF_PI, glm::vec3(UNIT, 0.0f, 0.0f));
 		modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
-		modelLife = glm::scale(modelLife, glm::vec3(shotBarLenght - 0.03f, 0.01f, 0.10f));
+		modelLife = glm::scale(modelLife, glm::vec3(shotBarLenght - SCALE_OFFSET_SHOT_BAR, SCALE_SHOT_BAR_Y, SCALE_SHOT_BAR_Z));
 
 		simpleShader.setMat4("model", modelLife);
 
@@ -508,23 +510,22 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 
 		simpleShader.use();
 
-		float lenghtCalcShot = ((currentTime - timeLastShot) * shotBarLenght)/chargingTime;
+		float lenghtCalcShot = ((currentTime - timeLastShot) * shotBarLenght) / chargingTime;
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture1);
+		glBindTexture(GL_TEXTURE_2D, texture_target);
 		glBindVertexArray(cubeVAO);
 
-		//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-		glm::mat4 modelLife = glm::mat4(1.0f);
+		glm::mat4 modelLife = glm::mat4(UNIT);
 
 
 		float centerCalcStart = (center + (shotBarLenght * (numShotsAvailable))) - shotHalfBar;
-		float centerCalc = centerCalcStart + (lenghtCalcShot/2.0f);
+		float centerCalc = centerCalcStart + (lenghtCalcShot / 2.0f);
 
-		modelLife = glm::translate(modelLife, glm::vec3(centerCalc, y + 2.22f, z));
-		modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelLife = glm::translate(modelLife, glm::vec3(centerCalc, y + OFFSET_SHOT_BAR, z));
+		modelLife = glm::rotate(modelLife, HALF_PI, glm::vec3(UNIT, 0.0f, 0.0f));
 		modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
-		modelLife = glm::scale(modelLife, glm::vec3(lenghtCalcShot -0.02f, 0.01f, 0.10f));
+		modelLife = glm::scale(modelLife, glm::vec3(lenghtCalcShot - SCALE_OFFSET_SHOT_BAR, SCALE_SHOT_BAR_Y, SCALE_SHOT_BAR_Z));
 
 		simpleShader.setMat4("model", modelLife);
 
@@ -532,6 +533,8 @@ void player::drawShotAvaiable(int numShotsAvailable, float currentTime, Shader s
 	}
 	glDisable(GL_BLEND);
 }
+
+//DRAW LIFE PLAYER
 void player::drawLifePlayer(Shader simpleShader) {
 
 	glEnable(GL_BLEND);
@@ -541,26 +544,26 @@ void player::drawLifePlayer(Shader simpleShader) {
 	float offSet = 0.0f;
 
 	if (life != lifeMax) {
-		 offSet = ((lifeMax - life) / 2)/lifeMax;
+		offSet = ((lifeMax - life) / 2) / lifeMax;
 	}
 
 	float lifeLenght = life / lifeMax;
 
-	if (life < 0.0f) {
-		lifeLenght = 0.0f;
+	if (life < MIN_LIFE_PLAYER) {
+		lifeLenght = MIN_LIFE_PLAYER;
 	}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureLife);
 	glBindVertexArray(cubeVAO);
 
-	//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-	glm::mat4 modelLife = glm::mat4(1.0f);
+	//lightShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+	glm::mat4 modelLife = glm::mat4(UNIT);
 
-	modelLife = glm::translate(modelLife, glm::vec3(x - offSet, y + 2.4f, z));
-	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	modelLife = glm::translate(modelLife, glm::vec3(x - offSet, y + OFFSET_POSITION_LIFEBAR, z));
+	modelLife = glm::rotate(modelLife, HALF_PI, glm::vec3(UNIT, 0.0f, 0.0f));
 	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.15f));
+	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, SCALE_SHOT_BAR_Y, SCALE_LIFEBARZ));
 
 	simpleShader.setMat4("model", modelLife);
 
@@ -580,27 +583,27 @@ void player::drawChestLife(Shader simpleShader) {
 
 	float offSet = 0.0f;
 
-	if (chest_life != 200.0f) {
-		offSet = ((200.0f - chest_life) / 2) / 200.0f;
+	if (chest_life != CHEST_LIFE) {
+		offSet = ((CHEST_LIFE - chest_life) / 2) / CHEST_LIFE;
 	}
 
-	float lifeLenght = chest_life / 200.0f;
+	float lifeLenght = chest_life / CHEST_LIFE;
 
-	if (chest_life < 0.0f) {
-		lifeLenght = 0.0f;
+	if (chest_life < MIN_LIFE_CHEST) {
+		lifeLenght = MIN_LIFE_CHEST;
 	}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureLife);
 	glBindVertexArray(cubeVAO);
 
-	//lightShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-	glm::mat4 modelLife = glm::mat4(1.0f);
+	//lightShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+	glm::mat4 modelLife = glm::mat4(UNIT);
 
-	modelLife = glm::translate(modelLife, glm::vec3(-1.0f - offSet, y + 1.5f, 0.0f));
-	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	modelLife = glm::translate(modelLife, glm::vec3(-UNIT - offSet, y + OFFSET_Y_CHESTlIFE_BAR, 0.0f));
+	modelLife = glm::rotate(modelLife, 3.14f / 2.0f, glm::vec3(UNIT, 0.0f, 0.0f));
 	modelLife = glm::translate(modelLife, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, 0.01f, 0.15f));
+	modelLife = glm::scale(modelLife, glm::vec3(lifeLenght, SCALE_SHOT_BAR_Y, SCALE_LIFEBARZ));
 
 	simpleShader.setMat4("model", modelLife);
 

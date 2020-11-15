@@ -46,13 +46,13 @@ updateAnimation* update_animation = new updateAnimation();
 
 
 //time
-float timebase = 0;
-double currentTime = 0.0f;
+float timebase = TIMEBASE_START;
+double currentTime = TIME_START;
 double previousTime = glfwGetTime();
 
 // timing
-float deltaTime = 0.0f;	// time between current frame and last frame
-float lastFrame = 0.0f;
+float deltaTime = DELTA_TIME_START;	// time between current frame and last frame
+float lastFrame = LAST_FRAME_START;
 
 //vettore up della camera
 glm::vec3 up(UP_X, UP_Y, UP_Z);
@@ -114,15 +114,15 @@ void processInput(GLFWwindow* window)
 
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			if (muoviSx != true) {
-				muoviDx = true;
+				moveDx = true;
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
-			muoviDx = false;
+			moveDx = false;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-			if (muoviDx != true) {
+			if (moveDx != true) {
 				muoviSx = true;
 			}
 		}
@@ -185,9 +185,9 @@ void mouse_position() {
 	glm::mat4 view_matrix = view_global;
 
 	//Step 1: 3d Normalised Device Coordinates
-	float x = (2.0f * cp.x) / (float)SCR_WIDTH - 1.0f;
-	float y = 1.0f - (2.0f * cp.y) / (float)SCR_HEIGHT;
-	float z = 1.0f;
+	float x = (2.0f * cp.x) / (float)SCR_WIDTH - UNIT;
+	float y = UNIT - (2.0f * cp.y) / (float)SCR_HEIGHT;
+	float z = UNIT;
 	glm::vec3 ray_nds(x, y, z);
 
 	//Step 2: 4d Homogeneous Clip Coordinates
@@ -201,8 +201,8 @@ void mouse_position() {
 	glm::vec3 ray_word((inverse(view_matrix) * ray_eye).x, (inverse(view_matrix) * ray_eye).y, (inverse(view_matrix) * ray_eye).z);
 	ray_word = glm::normalize(ray_word);
 
-	glm::vec3 plane_normal_word(0.0f, 1.0f, 0.0f);
-	glm::vec3 plane_pos_word(-0.75f, 1.0f, 0.75f);
+	glm::vec3 plane_normal_word(PLANE_NORMAL_X, PLANE_NORMAL_Y, PLANE_NORMAL_Z);
+	glm::vec3 plane_pos_word(- PLANE_POS_X, PLANE_POS_Y, PLANE_POS_Z);
 	ray_plane(plane_normal_word, plane_pos_word, ray_word, pos_camera_mobile_global, DIM);
 
 }
@@ -217,7 +217,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 }
 
 void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(COLOR_R, COLOR_G, COLOR_B, UNIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	currentTime = glfwGetTime();
@@ -230,7 +230,7 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 
 		// ------- PLAYER MOVES ------- //
 
-		if (muoviDx) {
+		if (moveDx) {
 			update_game->moveRight(player, botList);
 		}
 
@@ -258,7 +258,7 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 		else {
 			gameuno->getPlayer()->startPlayerShot = false;
 		}
-		if (gameuno->getPlayer()->chest_life <= 0.0f || gameuno->getPlayer()->life <= 0.0f) {
+		if (gameuno->getPlayer()->chest_life <= MIN_LIFE_CHEST || gameuno->getPlayer()->life <= MIN_LIFE_PLAYER) {
 			gameuno->gameOver = true;
 		}
 
@@ -297,15 +297,15 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	//glm::vec3 at_camera_mobile(x, 0.0f, z - 5.0f);
 
 	//corretta
-	glm::vec3 pos_camera_mobile(x, 12.0f, z + 10.0f);
-	glm::vec3 at_camera_mobile(x, 0.0f, z);
+	glm::vec3 pos_camera_mobile(x, MOBILE_CAMERA_OFFSET_Y, z + MOBILE_CAMERA_OFFSET_Z);
+	glm::vec3 at_camera_mobile(x, MOBILE_CAMERA_AT_Y, z);
 
 	////dall alto
 	//glm::vec3 pos_camera_mobile(x, 20.0f, z);
-	//glm::vec3 at_camera_mobile(x, 0.0f, z - 1.0f);
+	//glm::vec3 at_camera_mobile(x, 0.0f, z - UNIT);
 
 	//view
-	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 view = glm::mat4(UNIT);
 	view = glm::lookAt(pos_camera_mobile, at_camera_mobile, up);
 	pos_camera_mobile_global = pos_camera_mobile;
 	view_global = view;
@@ -317,7 +317,7 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 }
 
 void renderMainMenu(Shader simpleShader, Shader lightShader, Shader animShader) {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(COLOR_R, COLOR_G, COLOR_B, UNIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	currentTime = glfwGetTime();
@@ -354,7 +354,7 @@ void renderMainMenu(Shader simpleShader, Shader lightShader, Shader animShader) 
 
 void renderLoading(Shader simpleShader) {
 
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(COLOR_R, COLOR_G, COLOR_B, UNIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//setto a false la soundtrack del menu
@@ -375,7 +375,7 @@ void renderLoading(Shader simpleShader) {
 }
 
 void renderPauseMenu(Shader simpleShader, Shader lightShader) {
-	glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
+	glClearColor(COLOR_R, COLOR_G, COLOR_B, UNIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	currentTime = glfwGetTime();
@@ -394,7 +394,7 @@ void renderPauseMenu(Shader simpleShader, Shader lightShader) {
 
 void renderName(Shader simpleShader,Shader lightShader,int intro) {
 
-	glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
+	glClearColor(COLOR_R, COLOR_G, COLOR_B, UNIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	prev_menu->draw(simpleShader, lightShader, intro);
 }
@@ -404,11 +404,11 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 {
 	currentTime = glfwGetTime();
 
-	if(currentTime < 13){
+	if(currentTime < TIME_END_FIRST_INTRO){
 		renderName(simpleShader, lightShader, FIRST_INTRO);
-	}else if (currentTime >= 13 && currentTime < 19) {
+	}else if (currentTime >= TIME_END_FIRST_INTRO && currentTime < TIME_END_SECOND_INTRO) {
 		renderName(simpleShader, lightShader, SECOND_INTRO);
-	} else if (currentTime >= 19 && currentTime < 24) {
+	} else if (currentTime >= TIME_END_SECOND_INTRO && currentTime < TIME_END_LAST_INTRO) {
 		renderName(simpleShader, lightShader, LAST_INTRO);
 	} else {
 		if (!gameuno->inGame && !gameuno->loadingGame->isLoading) {
@@ -495,7 +495,7 @@ int main()
 #endif
 
 																											 // glfw window creation
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL 3.3 - Roboassalto", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL 3.3 - Zombie Attack", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -515,7 +515,7 @@ int main()
 
 	// caricamento texture
 	gameuno->getGameMap()->texturePrato = loadtexture("texture/prato2.png", false);
-	gameuno->getPlayer()->texture1 = loadtexture("texture/target.png", true);
+	gameuno->getPlayer()->texture_target = loadtexture("texture/target.png", true);
 	gameuno->getPlayer()->textureLife = loadtexture("texture/lifeBar.png", true);
 	gameuno->getPlayer()->textureShotBar = loadtexture("texture/shotBar.png", true);
 	gameuno->textureLifeBar = loadtexture("texture/lifeBar.png", true);
@@ -535,7 +535,7 @@ int main()
 	gameuno->score_texture = loadtexture("texture/font/Score.png", true);
 
 	//load font texture
-	for (int j = 0; j < 10; j++) {
+	for (int j = FIRST_NAMBER; j < LAST_NAMBER; j++) {
 		string file = "texture/font/" + to_string(j);
 		file = file + ".png";
 		cout << file << endl;
@@ -553,13 +553,13 @@ int main()
 	glBindVertexArray(cubeVAO);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, STRIDE * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// normal attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, STRIDE * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	// texture coord attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, STRIDE * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind

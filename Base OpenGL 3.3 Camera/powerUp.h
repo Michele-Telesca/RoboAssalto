@@ -58,16 +58,16 @@ void powerUp::initPowerUp() {
 	medikit->loadModel("models/power_up/medikit/medikit.dae");
 
 	//inizilizzo la lista di coordinate di spawn dei powerUp e le inserisco in una lista
-	spawnCoordsList.push_back(glm::vec3(0.0f, 1.0f, 15.0f));    // indice: 0
-	spawnCoordsList.push_back(glm::vec3(-5.0f, 1.0f, 17.5f));   // indice: 1
-	spawnCoordsList.push_back(glm::vec3(-7.5f, 1.0f, 6.0f));    // indice: 2
-	spawnCoordsList.push_back(glm::vec3(-9.0f, 1.0f, -6.0f));   // indice: 3
-	spawnCoordsList.push_back(glm::vec3(0.0f, 1.0f, -15.0f));   // indice: 4
-	spawnCoordsList.push_back(glm::vec3(8.5f, 1.0f, -5.5f));    // indice: 5
-	spawnCoordsList.push_back(glm::vec3(8.0f, 1.0f, 3.0f));		// indice: 6
-	spawnCoordsList.push_back(glm::vec3(17.0f, 1.0f, -1.5f));   // indice: 7
-	spawnCoordsList.push_back(glm::vec3(3.5f, 1.0f, 8.0f));     // indice: 8
-	spawnCoordsList.push_back(glm::vec3(13.0f, 1.0f, 14.0f));   // indice: 9
+	spawnCoordsList.push_back(glm::vec3(0.0f, UNIT, 15.0f));    // indice: 0
+	spawnCoordsList.push_back(glm::vec3(-5.0f, UNIT, 17.5f));   // indice: 1
+	spawnCoordsList.push_back(glm::vec3(-7.5f, UNIT, 6.0f));    // indice: 2
+	spawnCoordsList.push_back(glm::vec3(-9.0f, UNIT, -6.0f));   // indice: 3
+	spawnCoordsList.push_back(glm::vec3(0.0f, UNIT, -15.0f));   // indice: 4
+	spawnCoordsList.push_back(glm::vec3(8.5f, UNIT, -5.5f));    // indice: 5
+	spawnCoordsList.push_back(glm::vec3(8.0f, UNIT, 3.0f));		// indice: 6
+	spawnCoordsList.push_back(glm::vec3(17.0f, UNIT, -1.5f));   // indice: 7
+	spawnCoordsList.push_back(glm::vec3(3.5f, UNIT, 8.0f));     // indice: 8
+	spawnCoordsList.push_back(glm::vec3(13.0f, UNIT, 14.0f));   // indice: 9
 }
 
 void powerUp::drawPowerUp(Shader lightShader,Shader simpleShader) {
@@ -76,32 +76,32 @@ void powerUp::drawPowerUp(Shader lightShader,Shader simpleShader) {
 
 	// material properties
 	lightShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
-	lightShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	lightShader.setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	lightShader.setVec3("material.diffuse", UNIT, UNIT, UNIT);
+	lightShader.setVec3("material.specular", UNIT, UNIT, UNIT);
 	lightShader.setFloat("material.shininess", 76.8f);
 
 	if (powerUp_type == WEAPON_SHOTGUN) {
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(UNIT);
 		model = glm::translate(model, glm::vec3(x, y + animationTime_translate_y, z));
-		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, UNIT, 0.0f));
 		model = glm::scale(model, glm::vec3(0.025f, 0.025f, 0.025f)); //bullet scale
 		lightShader.setMat4("model", model);
 		shotgun->Draw(lightShader); //bullet draw
 	} 
 
 	else if (powerUp_type == WEAPON_SNIPER) {
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(UNIT);
 		model = glm::translate(model, glm::vec3(x, y + animationTime_translate_y, z));
-		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, UNIT, 0.0f));
 		model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.06f)); //bullet scale
 		lightShader.setMat4("model", model);
 		sniper->Draw(lightShader); //bullet draw
 	}
 
 	else if (powerUp_type == MEDIKIT) {
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(UNIT);
 		model = glm::translate(model, glm::vec3(x, y + animationTime_translate_y, z));
-		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, UNIT, 0.0f));
 		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f)); //bullet scale
 		lightShader.setMat4("model", model);
 		medikit->Draw(lightShader); //bullet draw
@@ -121,8 +121,8 @@ void powerUp::drawBase(Shader simpleShader, int powerUp_type) {
 	glBindTexture(GL_TEXTURE_2D, texture_base);
 	glBindVertexArray(cubeVAO);
 
-	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
-	glm::mat4 modelS = glm::mat4(1.0f);
+	//simpleShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
+	glm::mat4 modelS = glm::mat4(UNIT);
 
 	if (powerUp_type == WEAPON_SHOTGUN) {
 		modelS = glm::translate(modelS, glm::vec3(x + 0.35f, y + 0.02f, z));
@@ -131,7 +131,7 @@ void powerUp::drawBase(Shader simpleShader, int powerUp_type) {
 		modelS = glm::translate(modelS, glm::vec3(x, y + 0.02f, z));
 	}
 
-	modelS = glm::rotate(modelS, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	modelS = glm::rotate(modelS, 3.14f / 2.0f, glm::vec3(0.0f, UNIT, 0.0f));
 	modelS = glm::translate(modelS, glm::vec3(0.0f, 0.0f, 0.0f));
 	modelS = glm::scale(modelS, glm::vec3(1.6f, 0.02f, 1.6f));
 

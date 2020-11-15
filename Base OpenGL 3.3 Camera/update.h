@@ -411,7 +411,7 @@ void update::calculateAnglePlayer(player* p) {
 	float anglePlayerR = 0.0f;
 	float anglePlayer = p->getAnglePlayer();
 
-	if (muoviDx == true) {
+	if (moveDx == true) {
 		anglePlayerR = 90.0f;
 		if (muoviSu == true) {
 			anglePlayerR = 135.0f;
@@ -431,16 +431,16 @@ void update::calculateAnglePlayer(player* p) {
 	}
 
 	if (muoviGiu == true) {
-		if (muoviDx == false && muoviSx == false) {
+		if (moveDx == false && muoviSx == false) {
 			anglePlayerR = 0.0f;
 		}
 	}
 	if (muoviSu == true) {
-		if (muoviDx == false && muoviSx == false) {
+		if (moveDx == false && muoviSx == false) {
 			anglePlayerR = 180.0;
 		}
 	}
-	if (muoviDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) {
+	if (moveDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) {
 		anglePlayerR = anglePlayer;
 	}
 
