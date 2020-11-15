@@ -55,7 +55,7 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
 //vettore up della camera
-glm::vec3 up(0.0, 1.0, 0.0);
+glm::vec3 up(UP_X, UP_Y, UP_Z);
 
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
@@ -392,11 +392,11 @@ void renderPauseMenu(Shader simpleShader, Shader lightShader) {
 	pause_menu->draw(simpleShader, lightShader,gameuno->gameOver);
 }
 
-void renderName(Shader simpleShader,Shader lightShader,bool nameProject) {
+void renderName(Shader simpleShader,Shader lightShader,int intro) {
 
 	glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	prev_menu->draw(simpleShader, lightShader, nameProject);
+	prev_menu->draw(simpleShader, lightShader, intro);
 }
 
 // viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
@@ -404,10 +404,12 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 {
 	currentTime = glfwGetTime();
 
-	if (currentTime < 10) {
-		renderName(simpleShader, lightShader, true);
-	} else if (currentTime >= 10 && currentTime < 20) {
-		renderName(simpleShader, lightShader, false);
+	if(currentTime < 13){
+		renderName(simpleShader, lightShader, FIRST_INTRO);
+	}else if (currentTime >= 13 && currentTime < 19) {
+		renderName(simpleShader, lightShader, SECOND_INTRO);
+	} else if (currentTime >= 19 && currentTime < 24) {
+		renderName(simpleShader, lightShader, LAST_INTRO);
 	} else {
 		if (!gameuno->inGame && !gameuno->loadingGame->isLoading) {
 			renderMainMenu(simpleShader, lightShader, animShader);
@@ -520,20 +522,19 @@ int main()
 	gameuno->textureShadow = loadtexture("texture/ombra.png", true);
 	gameuno->getGameMap()->textureShadow = loadtexture("texture/ombraAlberi.png", true);
 	gameuno->power_up->texture_base = loadtexture("texture/powerUp.png", true);
-
 	gameuno->getPlayer()->textureShadow = loadtexture("texture/ombra.png", true);
-
 	gameuno->loadingGame->texture_statusbar = loadtexture("texture/loadingBar.png", true);
 	gameuno->loadingGame->texture_boundary = loadtexture("texture/texture_boundary.png", true);
 	gameuno->loadingGame->texture_background = loadtexture("texture/sfondo2.png", false);
-
 	main_menu->texture_background = loadtexture("texture/sfondo2.png", true);
 	pause_menu->texture_background = loadtexture("texture/sfondo2.png",false);
 	pause_menu ->texture_gameover = loadtexture("texture/gameover.png", true);
 	prev_menu->texture_name= loadtexture("texture/nomi.png", true);
 	prev_menu->texture_team = loadtexture("texture/progetto.png", true);
-
+	prev_menu->texture_unibas = loadtexture("texture/intro.png", true);
 	gameuno->score_texture = loadtexture("texture/font/Score.png", true);
+
+	//load font texture
 	for (int j = 0; j < 10; j++) {
 		string file = "texture/font/" + to_string(j);
 		file = file + ".png";

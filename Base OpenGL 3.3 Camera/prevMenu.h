@@ -8,12 +8,14 @@ public:
 	prevMenu() {}
 
 	cube* background;
+
+	unsigned int texture_unibas;
 	unsigned int texture_name;
 	unsigned int texture_team;
 
 
 	void setShadersProperties(Shader simpleShader, Shader lightShader);
-	void draw(Shader simpleShader, Shader lightShader, bool nameProject);
+	void draw(Shader simpleShader, Shader lightShader, int intro);
 
 	void init();
 };
@@ -71,10 +73,13 @@ void prevMenu::init() {
 }
 
 
-void prevMenu::draw(Shader simpleShader, Shader lightShader, bool nameProject) {
+void prevMenu::draw(Shader simpleShader, Shader lightShader, int intro) {
 	
 	setShadersProperties(simpleShader, lightShader);
-	if (nameProject) {
+	if (intro == FIRST_INTRO) {
+		background->drawCube(simpleShader, texture_unibas);
+	}
+	else if (intro == SECOND_INTRO) {
 		background->drawCube(simpleShader, texture_name);
 	}
 	else {

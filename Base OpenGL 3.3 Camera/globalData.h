@@ -7,6 +7,13 @@ glm::mat4 view_global(1.0f);
 
 bool quit = false;
 
+
+//camera parameters
+const float UP_X = 0.0;
+const float UP_Y = 1.0;
+const float UP_Z = 0.0;
+
+
 // settings
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
@@ -112,3 +119,8 @@ const float ZOMBIE_DERRICK_DAMAGE = 25.0f;
 
 const float ZOMBIE_COP_LIFE = 300.0f;
 const float ZOMBIE_COP_DAMAGE = 50.0f;
+
+
+const int FIRST_INTRO = 1;
+const int SECOND_INTRO = 2;
+const int LAST_INTRO = 3;

@@ -38,7 +38,7 @@ class powerUp
 
 		void initPowerUp();
 		void drawPowerUp(Shader lightShader,Shader simpleShader);
-		void drawBase(Shader simpleShader);
+		void drawBase(Shader simpleShader,int powerUp_type);
 };
 
 void powerUp::initPowerUp() {
@@ -107,10 +107,10 @@ void powerUp::drawPowerUp(Shader lightShader,Shader simpleShader) {
 		medikit->Draw(lightShader); //bullet draw
 	}
 	
-	drawBase(simpleShader);
+	drawBase(simpleShader, powerUp_type);
 }
 
-void powerUp::drawBase(Shader simpleShader) {
+void powerUp::drawBase(Shader simpleShader, int powerUp_type) {
 	simpleShader.use();
 
 	glEnable(GL_BLEND);
@@ -124,8 +124,13 @@ void powerUp::drawBase(Shader simpleShader) {
 	//simpleShader.setVec3("colorcube", 1.0f, 0.0f, 0.0f);
 	glm::mat4 modelS = glm::mat4(1.0f);
 
+	if (powerUp_type == WEAPON_SHOTGUN) {
+		modelS = glm::translate(modelS, glm::vec3(x + 0.35f, y + 0.02f, z));
+	}
+	else {
+		modelS = glm::translate(modelS, glm::vec3(x, y + 0.02f, z));
+	}
 
-	modelS = glm::translate(modelS, glm::vec3(x, y + 0.02f, z));
 	modelS = glm::rotate(modelS, 3.14f / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	modelS = glm::translate(modelS, glm::vec3(0.0f, 0.0f, 0.0f));
 	modelS = glm::scale(modelS, glm::vec3(1.6f, 0.02f, 1.6f));
