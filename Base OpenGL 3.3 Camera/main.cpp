@@ -191,11 +191,11 @@ void mouse_position() {
 	glm::vec3 ray_nds(x, y, z);
 
 	//Step 2: 4d Homogeneous Clip Coordinates
-	glm::vec4 ray_clip(ray_nds.x, ray_nds.y, -1.0, 1.0);
+	glm::vec4 ray_clip(ray_nds.x, ray_nds.y, -UNIT, UNIT);
 
 	//Step 3: 4d Eye (Camera) Coordinates
 	glm::vec4 ray_eye = inverse(projection_matrix) * ray_clip;
-	ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
+	ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -UNIT, 0.0);
 
 	//Step 4: 4d World Coordinates
 	glm::vec3 ray_word((inverse(view_matrix) * ray_eye).x, (inverse(view_matrix) * ray_eye).y, (inverse(view_matrix) * ray_eye).z);

@@ -29,9 +29,9 @@ const float DELTA_TIME_START = 0.0f;
 const float LAST_FRAME_START = 0.0f;
 
 //time utility
-const int TIME_END_FIRST_INTRO = 13;
-const int TIME_END_SECOND_INTRO = 19;
-const int TIME_END_LAST_INTRO = 24;
+const int TIME_END_FIRST_INTRO = 15;
+const int TIME_END_SECOND_INTRO = 20;
+const int TIME_END_LAST_INTRO = 25;
 
 //plane hit mouse
 const float PLANE_NORMAL_X = 0.0f;
