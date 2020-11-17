@@ -44,7 +44,6 @@ pauseMenu* pause_menu = new pauseMenu();
 update* update_game = new update();
 updateAnimation* update_animation = new updateAnimation();
 
-
 //time
 float timebase = TIMEBASE_START;
 double currentTime = TIME_START;
@@ -337,6 +336,10 @@ void renderMainMenu(Shader simpleShader, Shader lightShader, Shader animShader) 
 		update_animation->menuSound(main_menu);
 
 		if (main_menu->startNewGame) { //il flag startNewGame è true (l'utente ha cliccato su play)
+
+			currentTime = glfwGetTime();
+			srand(currentTime);
+
 			gameuno->gameOver = false;
 			gameuno->loadingGame->init(); //inizializzo la barra di caricamento 
 			gameuno->loadingGame->isLoading = true; //setto il caricamento a true
@@ -494,7 +497,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
 
-																											 // glfw window creation
+	// glfw window creation
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL 3.3 - Zombie Attack", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;

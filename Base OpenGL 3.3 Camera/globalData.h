@@ -100,6 +100,17 @@ const float ANGLE_PLAYER_ROTATE = 90.0f;
 const float ANGLE_0 = 0.0f;
 const float ANGLE_180 = 180.0f;
 const float ANGLE_360 = 360.0f;
+const float ANGLE_270 = 270.0f;
+const float ANGLE_45 = 45.0f;
+const float ANGLE_135 = 135.0f;
+const float ANGLE_225 = 225.0f;
+const float ANGLE_315 = 315.0f;
+
+
+
+
+
+const float ANGLE_90 = 90.0f;
 
 const float ANGLE_OFFSET = 15.0f;
 

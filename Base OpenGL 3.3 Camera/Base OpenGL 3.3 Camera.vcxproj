@@ -32,7 +32,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ProjectGuid>{ce296191-0fa5-4e5e-a2db-e0663f9fab52}</ProjectGuid>
     <RootNamespace>Base_OpenGL_3_3_Camera</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>RoboAssalto</ProjectName>
+    <ProjectName>ZombieAttack</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -185,14 +185,12 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="playerShot.h" />
     <ClInclude Include="point3D.h" />
     <ClInclude Include="powerUp.h" />
-    <ClInclude Include="shader_m.h" />
     <ClInclude Include="mapObject.h" />
     <ClInclude Include="skinned_mesh.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="update.h" />
     <ClInclude Include="updateAnimation.h" />
     <ClInclude Include="utility.h" />
-    <ClInclude Include="villainShot.h" />
     <ClInclude Include="weapon.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="player.h" />

@@ -307,16 +307,16 @@ void update::moveBot(villain* bot, player* p,game* gameuno) {
 				if (bot->isOnPath == false) {
 					//Allora risetto la rotazione secondo il path 
 					if (bot->old_direction == DIRECTION_RIGHT) {
-						bot->rotationAngle = 90.0f;
-						bot->angleToReach = 90.0f;
+						bot->rotationAngle = ANGLE_90;
+						bot->angleToReach = ANGLE_90;
 					}
 					else if (bot->old_direction == DIRECTION_LEFT) {
-						bot->rotationAngle = 270.0f;
-						bot->angleToReach = 270.0f;
+						bot->rotationAngle = ANGLE_270;
+						bot->angleToReach = ANGLE_270;
 					}
 					else if (bot->old_direction == DIRECTION_UP) {
-						bot->rotationAngle = 180.0f;
-						bot->angleToReach = 180.0f;
+						bot->rotationAngle = ANGLE_180;
+						bot->angleToReach = ANGLE_180;
 					}
 					else if (bot->old_direction == DIRECTION_DOWN) {
 						bot->rotationAngle = 0.0f;
@@ -343,11 +343,11 @@ void update::moveBot(villain* bot, player* p,game* gameuno) {
 
 					else if (newCoord_x < bot->getX()) {                    //dovrò muovere a sinistra
 						if (bot->old_direction == DIRECTION_DOWN) {             //se la vecchia direzione era verso il basso
-							bot->angleToReach = bot->rotationAngle - 90.0f;        //setto l'angolo di rotazioe da raggiungere a -90
+							bot->angleToReach = bot->rotationAngle - ANGLE_90;        //setto l'angolo di rotazioe da raggiungere a -90
 							bot->sensoOrario = true;                               //setto il senso di rotazione ORARIO
 						}
 						else if (bot->old_direction == DIRECTION_UP) {          //se la vecchia direzione era verso l'alto
-							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
+							bot->angleToReach = bot->rotationAngle + ANGLE_90;        //setto l'angolo di rotazione da raggiungere a +90
 							bot->sensoOrario = false;							   //setto il senso di rotazione ANTIORARIO
 						}
 						bot->setX(bot->getX() - BOT_MOVE_STEP);                 //muovi verso sinistra
@@ -359,11 +359,11 @@ void update::moveBot(villain* bot, player* p,game* gameuno) {
 
 					if (newCoord_z > bot->getZ()) {                         //dovrò muovere in basso
 						if (bot->old_direction == DIRECTION_RIGHT) {           //se la vecchia direzione era verso destra
-							bot->angleToReach = bot->rotationAngle - 90.0f;        //setto l'angolo di rotazione da raggiungere a -90
+							bot->angleToReach = bot->rotationAngle - ANGLE_90;        //setto l'angolo di rotazione da raggiungere a -90
 							bot->sensoOrario = true;                               //setto il senso di rotazione ORARIO
 						}
 						else if (bot->old_direction == DIRECTION_LEFT) {       //se la vecchia direzione era verso sinistra
-							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
+							bot->angleToReach = bot->rotationAngle + ANGLE_90;        //setto l'angolo di rotazione da raggiungere a +90
 							bot->sensoOrario = false;                              //setto il senso di rotazione ANTIORARIO
 						}
 						bot->setZ(bot->getZ() + BOT_MOVE_STEP);                 //muovi verso il basso
@@ -372,11 +372,11 @@ void update::moveBot(villain* bot, player* p,game* gameuno) {
 
 					else if (newCoord_z < bot->getZ()) {                    //dovrò muovere in alto
 						if (bot->old_direction == DIRECTION_RIGHT) {            //se la vecchia direzione era verso destra
-							bot->angleToReach = bot->rotationAngle + 90.0f;        //setto l'angolo di rotazione da raggiungere a +90
+							bot->angleToReach = bot->rotationAngle + ANGLE_90;        //setto l'angolo di rotazione da raggiungere a +90
 							bot->sensoOrario = false;							   //setto il senso di rotazione ANTIORARIO
 						}
 						else if (bot->old_direction == DIRECTION_LEFT) {        //se la vecchia direzione era verso sinistra
-							bot->angleToReach = bot->rotationAngle - 90.0f;        //setto l'angolo di rotazione da raggiungere a -90
+							bot->angleToReach = bot->rotationAngle - ANGLE_90;        //setto l'angolo di rotazione da raggiungere a -90
 							bot->sensoOrario = true;							   //setto il senso di rotazione ORARIO
 						}
 						bot->setZ(bot->getZ() - BOT_MOVE_STEP);                 //muovo verso l'alto
@@ -412,21 +412,21 @@ void update::calculateAnglePlayer(player* p) {
 	float anglePlayer = p->getAnglePlayer();
 
 	if (moveDx == true) {
-		anglePlayerR = 90.0f;
+		anglePlayerR = ANGLE_90;
 		if (muoviSu == true) {
-			anglePlayerR = 135.0f;
+			anglePlayerR = ANGLE_135;
 		}
 		if (muoviGiu == true) {
-			anglePlayerR = 45.0f;
+			anglePlayerR = ANGLE_45;
 		}
 	}
 	if (muoviSx == true) {
-		anglePlayerR = 270.0f;
+		anglePlayerR = ANGLE_270;
 		if (muoviSu == true) {
-			anglePlayerR = 225.0f;
+			anglePlayerR = ANGLE_225;
 		}
 		if (muoviGiu == true) {
-			anglePlayerR = 315.0f;
+			anglePlayerR = ANGLE_315;
 		}
 	}
 
@@ -437,7 +437,7 @@ void update::calculateAnglePlayer(player* p) {
 	}
 	if (muoviSu == true) {
 		if (moveDx == false && muoviSx == false) {
-			anglePlayerR = 180.0;
+			anglePlayerR = ANGLE_180;
 		}
 	}
 	if (moveDx == false && muoviSx == false && muoviSu == false && muoviGiu == false) {
@@ -445,31 +445,31 @@ void update::calculateAnglePlayer(player* p) {
 	}
 
 	if (anglePlayer - anglePlayerR > 0.0f ) {
-		if (anglePlayer - anglePlayerR < 180.0f) {
-			anglePlayer = anglePlayer - 15.0f;
+		if (anglePlayer - anglePlayerR < ANGLE_180) {
+			anglePlayer = anglePlayer - ANGLE_OFFSET;
 		}
 		else {
-			anglePlayer = anglePlayer + 15.0f;
+			anglePlayer = anglePlayer + ANGLE_OFFSET;
 
 		}
 	}
 	if (anglePlayer - anglePlayerR < 0.0f) {
-		if (anglePlayer - anglePlayerR > -180.0f) {
-			anglePlayer = anglePlayer + 15.0f;
+		if (anglePlayer - anglePlayerR > -ANGLE_180) {
+			anglePlayer = anglePlayer + ANGLE_OFFSET;
 		}
 		else {
-			anglePlayer = anglePlayer - 15.0f;
+			anglePlayer = anglePlayer - ANGLE_OFFSET;
 		}
 	}
 	
 	if(anglePlayerR == anglePlayer){
 		anglePlayer = anglePlayerR;
 	}
-	if (anglePlayer == 360.0f) {
+	if (anglePlayer == ANGLE_360) {
 		anglePlayer = 0.0f;
 	}
 	if (anglePlayer < 0.0f) {
-		anglePlayer = 345.0f;
+		anglePlayer = ANGLE_360 - ANGLE_OFFSET;
 	}
 
 

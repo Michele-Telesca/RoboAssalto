@@ -82,7 +82,7 @@ void powerUp::drawPowerUp(Shader lightShader,Shader simpleShader) {
 
 	if (powerUp_type == WEAPON_SHOTGUN) {
 		glm::mat4 model = glm::mat4(UNIT);
-		model = glm::translate(model, glm::vec3(x, y + animationTime_translate_y, z));
+		model = glm::translate(model, glm::vec3(x + 0.2f, y + animationTime_translate_y -0.5f, z + 0.5f));
 		model = glm::rotate(model, glm::radians(animationTime_rotate_y), glm::vec3(0.0f, UNIT, 0.0f));
 		model = glm::scale(model, glm::vec3(0.025f, 0.025f, 0.025f)); //bullet scale
 		lightShader.setMat4("model", model);
@@ -133,7 +133,7 @@ void powerUp::drawBase(Shader simpleShader, int powerUp_type) {
 
 	modelS = glm::rotate(modelS, 3.14f / 2.0f, glm::vec3(0.0f, UNIT, 0.0f));
 	modelS = glm::translate(modelS, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelS = glm::scale(modelS, glm::vec3(1.6f, 0.02f, 1.6f));
+	modelS = glm::scale(modelS, glm::vec3(2.2f, 0.02f, 2.2f));
 
 	simpleShader.setMat4("model", modelS);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
