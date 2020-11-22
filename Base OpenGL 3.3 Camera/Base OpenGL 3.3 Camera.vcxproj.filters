@@ -86,9 +86,6 @@
     <ClInclude Include="game.h">
       <Filter>Header Files\Controllo</Filter>
     </ClInclude>
-    <ClInclude Include="gameMap.h">
-      <Filter>Header Files\Controllo</Filter>
-    </ClInclude>
     <ClInclude Include="update.h">
       <Filter>Header Files\Controllo</Filter>
     </ClInclude>
@@ -103,9 +100,6 @@
     </ClInclude>
     <ClInclude Include="mesh.h">
       <Filter>Header Files\Tool</Filter>
-    </ClInclude>
-    <ClInclude Include="cube.h">
-      <Filter>Header Files\Controllo</Filter>
     </ClInclude>
     <ClInclude Include="mapObject.h">
       <Filter>Header Files\Modello</Filter>
@@ -145,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="prevMenu.h">
       <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="gameMap.h">
+      <Filter>Header Files\Modello</Filter>
+    </ClInclude>
+    <ClInclude Include="cube.h">
+      <Filter>Header Files\Modello</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

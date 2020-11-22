@@ -60,7 +60,7 @@ public:
 	 unsigned int textureShadow;
 
 	
-	//weapon* weapon; //per avere la gittata del villain
+	//weapon* weapon;
 	path* percorso;
 	player* p;
 

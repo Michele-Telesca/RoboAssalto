@@ -73,12 +73,6 @@ public:
 
 		lightShader.use();
 
-		// material properties
-		/*lightShader.setVec3("material.ambient", 0.9f, 0.9f, 0.9f);
-		lightShader.setVec3("material.diffuse", UNIT, UNIT, UNIT);
-		lightShader.setVec3("material.specular", UNIT, UNIT, UNIT);
-		lightShader.setFloat("material.shininess", 76.8f);*/
-
 		// texture
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -1,5 +1,4 @@
 #include "skinned_mesh.h"
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -15,9 +14,7 @@
 #include "shader_s.h"
 #include "camera.h"
 #include "stb_image.h"
-
 #include <gl/glu.h>
-
 #include "update.h"
 #include "updateAnimation.h"
 #include "model.h"
@@ -31,40 +28,36 @@
 #include "globalPathData.h"
 #include "mainMenu.h"
 #include "pauseMenu.h"
-
 #include <irrKlang/irrKlang.h>
 #include "prevMenu.h"
 
-// dichiarazione oggetti
+//Dichiarazione oggetti
 game* gameuno = new game();
 mainMenu* main_menu = new mainMenu();
 prevMenu* prev_menu = new prevMenu();
 pauseMenu* pause_menu = new pauseMenu();
-
 update* update_game = new update();
 updateAnimation* update_animation = new updateAnimation();
 
-//time
+//Time
 float timebase = TIMEBASE_START;
 double currentTime = TIME_START;
 double previousTime = glfwGetTime();
 
-// timing
 float deltaTime = DELTA_TIME_START;	// time between current frame and last frame
 float lastFrame = LAST_FRAME_START;
 
-//vettore up della camera
+//Camera UP
 glm::vec3 up(UP_X, UP_Y, UP_Z);
 
-
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// Callback input mouse/keyboard
 void processInput(GLFWwindow* window)
 {	
 	if (quit == true ) {
 		glfwSetWindowShouldClose(window, true);
 	}
 
-	//CALLBACK MENU
+	//Callback MENU
 	if (!gameuno->inGame || gameuno->gamePause) {
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 			if (!mouseSx) {
@@ -80,7 +73,7 @@ void processInput(GLFWwindow* window)
 		}
 	}
 
-	//CALLBACK GAME
+	//Callback GAME
 	if (gameuno->inGame) {
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 			mouseSx = true;
@@ -96,12 +89,10 @@ void processInput(GLFWwindow* window)
 			if (buttonEsc == false) {
 				buttonEsc = true;
 				if (gameuno->gamePause == false) {
-					cout << "metto in pausa" << endl;
-					gameuno->gamePause = true;
+					gameuno->gamePause = true; 
 				}
 				else {
 					if (gameuno->gameOver == false) {
-						cout << "tolgo la pausa" << endl;
 						gameuno->gamePause = false;
 					}
 				}
@@ -159,7 +150,6 @@ void ray_plane(glm::vec3 plane_normal_word, glm::vec3 plane_pos_word, glm::vec3 
 
 		if ((t >= 0.0f) && (p.z >= plane_pos_word.z - dim_square && p.z <= plane_pos_word.z + dim_square) && (p.x >= plane_pos_word.x - dim_square && p.x <= plane_pos_word.x + dim_square)) {
 
-			//cout << "********************************* HITTATO: (" << p.x << ", " << p.y << ", " << p.z << ")" << endl;
 			float player_xpos = gameuno->getPlayer()->getX(); //coordinata x del player
 			float player_zpos = gameuno->getPlayer()->getZ(); //coordinata z del player
 			//cout << "*** PLAYER Position (X,Z): (" << player_xpos << ", " << player_zpos << ")" << endl;
@@ -180,7 +170,6 @@ void mouse_position() {
 	GetCursorPos(&cp);	//Projection e View
 
 	glm::mat4 projection_matrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	//glm::mat4 view_matrix = glm::lookAt(pos_camera_fissa, at_camera_fissa, up);
 	glm::mat4 view_matrix = view_global;
 
 	//Step 1: 3d Normalised Device Coordinates
@@ -207,13 +196,12 @@ void mouse_position() {
 }
 
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-	// make sure the viewport matches the new window dimensions; note that width and 
-	// height will be significantly larger than specified on retina displays.
+
 	glViewport(0, 0, width, height);
 }
+
 
 void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	glClearColor(COLOR_R, COLOR_G, COLOR_B, UNIT);
@@ -291,17 +279,9 @@ void renderGame(Shader simpleShader, Shader lightShader, Shader animShader) {
 	float x = gameuno->getPlayer()->getX();
 	float z = gameuno->getPlayer()->getZ();
 
-	////dal basso
-	//glm::vec3 pos_camera_mobile(x, 5.0f, z + 5.0);
-	//glm::vec3 at_camera_mobile(x, 0.0f, z - 5.0f);
-
-	//corretta
+	//coordinate camera
 	glm::vec3 pos_camera_mobile(x, MOBILE_CAMERA_OFFSET_Y, z + MOBILE_CAMERA_OFFSET_Z);
 	glm::vec3 at_camera_mobile(x, MOBILE_CAMERA_AT_Y, z);
-
-	////dall alto
-	//glm::vec3 pos_camera_mobile(x, 20.0f, z);
-	//glm::vec3 at_camera_mobile(x, 0.0f, z - UNIT);
 
 	//view
 	glm::mat4 view = glm::mat4(UNIT);
@@ -402,7 +382,7 @@ void renderName(Shader simpleShader,Shader lightShader,int intro) {
 	prev_menu->draw(simpleShader, lightShader, intro);
 }
 
-// viene richiamata nel while e serve per disegnare gli oggetti creati nell'init, controllare lo stato degli oggetti e chiamare le fun di update dello stato
+//Render principale che gestisce tutte le altre schermate di render (intro, main_menù, game, pausa_menù)
 void render(Shader simpleShader, Shader lightShader, Shader animShader)
 {
 	currentTime = glfwGetTime();
@@ -436,7 +416,7 @@ void render(Shader simpleShader, Shader lightShader, Shader animShader)
 	}
 }
 
-// viene richiamata prima dell'inizio del while e server per inizializzare il game (vengono creati gli oggetti)
+//Inizializza i menù
 void init() {
 
 	main_menu->init();
@@ -506,7 +486,6 @@ int main()
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	//glfwSetCursorPosCallback(window, mouse_callback);
 
 	// glad: load all OpenGL function pointers
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {

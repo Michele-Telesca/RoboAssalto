@@ -20,13 +20,11 @@ public:
 	float angle;
 
 	Model* shotModel;
-	bool destroyed;//true quando il colpo ha hittato un nemico o un oggetto... 
 	bool isShot = false;
 	
 	float damage; //danno del proiettile
 
 	void inizializza();
-	//void draw(Shader lightShader, int texturePlayer,float dim); //disegna il colpo in base al weapon 
 	void drawPlayerShot(Shader simpleShader, int texturePlayer, weapon *wea); //disegna il colpo in base al weapon 
 	float direction;
 
@@ -60,7 +58,6 @@ void playerShot::inizializza() {
 
 }
 
-//void playerShot::draw(Shader lightShader, int texturePlayer,float dim) {
 void playerShot::drawPlayerShot(Shader simpleShader, int texturePlayer,weapon *wea) {
 
 

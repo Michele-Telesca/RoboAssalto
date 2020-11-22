@@ -7,7 +7,6 @@
 #include "path.h"
 #include "powerUp.h"
 #include "loading.h"
-
 #include <vector>
 
 /*classe game qui vengono gestiti tutte le azioni relative
@@ -27,7 +26,7 @@ public:
 
 	int difficulty;     //Livello di difficoltà del gioco, che incrementa durante la partita (da 1 a 6)
 
-	int score = INITIAL_SCORE;
+	int score;
 	bool gameInitialized;
 	bool inGame;
 	bool gamePause;
@@ -292,7 +291,7 @@ void game::init(int selectedPlayer, int weaponType) {
 			difficulty = START_DIFFICULTY;
 			cout << "*** Difficolta: 0" << endl;
 
-			
+			score = INITIAL_SCORE;
 
 			gameInitialized = true;	//segnalo che l'init del game è stato completato completato
 			cout << "*** INIT GAME: COMPLETED" << endl;
@@ -318,6 +317,8 @@ void game::init(int selectedPlayer, int weaponType) {
 			//resetto la difficoltà a 0
 			difficulty = START_DIFFICULTY;
 
+			//resetto lo score
+			score = INITIAL_SCORE;
 		}
 	}
 

@@ -103,7 +103,6 @@ void mapObject::drawMapObject(Shader lightShader,Shader simpleShader) {
 		glBindTexture(GL_TEXTURE_2D, shadowObject);
 		glBindVertexArray(cubeVAO);
 
-		//simpleShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
 		glm::mat4 modelSV = glm::mat4(UNIT);
 
 

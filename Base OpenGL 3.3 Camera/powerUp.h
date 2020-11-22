@@ -121,7 +121,6 @@ void powerUp::drawBase(Shader simpleShader, int powerUp_type) {
 	glBindTexture(GL_TEXTURE_2D, texture_base);
 	glBindVertexArray(cubeVAO);
 
-	//simpleShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
 	glm::mat4 modelS = glm::mat4(UNIT);
 
 	if (powerUp_type == WEAPON_SHOTGUN) {

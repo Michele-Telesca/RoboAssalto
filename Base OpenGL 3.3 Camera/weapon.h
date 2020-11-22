@@ -8,8 +8,7 @@ class weapon {
 public:
 
 	weapon() {};
-	//costruttore per tutte le armi
-	//weapon(float lengthRange, float angleRange, float lengthBase, int weapon_type) : angleRange(angleRange), lengthRange(lengthRange), lengthBase(lengthBase), weapon_type(weapon_type) {}
+
 	weapon(int type) {
 		weapon_type = type;	
 	}
@@ -54,7 +53,6 @@ void weapon::drawTarget(Shader simpleShader, float x, float y, float z, int text
 	glBindTexture(GL_TEXTURE_2D, texturePlayer);
 	glBindVertexArray(cubeVAO);
 
-	//simpleShader.setVec3("colorcube", UNIT, 0.0f, 0.0f);
 	glm::mat4 modelW = glm::mat4(UNIT);
 	float dx = (lengthRange / 2.0f) * sin(angle);
 	float dy = (lengthRange / 2.0f) * cos(angle);

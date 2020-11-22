@@ -18,13 +18,13 @@ public:
 	float y;
 	float z;
 
-	float life; //vita del player aggiornata 
+	float life; 
 	int chest_life;
 	float lifeMax;
 
 	int numShotsAvailable;  //colpi a disposizione
-	float chargingTime;     //tempo di ricarica del colpo
-	float timeLastShot;     //tempo dell'ultimo colpo. servirà in update per calcolare se è passato abbastanza tempo per ricaricare  
+	float chargingTime;     
+	float timeLastShot;       
 	float delayShotTime;
 	bool delayShotIsFinished;
 	float anglePlayer;
@@ -50,7 +50,7 @@ public:
 	float animationTime_playerRunning;
 	
 	// target dell'arma
-	weapon* wea;  //arma posseduta al momento
+	weapon* wea;  
 
 	//lista colpi
 	vector<playerShot*> listShot;
